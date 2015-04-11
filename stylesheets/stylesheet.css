@@ -222,6 +222,10 @@ hr {
     margin: 0.5ex;
 }
 
+.floatright {
+    float: right;
+}
+
 .btn-github .icon {
   opacity: 0.6;
   background: url("../images/blacktocat.png") 0 0 no-repeat;
