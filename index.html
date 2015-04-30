@@ -169,7 +169,10 @@
               clockwise, this clock is divided, and counter-clockwise
               it is multiplied following the rates: 1/16, 3/32, 1/8,
               3/16, 1/4, 3/8, 1/2, 3/4, 1, 3/2, 2/1, 3/1, 4/1, 6/1,
-              8/1, 12/1 (borrowed from the Echophon). Changing pre-delay
+              8/1, 12/1 (borrowed from the Echophon). Note that the
+              clock division is limited to the largest division not
+              exceeding the maximum delay; beyond this point, the
+              Position knob will have no effect. Changing pre-delay
               in real time is smooth and does not affect pitch (it
               uses the internal time stretcher).
             </dd>
@@ -193,7 +196,8 @@
               effect</a>; lots of oddities can be found in between. To
               hear the effect of the pitch shifter, some sound has to
               fed back by increasing Decay. Note that <b>Size</b> has
-              an impact on how well the sound is pitch-shifted.
+              an impact on how well the sound is pitch-shifted: the
+              larger the room size, the more accurate the pitch shift.
             </dd>
             <dt>Diffusion</dt>
             <dd>The <b>Texture</b> knob controls how much the sound is
@@ -251,16 +255,22 @@
           </ul>
 
 
-          <h4>Delay and Pitch-shifter mode</h4>
+          <h4>Looping delay and Pitch-shifter mode</h4>
 
           <ul>
             <li>When a clock is sent to the <b>Trig</b> input,
-              the <b>Position</b> knob becomes a clock divider/multiplier
-              for the pre-delay: at 12 o'clock, the pre-delay takes the
-              value of the clock length; clockwise, this clock is divided,
-              and counter-clockwise it is multiplied following the rates:
-              1/16, 3/32, 1/8, 3/16, 1/4, 3/8, 1/2, 3/4, 1, 3/2, 2/1, 3/1,
-              4/1, 6/1, 8/1, 12/1 (borrowed from the Echophon).</li>
+              the <b>Position</b> knob becomes a clock
+              divider/multiplier for the pre-delay: at 12 o'clock, the
+              pre-delay takes the value of the clock length;
+              clockwise, this clock is divided, and counter-clockwise
+              it is multiplied following the rates: 1/16, 3/32, 1/8,
+              3/16, 1/4, 3/8, 1/2, 3/4, 1, 3/2, 2/1, 3/1, 4/1, 6/1,
+              8/1, 12/1 (borrowed from the Echophon). Note that the
+              clock division is limited to the largest division not
+              exceeding the maximum delay; beyond this point, the
+              Position knob will have no effect. Note also that clock
+              synchronization will be more accurate with
+              the <b>Size</b> knob fully counter-clockwise.</li>
           </ul>
 
           <h4>Miscellaneous</h4>
