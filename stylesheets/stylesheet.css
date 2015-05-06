@@ -142,6 +142,16 @@ ul li:before {
   line-height: 16px;
 }
 
+ul.warn li:before {
+  content: "⚠";
+  font-family: "Courier New", Courier, monospace;
+  font-size: 40px;
+  color: #FFCC66;
+  margin-left: -37px;
+  margin-right: 21px;
+  line-height: 16px;
+}
+
 blockquote {
   color: #aaa;
   padding-left: 10px;
