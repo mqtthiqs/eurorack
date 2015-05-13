@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-61754260-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <title>Mutable Parasites</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <div class="floatright">
+          <a href="https://github.com/mqtthiqs/parasites"><img src="images/blacktocat.png"
+                                                               /></a>
+        </div>
+        <h1>Parasites</h1>
+        <h2>Disturbing hacks for Mutable Instruments modules</h2>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+
+        <div class="center">
+          <a href="#what">What is it?</a> |
+          <a href="#clouds">Clouds Parasite</a>
+        </div>
+
+        <p>&nbsp;</p>
+
+        <h2 id="what">What is it?</h2>
+
+        <img class="float" src="images/figurine.JPG" />
+
+        <p> A parasite is an organism living in or on another,
+          benefiting unilaterally from its host. <b>Parasites</b> is a
+          series of free
+          and <a href="https://github.com/mqtthiqs/parasites">open
+            source</a> alterative firmwares for the Eurorack modules
+          from <a href="http://mutable-instruments.net/">Mutable
+            Instruments</a>. Their purpose is to enhance existing
+          features, and add new function and hidden modes, retaining
+          as much as possible factory functionality.</p>
+
+        <p>If you own a supported module, you can easily install these
+          firmwares. All you need is to play a <code>.wav</code> file into the
+          module: a laptop and a patch cable will do.</p>
+
+        <h3>Disclaimer and acknowledgments</h3>
+
+        <p>All software found on this page is maintained
+          by <b>Matthias Puech</b>, based on Mutable Instrument's
+          <a href="https://github.com/pichenettes/eurorack/">open
+            source code</a>, and licenced under
+          the <a href="http://opensource.org/licenses/MIT">MIT
+            Licence</a>. Code and executables are provided as-is with
+          no guarantee. Address any questions, comments or
+          constructive criticisms
+          to <a href="mailto:matthias.puech@gmail.com">matthias.puech@gmail.com</a>. Please,
+          do not bother Mutable Instruments with questions about
+          these firmwares.</p>
+
+        <div class="floatright">
+          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+                                                         ">
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+            <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+          </form>
+        </div>
+
+        <p>As I'm doing this for fun and for my own needs, I don't
+          charge anything for it. However if you like this work and
+          want to support my effort, consider donating by clicking the
+          link on the right. If you can't, just drop a note saying
+          that you appreciate it!</p>
+
+        <p>Special thanks go to <b>Olivier Gillet</b> at Mutable
+          Instruments for releasing the source code of his modules and
+          for his help. Also, thanks to <b>Tim Churches</b> for
+          his <a href="https://github.com/timchurches/Mutated-Mutables/wiki/Ideas-for-possible-hacks-and-enhancements-to-Mutable-Instruments-open-source-eurorack-synthesiser-modules.">ideas</a>
+          and
+          <a href="https://github.com/timchurches/Mutated-Mutables">code</a>,
+          and for paving the way of alternate firmwares with
+          his <a href="http://timchurches.github.io/Mutated-Mutables/">Mutated
+          Mutables</a> project. Finally to all users of
+          the <a href="https://www.muffwiggler.com/forum/viewforum.php?f=16">MW</a>
+          and <a href="http://mutable-instruments.net/forum/discussions/interesting">MI</a>
+          forums for their comments and ideas.</p>
+
+        <hr />
+        <h2 id="clouds">Clouds Parasite</h2>
+
+        Clouds Parasite is an alternative firmware
+        for <a href="http://mutable-instruments.net/modules/clouds/">Clouds</a>. It
+        adds the following main features to the module:
+        <ul>
+          <li>The <b>OliVerb</b>, a new, full-featured creative reverb
+            mode based on the reverb of the original firmware (itself
+            based on a description of the Lexicon 480L), and inspired
+            in design by
+            the <a href="http://www.makenoisemusic.com/erbe-verb.html">Erbe
+              Verb</a>, with CV control over all parameters. It is
+            largely modeless, probably unrealistic and goes far beyond
+            your traditional reverb;</li>
+          <li><b>More envelopes</b> for your grains: the Texture knob
+            allows to select ramp down or ramp up-shaped
+            grains. Square-shaped grains have steeper edges for extra
+            glitch;</li>
+          <li><b>Tempo syncing with clock multiplier/divisor</b> in
+            looping delay, time-stetcher and reverb mode;</li>
+          <li>Availability of much <b>smaller grains</b> compared to
+            the official firmware.</li>
+        </ul>
+
+        <p>All features of the official firmware are left untouched and
+          still accessible as before.</p>
+
+        <h3>IMPORTANT WARNINGS</h3>
+
+        <ul class="warn">
+          <li><i>(2015-05-06)</i> There seems to be currently an unknown
+            issue on some Clouds where updating could brick (render
+            useless) the module; it is rare and reversible, but
+            happened twice already. The bug is being investigated as
+            of 2015-05-06 but in the meantime, I would advise
+            everybody to not update their Clouds with this firmware
+            until we know more, unless you have a FTDI/JTAG programmer
+            and know what you are doing.
+          </li>
+          <li> <i>(2015-04-27)</i> If your module has a serial number
+            that ends with number < 020, you should contact Mutable
+                                    Instruments: your Clouds might have a faulty bootloader
+                                    which could brick the unit if you try to update it.
+                                    </li>
+        </ul>
+
+
+
+        <h3>Download and install</h3>
+
+        <p>Click on the button to download the latest stable version,
+          ready to play to your module:</p>
+        
+        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.0/parasite-clouds-v1.0.wav.zip"
+                             class="btn">Download latest version (v1.0)</a></p>
+
+        <p>Once you downloaded the file, unzip it and follow the
+          Firmware update procedure in
+          the <a href="http://mutable-instruments.net/modules/clouds/manual">official
+            manual</a>. Don't forget to recalibrate your module every
+          time you update the module, as described in the manual.
+
+          <h3>Documentation</h3>
+
+        <p>For full documentation, please see
+          the <a href="http://mutable-instruments.net/modules/clouds/manual">user
+            manual</a> of Clouds. I present hereafter only the
+          features added/modified.</p>
+
+        <h4>OliVerb mode</h4>
+
+        <p>One accesses the new OliVerb mode like the other factory
+          playback modes: hold the <b>Blend button</b> until LEDs get
+          orange, and press it again several times until the last
+          three are lit (or only the first LED is unlit). This mode is
+          mono-in, stereo-out. The reverb parameter can be controlled
+          by the knobs and CV inputs:</p>
+
+        <dl>
+          <dt>Pre-delay</dt>
+          <dd>The <b>Position</b> knob controls the time it take for
+            the reverb to kick in after a sound has gone in (from 0
+            to about half a second). When a clock is fed to
+            the <b>Trig</b> input, this knob becomes a clock
+            divider/multiplier for the pre-delay: at 12 o'clock, the
+            pre-delay takes the value of the clock length;
+            clockwise, this clock is divided, and counter-clockwise
+            it is multiplied following the rates: 1/16, 3/32, 1/8,
+            3/16, 1/4, 3/8, 1/2, 3/4, 1, 3/2, 2/1, 3/1, 4/1, 6/1,
+            8/1, 12/1 (borrowed from the Echophon). Note that the
+            clock division is limited to the largest division not
+            exceeding the maximum delay; beyond this point, the
+            Position knob will have no effect. Changing pre-delay
+            in real time is smooth and does not affect pitch (it
+            uses the internal time stretcher).
+          </dd>
+          <dt>Reverb Size</dt>
+          <dd>The <b>Size</b> knob controls the lengths of all the
+            delays internal to the reverb, i.e. the size of the
+            emulated room. It varies from a small resonator to a
+            huge hall. </dd>
+          <dt>Decay</dt>
+          <dd>The <b>Density</b> knob controls the amount of sound
+            fed back into the reverb loop, i.e. the decay time of the
+            reverb tail. Beyond 3 o'clock, this signal is actually
+            amplified and the reverb enters self-oscillation.</dd>
+          <dt>Pitch shift</dt>
+          <dd>Each time the sound is fed back into the reverb, it
+            can be pitch shifted. The <b>Pitch</b> knob controls,
+            from -1 to +1 octaves how it is pitch shifted. At 12
+            o'clock, no pitch shifting is applied; fully clockwise,
+            we get the
+            classic <a href="https://valhalladsp.wordpress.com/2010/05/11/enolanois-shimmer-sound-how-it-is-made/">shimmer
+              effect</a>; lots of oddities can be found in between. To
+            hear the effect of the pitch shifter, some sound has to
+            fed back by increasing Decay. Note that <b>Size</b> has
+            an impact on how well the sound is pitch-shifted: the
+            larger the room size, the more accurate the pitch shift.
+          </dd>
+          <dt>Diffusion</dt>
+          <dd>The <b>Texture</b> knob controls how much the sound is
+            "smoothened" by the diffusers each time it goes through
+            the loop. Fully clockwise, you get the more dense,
+            continuous sound; fully counter-clockwise, you clearly
+            hear the sound being repeated like in a multi-tap
+            delay.</dd>
+          <dt>Freeze</dt>
+          <dd>The <b>Freeze</b> button sets reverb to (near)
+            infinite decay, and mutes the input. This works best with
+            no pitch shifting and a large size.</dd>
+          <dt>Dry/Wet</dt>
+          <dd>The first function of the <b>Blend</b> knob is dry/wet
+            crossfading, as in the other modes.</dd>
+          <dt>Dampening</dt>
+          <dd>The second function of the <b>Blend</b> knob (called
+            "stereo spread") controls the dampening of the
+            reverb. From fully CCW to 12 o'clock, a low-pass filter is
+            applied, simultaing the absorption of the room. From 12
+            o'clock to fully CW, a high-pass filter is applied for
+            unusual, crystalline effects.</dd>
+          <dt>Modulation amount</dt>
+          <dd>Each delay in the reverb can be individually modulated
+            by 9 smoothed random LFOs. The fourth function of
+            the <b>Blend</b> knob (called "reverb") controls the
+            amount of modulation applied by the LFOs to the delay
+            time. Small modulations result in subtle chorus and ghost
+            tones, large modulations in random pitch shifts.</dd>
+          <dt>Modulation speed</dt>
+          <dd>The third function of
+            the <b>Blend</b> knob (called "feedback") controls the
+            speed of these LFOs. It ranges from ~1/100Hz to
+            ~100Hz. It has no effect if modulation amount is null.</dd>
+        </dl>
+
+        <h4>Resonator mode</h4>
+
+        <p>It is a dual-voice, four-parts resonator (or comb filter) effect with
+          built-in capability for polyphonic Karplus-Strong plucked string
+          synthesis, and more. You access it by long-pressing the <b>Blend button</b>
+          until LEDs become orange, and press it again several times until only
+          the second LED it unlit.</p>
+
+        <h5>Introduction</h5>
+
+        <p>To discover it, put the knobs in the following position: <b>Position</b>,
+          <b>Size</b>, <b>Density</b>, <b>Stereo spread</b>, <b>Feedback</b> and <b>Reverb</b> fully CCW;
+          <b>Pitch</b>, <b>In gain</b> and <b>Texture</b> at 12 o'clock; <b>Dry/Wet</b> fully CW.</p>
+
+        <p>Each input feeds one of the two voices/resonators, which
+          decay is controlled by the <b>Density</b> knob. Remember
+          that <b>In L</b> is normalized to <b>In R</b>, so with
+          nothing patched in <b>In R</b>, the <b>In L</b> signal is
+          fed to both voices. The pitch of the resonator is controlled
+          by the <b>Pitch</b> knob and the <b>V/Oct</b> input, so you
+          can "play" the resonator like an oscillator. In fact, each
+          voice consists of four "parts" (four resonators), which can
+          be set to different pitches to form chords. The <b>Size</b>
+          knob sets the chord, borrowed from Braids: unison, detuned,
+          fifth etc. The resonators can sound very metallic;
+          the <b>Texture</b> knob helps attenuating the high/low
+          frequencies each time sound passes through the resonator. At
+          12 o'clock, no filtering is applied; CCW is a low-pass
+          filter; CW is a band-pass filter. This way, a short sound
+          impulse passing through the resonator will have a long decay
+          with less and less high (and possibly low) frequency.</p>
+
+        <p>This technique, sending a short noise burst to "excite" a
+          resonator, is the so-called Karplus-Strong algorithm to
+          synthesize the sound of plucked strings instruments like
+          guitars. Here, no need for additional modules: sending a
+          trigger to the <b>Trig</b> input will send a short burst of
+          noise to one of the voices. The <b>Position</b> knob
+          controls the timbre and duration of this burst, roughly
+          modelling the position on which the string is struck.</p>
+
+        <p>Up to now, we only discussed one voice. Actually, each
+          time a <b>Trig</b> is received, the module switches the
+          active voice; therefore, you can get duophony. At any time,
+          the knobs (pitch, chord, feedback, damping) control only the
+          parameters of the resonators of the active voice; the other
+          voice keeps the last parameters it was on. If you are
+          satisfied with the sound of the current voice and want to
+          keep it running (maybe as a drone, using the other voice for
+          melody), press <b>Freeze</b>: it will instantly switch
+          voice, and prevent <b>Trig</b> from automatically switching
+          voice.</p>
+
+        <p>For the more technically enclined, here is a diagram of how
+          it works: <img src="images/resonator-dia.jpg" /> and here is
+          a detail on the COMB boxes: <img src="images/comb-dia.jpg"
+          /> Delay M sets the pitch of one part. The ratio between
+          delay times M and N is the Harmonics parameter.
+
+        <h5>Function description</h5>
+
+        <p>Here is a full description of the parameters and their function:</p>
+
+        <dl>
+          <dt>Decay (<b>Density</b> knob and CV)</dt>
+          <dd>Decay time of the current voice. Beyond approx. 3
+            o'clock, decay is infinite and the sound sustains
+            forever (you can use it as a traditional oscillator).</dd>
+          <dt>Pitch (<b>Pitch</b> knob and V/Oct CV)</dt>
+          <dd>Base pitch of the current voice. At 12 o'clock, the
+            pitch is A3 (220Hz).</dd>
+          <dt>Chord (<b>Size</b> knob and CV)</dt>
+          <dd>Chord selection for the current voice. Morphs gradually
+            between Unison, Fat, Superfat, Fat power, Fat octave,
+            Octaves, Power, Major, Major7, Minor7, Minor, Sus2, Sus4,
+            Minor9, Major9, Minor11, Major11, and Major11.</dd>
+          <dt>Dampening
+            (<b>Texture</b> knob and CV)</dt>
+          <dd>Controls filtering in the feedback loop of the
+            resonator. At 12 o'clock, no filtering is applied; CCW, a
+            low-pass filter is applied with a increasingly low cutoff
+            frequency; CW, a band-pass filter at the frequency of the
+            resonator is applied with an increasingly high
+            resonance.</dd>
+          <dt>Burst (<b>Trig</b> CV)</dt>
+          <dd>A trigger in this input will switch the current voice
+            (if <b>Freeze</b> is not active) and send a short burst of
+            noise in its resonator.</dd>
+          <dt>Position (<b>Position</b> knob and CV)</dt>
+          <dd>Controls the timbre and duration of the noise burst.
+            CCW, it will be longer and more dampened; CW, it will be
+            shorter and more high pitched. At both ends of the knob, the
+            burst will be inaudible (too damped or too short), which you
+            can use to "mute" a voice.</dd>
+          <dt>Freeze (<b>Freeze</b> button and CV)</dt>
+          <dd>Switch the current voice, and inhibits further voice
+            switch by the <b>Trig</b> CV.</dd>
+          <dt>Dry/Wet (first function of <b>Blend</b> knob and CV)</dt>
+          <dd>Crossfades between the dry and the wet signal.</dd>
+          <dt>Stereo output (second function of <b>Blend</b> knob and CV)</dt>
+          <dd>Assigns each part and voice to an output (<b>Out L</b>
+            or <b>Out R</b>). Fully CCW, each voice goes to a different
+            output. At 12 o'clock, both voices are equally mixed in both
+            output. Fully CW, parts of both voices are distributed on
+            both output for a wide stereo effect.</dd>
+          <dt>Scatter (third function of <b>Blend</b> knob and CV)</dt>
+          <dd>Controls the random delay times before the sound (input
+            or burst) hits each resonator of the current voice. Used for
+            K-S synthesis with a chord, this will give the impression
+            that strings are struck with a slight. The delay times are
+            randomized at each voice switch.</dd>
+          <dt>Harmonics (fourth function of <b>Blend</b> knob and CV)</dt>
+          <dd>Simulates striking the harmonics on a string. Fully CCW,
+            it has no effect. Fully CW, the second harmonic will ring;
+            at 12 o'clock, the third, at 10 the fourth etc.
+          </dd>
+        </dl>
+
+        <h4>Granular mode</h4>
+
+        <ul>
+          <li>The <b>Texture</b> knob now has asymetric shapes of
+            grain envelopes. It morphes between: square, ramp up,
+            ramp down, triangle, and triangle with diffuser. Fully
+            counter-clockwise, the square shape has particularly sharp
+            edges and may click. This is desired (more glitch!); if
+            you want the old behaviour, turn the knob up a little bit
+            until the click disappears.</li>
+          <li>The range of the <b>Size</b> knob has been adjusted to
+            produce much smaller grains. Fully counter-clockwise,
+            grains are barely hearable spikes; fully clockwise, the
+            maximum size is as before.
+          <li>To cope with the additional computation, Grain
+            polyphony has been reduced a bit. This should not be
+            noticeable.</li>
+        </ul>
+
+        <h4>Looping delay and Pitch-shifter mode</h4>
+
+        <ul>
+          <li>When a clock is sent to the <b>Trig</b> input,
+            the <b>Position</b> knob becomes a clock
+            divider/multiplier for the pre-delay: at 12 o'clock, the
+            pre-delay takes the value of the clock length;
+            clockwise, this clock is divided, and counter-clockwise
+            it is multiplied following the rates: 1/16, 3/32, 1/8,
+            3/16, 1/4, 3/8, 1/2, 3/4, 1, 3/2, 2/1, 3/1, 4/1, 6/1,
+            8/1, 12/1 (borrowed from the Echophon). Note that the
+            clock division is limited to the largest division not
+            exceeding the maximum delay; beyond this point, the
+            Position knob will have no effect. Note also that clock
+            synchronization will be more accurate with
+            the <b>Size</b> knob fully counter-clockwise.</li>
+          <li>In the Mono quality modes, <b>Stereo spread</b>
+            crossfades between the left and the right input (which
+            allows open-feedback delay patches). Remember that the
+            left input is normalized into the right input, so with
+            nothing patched in <b>In L</b>, this will have no
+            effect.</li>
+          <li>In the Stereo quality modes, <b>Stereo spread</b>
+            gradually swaps both output channels. Fully CW, it allows
+            to do ping-pong delay effects.</li>
+        </ul>
+
+        <h4>Looping delay</h4>
+
+        <ul>
+          <li>When the pitch is at 0, bypass the pitch shifter
+            completely. This drastically enhances the delay quality
+            when no pitch-shifting is done, avoiding the flanging
+            effect when the delay was used with feedback. By the way: don't forget
+            to calibrate the module after the update!</li>
+          <li>When Freeze is active and delay time is synced to an
+            external clock, <b>Size</b> controls the repeat time
+            multiplication/division.
+          </li>
+        </ul>
+
+        <h4>Miscellaneous</h4>
+
+        <ul>
+          <li>changed long-press time to access the alternative
+            modes to 2.5 seconds.</li>
+          <li>changed response of the feedback knob to square
+            root-ish.</li>
+          <li>avoided a constant low-frequency tone build-up at high
+            feedbacks</li>
+          <li><b>Pitch</b> knob: made a clearer plateau at +12/-12
+            semitones, so that octaves up/down are easier to find on
+            the knob.
+          </li>
+        </ul>
+
+        <h3>Changelog</h3>
+
+        <table style="width:100%">
+          <tr>
+            <th>Version</th>
+            <th>Date</th>
+            <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/v1.2beta1/clouds-parasite-v1.2beta1.wav.zip">v1.2beta1</a></td>
+            <td>2015-05-13</td>
+            <td>
+              <ul>
+                <li>New Resonator mode.</li>
+                <li>Enhanced quality of the looping delay and
+                feedback.</li>
+                <li>Fixed a bug creating a constant tone in the
+                  built-in reverb when switching away from Oliverb.
+                  (this time for good)</li>
+                <li>In looping delay when frozen and
+                  synced, made <b>Size</b> controls buffer size.</li>
+                <li>In looping delay/time stretcher, made <b>Stereo
+                    spread</b> control stereo features of the modes.</li>
+                <li>Increased plateau for +/-12 on <b>Pitch</b>
+                  knob.</li>
+                <li>Swapped ramp up/down envelopes in Granular
+                mode.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.0/parasite-clouds-v1.0.wav.zip">v1.0</a></td>
+            <td>2015-04-29</td>
+            <td><ul>
+                <li>Enhanced quality of the interpolation of the Oliverb
+                  and pitch shifting algorithms;</li>
+                <li>Reduced clipping in
+                  Oliverb mode;</li>
+                <li>Fixed a bug potentially
+                  creating a constant pitched noise in the built-in reverb
+                  in the main modes;</li>
+                <li>Fixed a bug potentially causing a freeze of the
+                  module in time-stretcher mode.</li>
+            </ul></td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v0.9/clouds-parasite-v0.9.wav.zip">v0.9</a></td>
+            <td>2015-04-11</td>
+            <td>Full-featured OliVerb, asymetric envelopes, tempo
+              syncing with clock mult/div, smaller grains.</td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/mutable/releases/download/clouds%2Boliverb/clouds.wav">v0.1</a></td>
+            <td>2015-03-29</td>
+            <td>Initial release featuring a basic version of the
+              OliVerb.</td>
+          </tr>
+        </table>
+
+      </section>
+    </div>
+
+    
+  </body>
+</html>
