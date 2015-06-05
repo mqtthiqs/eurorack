@@ -16,7 +16,7 @@
       ga('create', 'UA-61754260-1', 'auto');
       ga('send', 'pageview');
     </script>
-    <title>Mutable Parasites</title>
+    <title>Parasites</title>
   </head>
 
   <body>
@@ -25,7 +25,7 @@
       <div class="container">
         <div class="floatright">
           <a href="https://github.com/mqtthiqs/parasites"><img src="images/blacktocat.png"
-          /></a>
+                                                               /></a>
         </div>
         <h1>Parasites</h1>
         <h2>Disturbing hacks for Mutable Instruments modules</h2>
@@ -36,8 +36,9 @@
       <section id="main_content">
 
         <div class="center">
-          <a href="#what">What is it?</a> |
-          <a href="#clouds">Clouds Parasite</a>
+          <a href="index.html">What is it?</a> &nbsp;|&nbsp;
+          <a href="clouds.html">Clouds Parasite</a> &nbsp;|&nbsp;
+          <a href="frames.html">Frames Parasite</a>
         </div>
 
         <p>&nbsp;</p>
@@ -50,9 +51,9 @@
           benefiting unilaterally from its host. <b>Parasites</b> is a
           series of free
           and <a href="https://github.com/mqtthiqs/parasites">open
-          source</a> alterative firmwares for the Eurorack modules
+            source</a> alterative firmwares for the Eurorack modules
           from <a href="http://mutable-instruments.net/">Mutable
-          Instruments</a>. Their purpose is to enhance existing
+            Instruments</a>. Their purpose is to enhance existing
           features, and add new function and hidden modes, retaining
           as much as possible factory functionality.</p>
 
@@ -66,13 +67,13 @@
           by <b>Matthias Puech</b>, based on Mutable Instrument's
           <a href="https://github.com/pichenettes/eurorack/">open
             source code</a>, and licenced under
-            the <a href="http://opensource.org/licenses/MIT">MIT
+          the <a href="http://opensource.org/licenses/MIT">MIT
             Licence</a>. Code and executables are provided as-is with
-            no guarantee. Address any questions, comments or
-            constructive criticisms
-            to <a href="mailto:matthias.puech@gmail.com">matthias.puech@gmail.com</a>. Please,
-            do not bother Mutable Instruments with questions about
-            these firmwares.</p>
+          no guarantee. Address any questions, comments or
+          constructive criticisms
+          to <a href="mailto:matthias.puech@gmail.com">matthias.puech@gmail.com</a>. Please,
+          do not bother Mutable Instruments with questions about
+          these firmwares.</p>
 
         <div class="floatright">
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -84,262 +85,33 @@
           </form>
         </div>
 
-        <p>As I'm doing this for fun, I don't charge anything for
-        it. However if you like this work and want to support my
-        effort, consider donating by clicking the link on the
-        right. If you can't, just drop a note saying that you
-        appreciate it!</p>
+        <p>As I'm doing this for fun and for my own needs, I don't
+          charge anything for it. However if you like this work and
+          want to support my effort, consider donating by clicking the
+          link on the right. If you can't, just drop a note saying
+          that you appreciate it!</p>
 
         <p>Special thanks go to <b>Olivier Gillet</b> at Mutable
-          Instruments for releasing the source code of his
-          modules. Also, thanks to <b>Tim Churches</b> for his <a href="https://github.com/timchurches/Mutated-Mutables/wiki/Ideas-for-possible-hacks-and-enhancements-to-Mutable-Instruments-open-source-eurorack-synthesiser-modules.">ideas</a> and
+          Instruments for releasing the source code of his modules and
+          for his help. Also, thanks to <b>Tim Churches</b> for
+          his <a href="https://github.com/timchurches/Mutated-Mutables/wiki/Ideas-for-possible-hacks-and-enhancements-to-Mutable-Instruments-open-source-eurorack-synthesiser-modules.">ideas</a>
+          and
           <a href="https://github.com/timchurches/Mutated-Mutables">code</a>,
           and for paving the way of alternate firmwares with
           his <a href="http://timchurches.github.io/Mutated-Mutables/">Mutated
-          Mutables</a> project, and to all users of
+          Mutables</a> project. Thanks to the early volunteer
+          testers. Finally to all users of
           the <a href="https://www.muffwiggler.com/forum/viewforum.php?f=16">MW</a>
           and <a href="http://mutable-instruments.net/forum/discussions/interesting">MI</a>
           forums for their comments and ideas.</p>
 
         <hr />
-        <h2 id="clouds">Clouds Parasite</h2>
-
-        Clouds Parasite is an alternative firmware
-        for <a href="http://mutable-instruments.net/modules/clouds/">Clouds</a>. It
-        adds the following main features to the module:
+        <h2>The Projects</h2>
         <ul>
-          <li>The <b>OliVerb</b>, a new, full-featured creative reverb
-            mode based on the reverb of the original firmware (itself
-            based on a description of the Lexicon 480L), and inspired
-            in design by
-            the <a href="http://www.makenoisemusic.com/erbe-verb.html">Erbe
-            Verb</a>, with CV control over all parameters. It is
-            largely modeless, probably unrealistic and goes far beyond
-            your traditional reverb;</li>
-          <li><b>More envelopes</b> for your grains: the Texture knob
-            allows to select ramp down or ramp up-shaped
-            grains. Square-shaped grains have steeper edges for extra
-            glitch;</li>
-          <li><b>Tempo syncing with clock multiplier/divisor</b> in
-            looping delay, time-stetcher and reverb mode;</li>
-          <li>Availability of much <b>smaller grains</b> compared to
-            the official firmware.</li>
+          <li><a href="clouds.html">Clouds Parasite</a></li>
+          <li><a href="frames.html">Frames Parasite</a></li>
         </ul>
-
-        <p>All features of the official firmware are left untouched and
-          still accessible as before.</p>
-
-        <h3>IMPORTANT WARNINGS</h3>
-
-        <ul class="warn">
-          <li><i>(2015-05-06)</i> There seems to be currently an unknown
-            issue on some Clouds where updating could brick (render
-            useless) the module; it is rare and reversible, but
-            happened twice already. The bug is being investigated as
-            of 2015-05-06 but in the meantime, I would advise
-            everybody to not update their Clouds with this firmware
-            until we know more, unless you have a FTDI/JTAG programmer
-            and know what you are doing.
-          </li>
-          <li> <i>(2015-04-27)</i> If your module has a serial number
-            that ends with number < 020, you should contact Mutable
-            Instruments: your Clouds might have a faulty bootloader
-            which could brick the unit if you try to update it.
-          </li>
-       </ul>
-
-
-
-        <h3>Download and install</h3>
-
-        <p>Click on the button to download the latest version, ready
-          to play to your module:</p>
-        
-        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.0/parasite-clouds-v1.0.wav.zip"
-                             class="btn">Download latest version (v1.0)</a></p>
-
-        <p>Once you downloaded the file, unzip it and follow the
-          Firmware update procedure in
-          the <a href="http://mutable-instruments.net/modules/clouds/manual">official
-            manual</a>. Don't forget to recalibrate your module every
-          time you update the module, as described in the manual.
-
-          <h3>Documentation</h3>
-
-          <p>For full documentation, please see
-            the <a href="http://mutable-instruments.net/modules/clouds/manual">user
-            manual</a> of Clouds. I present hereafter only the
-            features added/modified.</p>
-
-          <h4>OliVerb mode</h4>
-
-          <p>One accesses the new OliVerb mode like the other factory
-          playback modes: hold the <b>Blend button</b> until LEDs get
-          orange, and press it again several times until the last
-          three are lit (or only the first LED is unlit). This mode is
-          mono-in, stereo-out. The reverb parameter can be controlled
-          by the knobs and CV inputs:</p>
-
-          <dl>
-            <dt>Pre-delay</dt>
-            <dd>The <b>Position</b> knob controls the time it take for
-              the reverb to kick in after a sound has gone in (from 0
-              to about half a second). When a clock is fed to
-              the <b>Trig</b> input, this knob becomes a clock
-              divider/multiplier for the pre-delay: at 12 o'clock, the
-              pre-delay takes the value of the clock length;
-              clockwise, this clock is divided, and counter-clockwise
-              it is multiplied following the rates: 1/16, 3/32, 1/8,
-              3/16, 1/4, 3/8, 1/2, 3/4, 1, 3/2, 2/1, 3/1, 4/1, 6/1,
-              8/1, 12/1 (borrowed from the Echophon). Note that the
-              clock division is limited to the largest division not
-              exceeding the maximum delay; beyond this point, the
-              Position knob will have no effect. Changing pre-delay
-              in real time is smooth and does not affect pitch (it
-              uses the internal time stretcher).
-            </dd>
-            <dt>Reverb Size</dt>
-            <dd>The <b>Size</b> knob controls the lengths of all the
-              delays internal to the reverb, i.e. the size of the
-              emulated room. It varies from a small resonator to a
-              huge hall. </dd>
-            <dt>Decay</dt>
-            <dd>The <b>Density</b> knob controls the amount of sound
-            fed back into the reverb loop, i.e. the decay time of the
-            reverb tail. Beyond 3 o'clock, this signal is actually
-            amplified and the reverb enters self-oscillation.</dd>
-            <dt>Pitch shift</dt>
-            <dd>Each time the sound is fed back into the reverb, it
-              can be pitch shifted. The <b>Pitch</b> knob controls,
-              from -1 to +1 octaves how it is pitch shifted. At 12
-              o'clock, no pitch shifting is applied; fully clockwise,
-              we get the
-              classic <a href="https://valhalladsp.wordpress.com/2010/05/11/enolanois-shimmer-sound-how-it-is-made/">shimmer
-              effect</a>; lots of oddities can be found in between. To
-              hear the effect of the pitch shifter, some sound has to
-              fed back by increasing Decay. Note that <b>Size</b> has
-              an impact on how well the sound is pitch-shifted: the
-              larger the room size, the more accurate the pitch shift.
-            </dd>
-            <dt>Diffusion</dt>
-            <dd>The <b>Texture</b> knob controls how much the sound is
-            "smoothened" by the diffusers each time it goes through
-            the loop. Fully clockwise, you get the more dense,
-            continuous sound; fully counter-clockwise, you clearly
-            hear the sound being repeated like in a multi-tap
-            delay.</dd>
-            <dt>Freeze</dt>
-            <dd>The <b>Freeze</b> button sets reverb to (near)
-            infinite decay, and mutes the input. This works best with
-            no pitch shifting and a large size.</dd>
-            <dt>Dry/Wet</dt>
-            <dd>The first function of the <b>Blend</b> knob is dry/wet
-            crossfading, as in the other modes.</dd>
-            <dt>Dampening</dt>
-            <dd>The second function of the <b>Blend</b> knob (called
-            "stereo spread") controls the dampening of the
-            reverb. From fully CCW to 12 o'clock, a low-pass filter is
-            applied, simultaing the absorption of the room. From 12
-            o'clock to fully CW, a high-pass filter is applied for
-            unusual, crystalline effects.</dd>
-            <dt>Modulation amount</dt>
-            <dd>Each delay in the reverb can be individually modulated
-            by 9 smoothed random LFOs. The fourth function of
-            the <b>Blend</b> knob (called "reverb") controls the
-            amount of modulation applied by the LFOs to the delay
-            time. Small modulations result in subtle chorus and ghost
-            tones, large modulations in random pitch shifts.</dd>
-            <dt>Modulation speed</dt>
-            <dd>The third function of
-            the <b>Blend</b> knob (called "feedback") controls the
-            speed of these LFOs. It ranges from ~1/100Hz to
-            ~100Hz. It has no effect if modulation amount is null.</dd>
-          </dl>
-
-
-          <h4>Granular mode</h4>
-
-          <ul>
-            <li>The <b>Texture</b> knob now has asymetric shapes of
-            grain envelopes. It morphes between: square, ramp down,
-            ramp up, triangle, and triangle with diffuser. Fully
-            counter-clockwise, the square shape has particularly sharp
-            edges and may click. This is desired (more glitch!); if
-            you want the old behaviour, turn the knob up a little bit
-              until the click disappears.</li>
-            <li>The range of the <b>Size</b> knob has been adjusted to
-            produce much smaller grains. Fully counter-clockwise,
-            grains are barely hearable spikes; fully clockwise, the
-              maximum size is as before.
-            <li>To cope with the additional computation, Grain
-              polyphony has been reduced a bit. This should not be
-              noticeable.</li>
-          </ul>
-
-
-          <h4>Looping delay and Pitch-shifter mode</h4>
-
-          <ul>
-            <li>When a clock is sent to the <b>Trig</b> input,
-              the <b>Position</b> knob becomes a clock
-              divider/multiplier for the pre-delay: at 12 o'clock, the
-              pre-delay takes the value of the clock length;
-              clockwise, this clock is divided, and counter-clockwise
-              it is multiplied following the rates: 1/16, 3/32, 1/8,
-              3/16, 1/4, 3/8, 1/2, 3/4, 1, 3/2, 2/1, 3/1, 4/1, 6/1,
-              8/1, 12/1 (borrowed from the Echophon). Note that the
-              clock division is limited to the largest division not
-              exceeding the maximum delay; beyond this point, the
-              Position knob will have no effect. Note also that clock
-              synchronization will be more accurate with
-              the <b>Size</b> knob fully counter-clockwise.</li>
-          </ul>
-
-          <h4>Miscellaneous</h4>
-
-          <ul>
-            <li>changed long-press time to access the alternative
-              modes to 2.5 seconds.</li>
-            <li>changed response of the feedback knob to square root-ish.</li>
-          </ul>
-
-          <h3>Changelog</h3>
-
-          <table style="width:100%">
-            <tr>
-              <th>Version</th>
-              <th>Date</th>
-              <th>Changes</th>
-            </tr>
-            <tr>
-              <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.0/parasite-clouds-v1.0.wav.zip">v1.0</a></td>
-              <td>2015-04-29</td>
-              <td><ul>
-                  <li>Enhanced quality of the interpolation of the Oliverb
-                    and pitch shifting algorithms;</li>
-                  <li>Reduced clipping in
-                    Oliverb mode;</li>
-                  <li>Fixed a bug potentially
-              creating a constant pitched noise in the built-in reverb
-                    in the main modes;</li>
-                  <li>Fixed a bug potentially causing a freeze of the
-                    module in time-stretcher mode.</li>
-              </ul></td>
-            </tr>
-            <tr>
-              <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v0.9/clouds-parasite-v0.9.wav.zip">v0.9</a></td>
-              <td>2015-04-11</td>
-              <td>Full-featured OliVerb, asymetric envelopes, tempo
-                syncing with clock mult/div, smaller grains.</td>
-            </tr>
-            <tr>
-              <td><a href="https://github.com/mqtthiqs/mutable/releases/download/clouds%2Boliverb/clouds.wav">v0.1</a></td>
-              <td>2015-03-29</td>
-              <td>Initial release featuring a basic version of the
-                OliVerb.</td>
-            </tr>
-          </table>
-
+        <hr />
       </section>
     </div>
 

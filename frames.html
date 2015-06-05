@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-61754260-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <title>Frames Parasite</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <div class="floatright">
+          <a href="https://github.com/mqtthiqs/parasites"><img src="images/blacktocat.png"
+                                                               /></a>
+        </div>
+        <h1>Parasites</h1>
+        <h2>Disturbing hacks for Mutable Instruments modules</h2>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+
+        <div class="center">
+          <a href="index.html">What is it?</a> &nbsp;|&nbsp;
+          <a href="clouds.html">Clouds Parasite</a> &nbsp;|&nbsp;
+          <a href="frames.html">Frames Parasite</a>
+        </div>
+
+        <p>&nbsp;</p>
+
+        <h1 id="frames">Frames Parasite</h1>
+
+        Frames Parasite is an alternative firmware
+        for <a href="http://mutable-instruments.net/modules/frames/">Frames</a>. It
+        adds the following main features to the module:
+        <ul>
+          <li>a new <i>Sequencer step edition mode</i> to easily enter
+          sequences in sequencer mode.</li>
+          <li>a new <i>Shift Register sequencer mode</i> that turns
+          Frames into an advanced random canon generator.</li>
+        </ul>
+
+        <p>All features of the official firmware are left untouched and
+          still accessible as before.</p>
+
+        <h2>Download and install</h2>
+
+        <p>Click on the button to download the latest stable version,
+          ready to play to your module:</p>
+        
+        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/frames-v1.0/parasite-frames-v1.0.wav.zip"
+                             class="btn">Download latest version (v1.0)</a></p>
+
+        <p>Once you downloaded the file, unzip it and follow the
+          Firmware update procedure in
+          the <a href="http://mutable-instruments.net/modules/frames/manual">official
+            manual</a>.
+
+          <h2>Documentation</h2>
+
+        <p>For full documentation, please see
+          the <a href="http://mutable-instruments.net/modules/frames/manual">user
+            manual</a> of Frames. I present hereafter only the
+          features added/modified.</p>
+
+        <p>The changes affect only the <i>sequencer mode</i> descibed
+        in the manual. All other features are intact. To enter
+        sequencer mode, move the <b>Frame</b> knob so that it points
+        to an existing keyframe (the <b>Keyframe</b> LED must be lit),
+        and press the <b>Add</b> button 5 times.</p>
+
+        <h3>Sequencer step edition mode</h3>
+
+        <p>It was reported that editing a sequence in sequencer mode
+          is difficult because there is no way to edit
+          the <i>current</i> step (only the one pointed to by the
+          big <b>Frame</b> knob, which does not have to be the one
+          currently playing).</p>
+
+        The <i>step edition mode</i> is a submode where each of the
+        four gain knob adjusts the value of the current step. Of
+        course, if the knob is not touched, the current step value
+        doesn't change.
+
+        While in sequencer mode, you enter it by long-pressing
+        the <b>Del</b> button. The frame LED will glow dimly,
+        indicating that you entered the step edition mode. To exit it,
+        press the <b>Del</b> button shortly.
+
+        <blockquote>
+          <i>Note</i>: in this mode, you cannot add or remove steps to
+          the sequence, only edit them. If you want to add or remove
+          steps, go back to the normal sequencer mode.
+        </blockquote>
+
+        The <b>Frame</b> knob doesn't point to a frame anymore. It
+        controls the total number of steps of the sequence that will
+        be played: fully CW, the full sequence is played; fully CCW,
+        only one note will be played repeatedly.
+
+        <blockquote>
+          <i>Tip:</i> One popular way to edit the sequence is: feed a
+          clock to the <b>Frame</b> CV input. Turn
+          the <b>Modulation</b> attenuator to 0, and set the
+          channel knobs for the first step. Now quickly turn
+          the <b>Modulation</b> attenuator clockwise and back, so as
+          to "catch" only one clock tick; the sequencer steps, and you
+          can edit the second step... etc.
+        </blockquote>
+
+        <h3>Shift Register sequencer mode</h3>
+
+        This mode is a generative, hands-on sequencer for generating
+        complex melodic patterns, thanks to the idea of a <i>shift
+          register</i>. It is similar to
+        the <a href="https://www.modulargrid.net/e/synthesis-technology-e102-quad-temporal-shifter">Synthtech
+        E102</a>, but acts only on the recorded step sequence, and
+        with some randomness, making it also close to
+        a <a href="https://www.modulargrid.net/e/thonk-turing-machine-random-sequencer">Turing
+        Machine</a>.</p>
+
+
+        <i>A small video demo, thanks to <b>artisokka</b>:</i>
+        <iframe width="560" height="315"
+                src="https://www.youtube-nocookie.com/embed/vUlNS7yDHX0?rel=0"
+                frameborder="0" allowfullscreen></iframe>
+
+        <p>&nbsp;</p>
+
+        <h4>Introduction</h4>
+
+        <p>While in sequencer mode, long-press on the <b>Add</b>
+          button. You are now in Shift Register sequencer mode. To
+          exit it and get back to the normal sequencer mode, press
+          again shortly on the <b>Add button</b>.
+        </p>
+        <p>To explore it, program a pitch sequence on Channel 1, enter
+          this mode, input a clock in the <b>Frame</b> CV input with
+          the
+          <b>Modulation</b> attenuator fully CW. Now feed the four
+          channel outputs to your favorite oscillators' 1V/Oct, and
+          let the <b>Fr.Step</b> output trigger your envelopes.
+          You should hear your sequence from each oscillator, but each
+          time shifted by one step.</p>
+
+        <p>Now turn <b>Knob 2</b> fully CW: the last 4 notes repeat in
+        a loop: you just froze the sequence. Turn it back down to 11
+        o'clock, and put <b>Knob 3</b> to 2 o'clock (you might want to
+        increase the clock speed now). You just transformed your
+        initial sequence into a complex net of arpeggios. Finally,
+        slowly turn up <b>Knob 4</b>. The sequence will get more and
+          more random.</p>
+
+        <h4>Function description</h4>
+
+        <p>In this mode, only the sequence on Channel 1 is used. The
+        other channels are ignored (but they are still in memory for
+        when you exit the mode).</p>
+
+
+        <p><b>Knob 1</b> and the big <b>Frame</b> knob allow you to edit
+          the sequence as usual.</p>
+
+        <blockquote>
+          <i>Note</i>: The VCAs that control the gain of each channels
+          are a bit unstable: they are known to drift with temperature
+          changes. Therefore, for tuned, melodic use, you should
+          always use a quantizer, and/or reduce the range of the
+          offset to reduce the possible drift. There is a jumper on
+          the back of Frames that can be set to +5V instead of
+          +10V. Alternatively, you can feed a constant reference
+          voltage to the <b>All</b> input.
+        </blockquote>
+
+        When the <b>Modulation</b> attenuator is CW, a trigger in the
+        the <b>Frame</b> CV input will make Clouds' clock tick. At
+        each clock tick, two independent events can happen:
+
+        <ul>
+          <li>The sequencer can make a step. <b>Knob 2</b> is a clock
+            divider for this event: fully CCW, each clock tick makes
+            the sequencer step; at 12 o'clock, it takes 4 clock tick
+            for it to step; fully CW, it never steps.</li>
+
+          <li>All values can get shifted one channel to the right: the
+            gain of Channel 1 becomes the gain of Channel 2, 2 of 3, 3
+            of 4 and 4 of 1 (more on this last one below). <b>Knob
+            3</b> is a clock divider for this event: fully CCW, each
+            clock tick shifts the gains; fully CW, they are never
+            shifted.</li>
+        </ul>
+
+        When either of these events occur, the <b>Fr. Step</b> ouput
+        emits a trigger.
+
+        <blockquote>
+          <i>Tip:</i> With both clock divider knobs at mutually prime
+          values (4 and 5 for instance), you will get interesting
+          rhythms out of the <b>Fr. Step</b> output, perfect to
+          trigger envelopes.
+        </blockquote>
+
+        <p>There is a last small twist: when Channel 4 is shifted back on
+        channel 1, some small "errors" can occur in the copy. The
+        amount of error is controlled by <b>Knob 4</b>: fully CCW,
+        there is no error and the small sequence of 4 CV gets repeated
+        perfectly; fully CW, the value copied back to channel 1 is
+        completely random.</p>
+
+        <blockquote>
+          <i>Tip:</i> With <b>Knob 2</b> fully CW (no sequence step), and by
+          turning randomness up and back down, you can capture little
+          snippets of randomness, much like the Turing Machine.
+        </blockquote>
+
+        <p>To sum up:</p>
+        <ul>
+          <li>the big <b>Frame</b> knob selects a frame;</li>
+          <li>a trigger in the <b>Frame</b> CV input makes the clock tick;</li>
+          <li><b>Knob 1</b> edits the gain of the frame pointed to by
+            the <b>Frame</b> knob;</li>
+          <li><b>Knob 2</b> sets the number of clock tick it takes
+          for the sequence to step;</li>
+          <li><b>Knob 3</b> sets the number of clock tick it takes
+          for a shift to occur; </li>
+          <li>the <b>Knob 4</b> sets the amount of randomness
+          introduced when shifting;</li>
+          <li>the <b>Fr. Step</b> output emits a trigger whenever the
+          gains are changed.</li>
+        </ul>
+
+        <blockquote>
+          <i>Note</i>: in this mode, you cannot add or remove steps to
+          the sequence, only edit them. If you want to add or remove
+          steps, go back to the normal sequencer mode.
+        </blockquote>
+
+
+        <h2>Changelog</h2>
+
+        <table style="width:100%">
+          <tr>
+            <th>Version</th>
+            <th>Date</th>
+            <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/frames%2Bstep-mod2%2Bsr/frames.wav">v0.2</a></td>
+            <td>2015-03-23</td>
+            <td>New shift register sequencer mode, announced <a href="https://www.muffwiggler.com/forum/viewtopic.php?t=128684&start=all&postdays=0&postorder=asc">here</a>.
+            </td>
+          </tr>
+          <td><a href="https://github.com/mqtthiqs/parasites/releases/download/frames%2Bstep-mod/frames.step-mod.wav">v0.1</a></td>
+          <td>2015-03-21</td>
+          <td>Initial release featuring the sequencer sub-mode
+          allowing to edit the values of the current step, announced <a href="https://www.muffwiggler.com/forum/viewtopic.php?t=128684&start=all&postdays=0&postorder=asc">here</a>.</td>
+</tr>
+</table>
+
+</section>
+</div>
+
+
+</body>
+</html>
