@@ -67,13 +67,13 @@
             allows to select ramp down or ramp up-shaped
             grains. Square-shaped grains have steeper edges for extra
             glitch;</li>
-          <li><b>Tempo syncing with clock multiplier/divisor</b> in
-            looping delay, time-stetcher and reverb mode;</li>
-          <li>Support for <b>stereo delay</b> (ping-pong delay) and
-              (crude) <b>open feedback loop</b>; improved sound
-              quality of feedback and delays.</li>
           <li>Availability of much <b>smaller grains</b> compared to
             the official firmware.</li>
+          <li><b>Enhanced looping delay</b> and <b>time stretcher</b>
+          modes: tempo syncing with clock multiplier/divisor, support
+          for <b>stereo delay</b> (ping-pong delay) and
+          (crude) <b>open feedback loop</b>, much improved sound
+          quality, faster delay time change.</li>
         </ul>
 
         <p>All features of the official firmware are left untouched and
@@ -82,6 +82,10 @@
         <h2>IMPORTANT WARNINGS</h2>
 
         <ul class="warn">
+
+          <li><i>(2015-07-09)</i> If you purchased your Clouds on or
+          after July 2015, please use Clouds Parasite version >
+          1.3. Earlier versions might not work properly.</li>
           <li><i>(2015-06-06)</i> Some cases of bricking (updates that
           leaves Clouds non-functional) have been reported with
           previous versions of this firmware, very roughly 1% of the
@@ -105,9 +109,9 @@
         <p>Click on the button to download the latest stable version,
           ready to play to your module:</p>
         
-        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.2/clouds-parasite-v1.2.wav.zip"
+        <p class="center"><a href="TODO"
                              class="btn">Download latest version
-                             (v1.2)</a></p>
+                             (v1.3)</a></p>
 
         <p>Once you downloaded the file, unzip it and follow the
           Firmware update procedure in
@@ -417,6 +421,10 @@
             external clock, <b>Size</b> controls the repeat time
             multiplication/division.
           </li>
+          <li>Delay time changes are now much faster (there is less
+            slew on the knob and CV value).</li>
+          <li>The Position knob response has been tweaked to allow
+          easier dialing of very short delays.
         </ul>
 
         <h3>Miscellaneous</h3>
@@ -441,6 +449,46 @@
             <th>Version</th>
             <th>Date</th>
             <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="TODO">v1.3</a></td>
+            <td>2015-07-09</td>
+            <td>
+              <ul>
+                <li><b>Oliverb</b>:
+                  <ul>
+                  <li>fixed a bug causing a "swooping" sound when
+                  quickly reducing the reverb size.</li>
+                  <li>fixed a bug causing clicks when Size was fully CCW.</li>
+                  <li>replace soft-clipping by a limiter in the
+                  feedback loop. There is no distortion anymore when
+                    the reverb is self-oscillating.</li>
+                  <li> made the reverb tail a bit smoother (less
+                    "muddy"?)</li>
+                  <li>made wet signal significantly louder</li>
+                  </ul>
+                </li>
+                <li><b>Looping delay</b>:
+                  <ul>
+                    <li>reduced drastically the slew on the delay time
+                      setting. Delay time changes are almost
+                      instantaneous now.</li>
+                    <li>adjusted delay time knob response for more
+                      accurate dialing of short delays.</li>
+                    <li>enhanced the quality of pitch shifting.</li>
+                  </ul>
+                </li>
+                <li><b>Resonestor</b>: adjusted the Texture knob
+                  response for more useful range.</li>
+                <li><b>Granular</b>: lowered grain polyphony
+                  a bit to cope with inceased memory need.</li>
+                <li>hardware support for Clouds bought after July
+                  2015. Merged minor changes from the last official
+                  Clouds firmware.</li>
+                <li>adjusted HP filter on feedback a bit, to keep more
+                  low frequencies.</li>
+              </ul>
+            </td>
           </tr>
           <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.2/clouds-parasite-v1.2.wav.zip">v1.2</a></td>

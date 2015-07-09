@@ -185,6 +185,7 @@ th {
 
 td {
   padding: 5px 10px;
+  border-bottom: 1px dashed #AA8811;
 }
 
 hr {
