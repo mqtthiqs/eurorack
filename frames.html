@@ -49,129 +49,224 @@
         for <a href="http://mutable-instruments.net/modules/frames/">Frames</a>. It
         adds the following main features to the module:
         <ul>
-          <li>a new <i>Sequencer step edition mode</i> to easily enter
-          sequences in sequencer mode.</li>
+          <li>a new <i>quad Euclidean sequencer mode</i> that turns
+          Frames into a quad algorithmic drum sequencer with built-in
+          envelopes, VCA and mixer.</li>
           <li>a new <i>Shift Register sequencer mode</i> that turns
-          Frames into an advanced random canon generator.</li>
+          Frames into a live random canon generator.</li>
+          <li>an improved <i>quad sequencer mode</i> with sequence
+          randomization and a step edition mode to easily enter
+            sequences in sequencer mode.</li>
+          <li>a new user interface to easily switch between modes (no
+          more hard-to-remember button combos). There are five modes:
+          keyframer, quad sequencer, shift register sequencer, quad
+          LFO, quad Euclidean sequencer.</li>
+          <li>four additional memory slots to save and load presets
+          (sequences, mode, parameters etc.).</li>
         </ul>
 
         <p>All features of the official firmware are left untouched and
-          still accessible as before.</p>
+          still accessible.</p>
 
-        <h2>Download and install</h2>
+        <nav role="navigation" class="table-of-contents">
+          <h4>Table of contents</h4>
+          <ul>
+            <li><a href="#download">Download and install</a></li>
+            <li><a href="#documentation">Documentation</a>
+              <ul>
+                <li><a href="#mode">Mode-switching interface</a></li>
+                <li><a href="#euclidean">Euclidean sequencer</a></li>
+                <li><a href="#shift">Shift Register sequencer</a></li>
+                <li><a href="#preset">Preset memory</a></li>
+                <li><a href="#misc">Miscellaneous</a></li>
+              </ul>
+            </li>
+            <li><a href="#changelog">Changelog</a></li>
+          </ul>
+        </nav>
+
+        <h2 id="download">Download and install</h2>
 
         <p>Click on the button to download the latest stable version,
           ready to play to your module:</p>
         
-        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/frames%2Bstep-mod2%2Bsr/frames.wav"
-                             class="btn">Download latest version (v0.2)</a></p>
+        <p class="center">
+          <a href="https://github.com/mqtthiqs/parasites/releases/download/frames-v1.0/frames-parasite-v1.0.wav.zip"
+             class="btn">Download latest version (v1.0)</a>
+        </p>
 
         <p>Once you downloaded the file, unzip it and follow the
           Firmware update procedure in
           the <a href="http://mutable-instruments.net/modules/frames/manual">official
-            manual</a>.
+            manual</a>.</p>
 
-          <h2>Documentation</h2>
+        <h2 id="documentation">Documentation</h2>
 
         <p>For full documentation, please see
           the <a href="http://mutable-instruments.net/modules/frames/manual">user
-            manual</a> of Frames. I present hereafter only the
-          features added/modified.</p>
+          manual</a> of Frames. I present hereafter only the features
+          added/modified. In particular, all features concerning
+          keyframer mode (the main mode from the stock firmware) are
+          intact. Quad sequencer and LFO modes have been slightly
+          improved.</p>
 
-        <p>The changes affect only the <i>sequencer mode</i> descibed
-        in the manual. All other features are intact. To enter
-        sequencer mode, move the <b>Frame</b> knob so that it points
-        to an existing keyframe (the <b>Keyframe</b> LED must be lit),
-        and press the <b>Add</b> button 5 times.</p>
 
-        <h3>Sequencer step edition mode</h3>
+        <h3 id="mode">Mode-switching interface</h3>
 
-        <p>It was reported that editing a sequence in sequencer mode
-          is difficult because there is no way to edit
-          the <i>current</i> step (only the one pointed to by the
-          big <b>Frame</b> knob, which does not have to be the one
-          currently playing).</p>
+        <p>Frames Parasite can be used in five different modes, each
+        being a completely different function. To switch between
+        modes, press the two buttons simultaneously. The frame knob
+        blink quickly. Move one of the five knobs to select a feature:
 
-        The <i>step edition mode</i> is a submode where each of the
-        four gain knob adjusts the value of the current step. Of
-        course, if the knob is not touched, the current step value
-        doesn't change.
+        <ul>
+          <li><b>Frame</b> knob: keyframer mode (the original mode
+          of the stock firmware)</li>
+          <li><b>Knob 1</b>: Quad sequencer mode (adapted from the
+          stock firmware)</li>
+          <li><b>Knob 2</b>: Shift register sequencer mode</li>
+          <li><b>Knob 3</b>: Quad LFO (the easter egg in the stock firmware)</li>
+          <li><b>Knob 4</b>: Euclidean sequencer mode</li>
+        </ul>
 
-        While in sequencer mode, you enter it by long-pressing
-        the <b>Del</b> button. The frame LED will glow dimly,
-        indicating that you entered the step edition mode. To exit it,
-        press the <b>Del</b> button shortly.
+        Press any button to enter the selected mode.</p>
 
+        <blockquote><i>Note</i>: the keyframer and the two sequencer
+        modes share the same data. This means that the keyframes you
+        program will become sequences in the sequencer modes, and
+        vice versa.</blockquote>
+
+        <h3 id="euclidean">Euclidean sequencer mode</h3>
+
+        <p>This mode uses each channel of Frames as an independent
+        Euclidean sequencer that emits triggers, envelopes or even
+        fully enveloped and mixed sound, depending on the inputs and
+        outputs.</p>
+
+        <h4>Introduction to Euclidean rhythms</h4>
+
+        <p>An Euclidean sequencer is a trigger sequencer that generates
+        rhythms based on filling as evenly as possible <i>n</i> pulses
+        on a pattern of length <i>m</i> (with <i>m > n</i>). It will
+        distribute the notes equally, leaving as few "holes" as
+        possible. The parameters to generate such a rhythm are Length
+        (the total number <i>m</i> of steps of the sequence), Fill
+        (<i>n</i>, the number of notes in the sequence), and Rotate
+        (which shifts/rotates the whole sequence). For instance, if
+        Length=8, Fill=5 and Rotate=0, you might get the pattern:
+
+        <pre>xx.xx.x.</pre>
+
+        If you then set Rotate to 1, the pattern gets shifted to the right:
+
+        <pre>.xx.xx.x</pre></p>
+
+        <h4>Function Description</h4>
+
+        <p>To enter Euclidean sequencer mode, press the two buttons
+        simultaneously, turn <b>Knob 4</b> and press a button again.</p>
+
+        <p>
+          Feed a steady clock to the <b>Frame</b> CV input, and turn
+          the attenuverter all the way up. By default, the Length of
+          the pattern is 16. Each <b>Knob</b> (1-4) controls the Fill,
+          from 0 to the Length. The <b>Frame</b> knob controls the
+          Rotation between the four channel. It will set the rotation
+          of all channels and go through each possibility, so it will
+          be quite sensitive to small changes.
+        </p>
+
+        <p>
+          Long-press on the <b>Add</b> button to set the Length
+          parameter of each channel with <b>Knob</b> 1-4. It ranges
+          from 1 to 16 steps. Exit the Length-setting mode by pressing
+          any button.
+        </p>
+
+        <p>By default, each time a step is activated, Frames emit a
+        short trigger to the corresponding output. It is actually a
+        short exponentially decaying envelope with very fast
+        attack. Long-press on the <b>Del</b> button to change the
+        shape of this envelope: <b>Knob</b> 1-4 will range from a
+        short burst (CCW) to a long, decaying envelope (noon) to a
+        triangle (CW).</p>
+        
         <blockquote>
-          <i>Note</i>: in this mode, you cannot add or remove steps to
-          the sequence, only edit them. If you want to add or remove
-          steps, go back to the normal sequencer mode.
+          <i>Note:</i> These shapes are borrowed from Streams.
         </blockquote>
 
-        The <b>Frame</b> knob doesn't point to a frame anymore. It
-        controls the total number of steps of the sequence that will
-        be played: fully CW, the full sequence is played; fully CCW,
-        only one note will be played repeatedly.
+        Finally, the <b>Fr.Step</b> output and the keyframe LED output
+        a complex combination of each channel's state; it can be used
+        to modulate the incoming drum sounds or step a sequencer.
 
         <blockquote>
-          <i>Tip:</i> One popular way to edit the sequence is: feed a
-          clock to the <b>Frame</b> CV input. Turn
-          the <b>Modulation</b> attenuator to 0, and set the
-          channel knobs for the first step. Now quickly turn
-          the <b>Modulation</b> attenuator clockwise and back, so as
-          to "catch" only one clock tick; the sequencer steps, and you
-          can edit the second step... etc.
+          <p><i>Patch Tip:</i> Feed four oscillators set to different
+          timbre and pitches to the four input of Frames. Set up
+          Euclidean rhythms on the four channels, and set the
+          envelopes to various values in the first half of the
+          knobs. Monitor the <b>Mix</b> output. Voilà! Instant
+          4-voices drum machine.</p>
+
+          <p>Now take out one of the input set the +10V switch, and feed
+          the output of this channel (which is now an envelope going
+          from 10V ot 0V) to one parameter of an oscillator, for
+          instance the DPO's Fold CV input.</p>
+
+          <p>Finally, take the <b>Fr.Step</b> output to the FM input
+          of this oscillator, and adjust the FM attenuator. You'll get
+          a two-notes sequence, varying each time the Euclidean
+          patterns are modified.</p>
         </blockquote>
 
-        <h3>Shift Register sequencer mode</h3>
+        <h3 id="shift">Shift register sequencer mode</h3>
 
-        This mode is a generative, hands-on sequencer for generating
-        complex melodic patterns, thanks to the idea of a <i>shift
-          register</i>. It is similar to
-        the <a href="https://www.modulargrid.net/e/synthesis-technology-e102-quad-temporal-shifter">Synthtech
-        E102</a>, but acts only on the recorded step sequence, and
-        with some randomness, making it also close to
-        a <a href="https://www.modulargrid.net/e/thonk-turing-machine-random-sequencer">Turing
-        Machine</a>.</p>
-
-
-        <i>A small video demo, thanks to <b>artisokka</b>:</i>
-        <iframe width="560" height="315"
-                src="https://www.youtube-nocookie.com/embed/vUlNS7yDHX0?rel=0"
-                frameborder="0" allowfullscreen></iframe>
-
-        <p>&nbsp;</p>
+        <p>This mode is a generative, hands-on sequencer for generating
+          complex melodic patterns, thanks to the idea of a <i>shift
+            register</i>. It is similar to
+          the <a href="https://www.modulargrid.net/e/synthesis-technology-e102-quad-temporal-shifter">Synthtech
+            E102</a>, but acts only on the recorded step sequence, and
+          with some randomness, making it also related to
+          <a href="https://www.modulargrid.net/e/thonk-turing-machine-random-sequencer">Turing
+            Machine</a>
+            and <a href="https://www.modulargrid.net/e/mutable-instruments-branches">Branches</a>.</p>
 
         <h4>Introduction</h4>
 
-        <p>While in sequencer mode, long-press on the <b>Add</b>
-          button. You are now in Shift Register sequencer mode. To
-          exit it and get back to the normal sequencer mode, press
-          again shortly on the <b>Add button</b>.
+        <p>To enter Shift register sequencer mode, press the two
+          buttons simultaneously, turn <b>Knob</b> 2 and press a
+          button again., long-press on the <b>Add</b> button.
         </p>
-        <p>To explore it, program a pitch sequence on Channel 1, enter
-          this mode, input a clock in the <b>Frame</b> CV input with
-          the
-          <b>Modulation</b> attenuator fully CW. Now feed the four
-          channel outputs to your favorite oscillators' 1V/Oct, and
-          let the <b>Fr.Step</b> output trigger your envelopes.
-          You should hear your sequence from each oscillator, but each
-          time shifted by one step.</p>
 
-        <p>Now turn <b>Knob 2</b> fully CW: the last 4 notes repeat in
-        a loop: you just froze the sequence. Turn it back down to 11
-        o'clock, and put <b>Knob 3</b> to 2 o'clock (you might want to
-        increase the clock speed now). You just transformed your
-        initial sequence into a complex net of arpeggios. Finally,
-        slowly turn up <b>Knob 4</b>. The sequence will get more and
-          more random.</p>
+        <p>To explore it, program a pitch sequence by using <b>Knob
+          1</b>, the <b>Frame</b> knob and the <b>Add</b>/<b>Del</b>
+          buttons as in Keyframer or Sequencer modes (but on Channel 1
+          only). Then, input a steady clock in the <b>Frame</b> CV
+          input and turn the <b>Modulation</b> attenuator fully
+          CW.</p>
+
+         <p>Put <b>Knob</b>s (2-4) and the <b>Frame</b> knob at
+          noon. Now, feed the four channel outputs to your favorite
+          oscillators' 1V/Oct, and let the <b>Fr.Step</b> output
+          trigger your envelopes. You should hear your sequence from
+          each oscillator, but each time shifted by one step. Turn
+           <b>Knob 4</b> CCW: the order of the notes in the sequence
+           will be more and more randomized.</p>
+
+        <p>Now turn <b>Knob 2</b> fully CW: the last 8 notes repeat in
+          a loop: you just froze the sequence. Turn the <b>Frame</b>
+          knob to adjust the length of this loop. Turn <b>Knob 2</b>
+          back down to 2 o'clock, and put <b>Knob 3</b> to 2
+          o'clock. You just transformed your initial sequence into a
+          complex net of arpeggios. Now slowly turn
+        <b>Knob 4</b> CW. The sequence will get more and more
+        random. Finally, put <b>Knob 2</b> and <b>3</b> around 10
+        o'clock: now most clock tick will be ignored randomly, making
+        the sequencer step non-deterministically.</p>
 
         <h4>Function description</h4>
 
         <p>In this mode, only the sequence on Channel 1 is used. The
         other channels are ignored (but they are still in memory for
         when you exit the mode).</p>
-
 
         <p><b>Knob 1</b> and the big <b>Frame</b> knob allow you to edit
           the sequence as usual.</p>
@@ -188,25 +283,26 @@
         </blockquote>
 
         When the <b>Modulation</b> attenuator is CW, a trigger in the
-        the <b>Frame</b> CV input will make Clouds' clock tick. At
-        each clock tick, two independent events can happen:
+        the <b>Frame</b> CV input will make the clock tick. At each
+        clock tick, two independent events can happen:
 
         <ul>
-          <li>The sequencer can make a step. <b>Knob 2</b> is a clock
-            divider for this event: fully CCW, each clock tick makes
-            the sequencer step; at 12 o'clock, it takes 4 clock tick
-            for it to step; fully CW, it never steps.</li>
+          <li>The sequencer can make a step. <b>Knob 2</b> controls
+            when this happens: at noon, each clock tick makes the
+            sequencer step; CCW, it acts as a clock divider for this
+            event (from /1 to /8); CW, it randomly skips clock ticks,
+            with a higher and higher probability. At each end of the
+            button, it never steps.</li>
 
           <li>All values can get shifted one channel to the right: the
             gain of Channel 1 becomes the gain of Channel 2, 2 of 3, 3
-            of 4 and 4 of 1 (more on this last one below). <b>Knob
-            3</b> is a clock divider for this event: fully CCW, each
-            clock tick shifts the gains; fully CW, they are never
-            shifted.</li>
+            of 4 and 4 back to 1 (more on this last one below). <b>Knob
+            3</b> controls when this happens, just like for (see
+            above: CCW divides, CW randomly skips).</li>
         </ul>
 
         When either of these events occur, the <b>Fr. Step</b> ouput
-        emits a trigger.
+        emits a short trigger.
 
         <blockquote>
           <i>Tip:</i> With both clock divider knobs at mutually prime
@@ -215,18 +311,23 @@
           trigger envelopes.
         </blockquote>
 
-        <p>There is a last small twist: when Channel 4 is shifted back on
-        channel 1, some small "errors" can occur in the copy. The
-        amount of error is controlled by <b>Knob 4</b>: fully CCW,
-        there is no error and the small sequence of 4 CV gets repeated
-        perfectly; fully CW, the value copied back to channel 1 is
-        completely random.</p>
+        <p>There are two last small twist. First, when Channel 4 is
+          shifted back on channel 1, some "error" can occur in the
+          copy. The amount of error is controlled by <b>Knob 4</b>: at
+          noon and below, there is no error and the shift register
+          repeats perfectly; fully CW, the value copied back to channel
+          1 is completely random.</p>
 
         <blockquote>
           <i>Tip:</i> With <b>Knob 2</b> fully CW (no sequence step), and by
           turning randomness up and back down, you can capture little
           snippets of randomness, much like the Turing Machine.
         </blockquote>
+
+        Second, the sequence order can be shuffled with <b>Knob
+        4</b>. At noon and beyond, no shuffling appears and the
+        sequence is played in order. Fully CCW, values of the sequence
+        are completely random.
 
         <p>To sum up:</p>
         <ul>
@@ -244,20 +345,97 @@
           gains are changed.</li>
         </ul>
 
-        <blockquote>
-          <i>Note</i>: in this mode, you cannot add or remove steps to
-          the sequence, only edit them. If you want to add or remove
-          steps, go back to the normal sequencer mode.
-        </blockquote>
+        <h3 id="preset">Preset memory</h3>
 
+        <p>Frames Parasite proposes five memory slots to save the state
+         of the module (the mode you are in, your programmed sequence,
+         additional parameters) in persistent memory: the main slot
+         that is loaded on startup, plus 4 user slots. The startup
+         slot is associated to the <b>Frame</b> knob, and the 4 user
+          slots to <b>Knob</b>s 1-4.</p>
 
-        <h2>Changelog</h2>
+        <p>To save the current state of the module, press the <b>Add</b>
+        button for more than 3s. The LEDs will indicate the current
+        slot (no LEDs lit means the main slot). To change slot, turn
+        the corresponding button. Press <b>Add</b> again to confirm,
+        or <b>Del</b> to cancel the save.</p>
+
+        <p>To load a recorded state, press the <b>Del</b> button for
+        more than 3s. Turn the knob corresponding to the memory
+        slot. Turning the <b>Frame</b> knob will select clearing the
+        current settings and resetting the module to its initial
+        state. Press <b>Del</b> again to confirm, or <b>Add</b> to
+        cancel the save.</p>
+
+        <h3 id="misc">Miscellaneous</h3>
+
+        <h4>Quad sequencer mode</h4>
+
+        <ul>
+          <li>It was reported that editing a sequence in quad sequencer
+              mode is difficult because there is no way to edit
+              the <i>current</i> step (only the one pointed to by the
+              big <b>Frame</b> knob, which does not have to be the one
+              currently playing).
+
+            <p>The <i>step edition mode</i> is a submode where each of the
+              four <b>Knob</b>s adjusts the value of the current step. Of
+              course, if the knob is not touched, the current step value
+              doesn't change. While in quad sequencer mode, long-press
+              the <b>Del</b> button. The frame LED will glow dimly. To exit
+              the submode, press the <b>Del</b> button shortly.
+
+              <blockquote>
+                <i>Note</i>: in this mode, you cannot add or remove steps to
+                the sequence, only edit them. If you want to add or remove
+                steps, go back to the normal sequencer mode.
+              </blockquote>
+
+              The <b>Frame</b> knob doesn't point to a frame anymore. It
+              controls the total number of steps of the sequence that will
+              be played: fully CW, the full sequence is played; fully CCW,
+              only one note will be played repeatedly.
+
+              <blockquote>
+                <i>Tip:</i> One popular way to edit the sequence is: feed a
+                clock to the <b>Frame</b> CV input. Turn
+                the <b>Modulation</b> attenuator to 0, and set the
+                channel knobs for the first step. Now quickly turn
+                the <b>Modulation</b> attenuator clockwise and back, so as
+                to "catch" only one clock tick; the sequencer steps, and you
+                can edit the second step... etc.
+              </blockquote></li>
+
+          <li>Long-pressing the <b>Add</b> button will randomize the
+        values of all the steps of the current sequence. Careful, this
+        operation is irreversible, so think about saving your
+        sequences!</li>
+        </ul>
+
+        <h4>Quad LFO mode</h4>
+
+            <ul>
+              <li>Press <b>Add</b> to reset the phase of all oscillators.</li>
+              <li>Press <b>Del</b> to randomize the phase of all oscillators.</li>
+              <li>The <b>Fr.Step</b> output follows the keyframe LED:
+              it is high for half the cycle of Oscillator 1.</li>
+            </ul>
+
+        <h2 id="changelog">Changelog</h2>
 
         <table style="width:100%">
           <tr>
             <th>Version</th>
             <th>Date</th>
             <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/frames-v1.0/frames-parasite-v1.0.wav.zip">v1.0</a></td>
+            <td>2015-08-14</td>
+            <td>New Euclidean sequencer mode, improved shift register
+            sequencer mode, four preset memory, new user interface to
+            switch mode.
+            </td>
           </tr>
           <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/frames%2Bstep-mod2%2Bsr/frames.wav">v0.2</a></td>
