@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-61754260-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <title>Tides Parasite</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <div class="floatright">
+          <a href="https://github.com/mqtthiqs/parasites"><img src="images/blacktocat.png"
+                                                               /></a>
+        </div>
+        <h1>Parasites</h1>
+        <h2>Disturbing hacks for Mutable Instruments modules</h2>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+
+        <div class="center">
+          <a href="index.html">What is it?</a> &nbsp;|&nbsp;
+          <a href="clouds.html">Clouds Parasite</a> &nbsp;|&nbsp;
+          <a href="frames.html">Frames Parasite</a> &nbsp;|&nbsp;
+          <a href="tides.html">Tides Parasite</a>
+        </div>
+
+        <p>&nbsp;</p>
+
+        <h1 id="tides">Tides Parasite</h1>
+
+        Tides Parasite is an alternative firmware
+        for <a href="http://mutable-instruments.net/modules/tides/">Tides</a>. It
+        adds the following modes to the module:
+        <ul>
+          <li><i>Two-bumps</i>: a silky 14-voices harmonic oscillator
+          with two spectral bumps or notches, control over centroids
+          and width, harmonics selection, wave quality selection,
+          sub-oscillator and 1-bit outputs, and a special harmonics
+          shuffling output for unusual, random timbres.</li>
+          <li><i>Two-drunks</i>: a complex duophonic random walk
+          generator with selectable interpolation, driven by two
+          altered clocks: one is jittery, the other simulates a biased
+          coin toss. This mode is quite versatile and can be used as:
+          an oscillator with PLL, a Bernoulli gate, a random trigger
+          delay, a stepped, smooth or waveshaped random voltage
+          generator, a random burst generator, a surprising filtered
+          noise source... and probably more!
+        </ul>
+
+        <p>All features of the official firmware are left untouched
+          and still accessible (with the
+          exceptions <a href="#misc">mentioned below</a>).</p>
+        <nav role="navigation" class="table-of-contents">
+          <h4>Table of contents</h4>
+          <ul>
+            <li><a href="#download">Download and install</a></li>
+            <li><a href="#documentation">Documentation</a>
+              <ul>
+                <li><a href="#mode">Mode-switching interface</a></li>
+                <li><a href="#two-bumps"><i>Two-bumps</i></a></li>
+                <li><a href="#two-drunks"><i>Two-drunks</i></a></li>
+                <li><a href="#misc">Miscellaneous</a></li>
+              </ul>
+            </li>
+            <li><a href="#changelog">Changelog</a></li>
+          </ul>
+        </nav>
+
+        <h2 id="download">Download and install</h2>
+
+        <p>Click on the button to download the latest stable version,
+          ready to play to your module:</p>
+        
+        <p class="center">
+          <a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.0/tides-parasite-v1.0.wav.zip"
+             class="btn">Download latest version (v1.0)</a>
+        </p>
+
+        <p>Once you downloaded the file, unzip it and follow the
+          Firmware update procedure in
+          the <a href="http://mutable-instruments.net/modules/tides/manual">official
+            manual</a>.</p>
+
+        <h2 id="documentation">Documentation</h2>
+
+        <p>For full documentation, please see
+          the <a href="http://mutable-instruments.net/modules/tides/manual">user
+          manual</a> of Tides. I present hereafter only the features
+          added/modified.</p>
+
+
+        <h3 id="mode">Mode-switching interface</h3>
+
+        <p>Tides Parasite can be used in three different modes, each
+        being a completely different function. To switch between
+        modes, press the two buttons simultaneously. The LED
+        corresponding to the current mode blinks quickly for two
+        seconds. Use the buttons to choose the mode, then wait for two
+        seconds for it to become active. The modes are:
+
+        <ul>
+          <li>LED 1: function-generator mode (the original mode
+          of the stock firmware)</li>
+          <li>LED 2: <i>Two-bumps</i> mode: a harmonic oscillator.</li>
+          <li>LED 3: <i>Two-drunks</i> mode: a random generator.</li>
+        </ul>
+
+        <h3 id="two-bumps"><i>Two-bumps</i> mode</h3>
+
+        <p>A <i>harmonic generator</i> (also called an <i>additive
+        synthesis</i> engine) produces its timbre by summing sinusoids
+        of multiple frequencies (<i>harmonics</i>). Theoretically, all
+        timbres can be reproduced this way, by choosing the right
+        amplitude for each sine.</p>
+
+        <p><i>Two-bumps</i> is a harmonic generator that sums 14
+        harmonics. The timbre is shaped by choosing two "center
+        frequencies", (with the <b>Shape</b> and <b>Slope</b> knobs)
+        which select the loudest harmonics, and a "width", which is the
+        amount of harmonics adjacent to the two centers that will also
+        ring (the <b>Smoothness</b> knob, from fully CCW to
+        noon). Additionally, you can have the exact mirror of what I
+        just described. The bumps then become potholes: all harmonics
+        ring by default and you are selecting the quietest harmonics,
+        digging a notch of varying width in the spectrum (this is
+        selected by the <b>Smoothness</b> knob, from noon to fully
+        CW).</p>
+
+        <p>The upper button (<b>Mode</b> button in the official
+        manual) selects which harmonics can ring. When the LED is off,
+        the first 14 harmonics ring: it is the default in most harmonic
+        oscillators. When the LED is green, only the odd harmonics
+        ring: the timbre is more "metallic", closer to a square wave.
+        Finally, when the LED is red, only the octaves ring: the resulting
+        timbre reminds a church organ.</p>
+
+        <blockquote>
+          <i>Tip</i>: Put the oscillator in this "octaves" mode, put
+          the width at noon and the frequency around 9 o'clock; 14
+          octaves will ring at the same time, many of them way outside
+          the audible range. Now feed a slow sawtooth to the 1V/Oct
+          input, and adjust its amplitude so that it is 1V (or 2 or
+          3... any round number of volts). Monitor the
+          <b>Bipolar</b> output: you will hear a <a href="https://en.wikipedia.org/wiki/Shepard_tone">Shepard-Risset infinite glissando</a>.
+        </blockquote>
+
+        <p>The lower button (<b>Range</b> button in the manual) allows
+        to select the quality of the sine waves forming the
+        sound. When the LED is off, the quality is maximum. When the
+        LED is green, the sine is decimated a bit, leaving
+        high-pitched aliasing noise: this gives more character to the
+        sound. When the LED is red, the sine is decimated even more,
+        for a stronger effect.</p>
+
+        <blockquote>
+          <i>Note</i>: even in the maximum quality mode, you can sometimes
+          hear a faint aliasing. That's a deliberate choice: the
+          sampling rate is chosen rather low, so we can cram more
+          harmonics in the available computing power.
+        </blockquote>
+
+        <blockquote>
+          <i>Another note</i>: the effect of decimation is not exactly
+          the same as feeding the output of <i>Two-bumps</i> into a
+          bit-crusher, since all independent sine waves are decimated
+          independently, each at its own frequency.
+        </blockquote>
+
+        <p>The main output is the <b>Bipolar</b> output. There are
+        three alternate outputs. The <b>Low</b> output is a square
+        sub-oscillator. The <b>High</b> output is a 1-bit version of
+        the <b>Bipolar</b> signal. The <b>Unipolar</b> output is a
+          unipolar and <i>permuted</i> version of the main signal: instead of
+        sweeping through harmonics in order, all harmonics are
+        shuffled randomly, giving new random but controllable timbres
+        each time. The harmonics are reshuffled when a gate is
+        received in the <b>Freeze</b> input.</p>
+
+        To sum up:
+
+        <ul>
+          <li>The <b>Shape</b> and <b>Slope</b> knobs select the two
+          center frequencies. The effect of second one is always a bit
+          less pronounced than the effect of the first (for variety).</li>
+          <li>The <b>Smoothness</b> knob selects how the timbre is
+          affected by the center frequencies. From fully CCW to noon,
+          only the harmonics at the center frequencies ring, and an
+          increasing number of their neighbors. From noon to
+          fully CW, all harmonics ring, except those at the centers,
+          and an increasing number of their neighbors.</li>
+          <li>The <b>Frequency</b> knob selects the fundamental
+            frequency. The <b>FM</b> knob is an attenuverter for the
+            corresponding CV input.</li>
+          <li>The <b>Mode</b> switch selects the harmonics
+          distribution between: all harmonics, odd harmonics, octaves.</li>
+          <li>The <b>Range</b> switch selects the decimation of the
+          individual sine waves between: no decimation, a bit, and a
+          lot of decimation.</li>
+          <li>A trigger in the <b>Trig</b> input will randomize the
+            phase of each harmonics in the <b>Unipolar</b> output.</li>
+          <li>Feed a clock in the <b>Clock</b> input and long-press
+            the <b>Range</b> button to go into PLL mode (like on the
+            original firmware).</li>
+          <li>The <b>Level</b> input acts as a VCA (like on the
+            original firmware).</li>
+          <li>The <b>Bipolar</b> output is the main output.</li>
+          <li>The <b>Unipolar</b> output is the unipolar, permuted
+          harmonics output.</li>
+          <li>The <b>High</b> output is a 1-bit version of
+          the <b>Bipolar</b> output.</li>
+          <li>The <b>Low</b> output is a square sub-oscillator, one
+          octave down from the fundamental.</li>
+        </ul>
+
+        <h3 id="two-drunks"><i>Two-drunks</i> mode</h3>
+
+        <p>A <a href="https://en.wikipedia.org/wiki/Random_walk">random
+        walk</a>, also called a Drunkard's walk, is a stochastic
+        process (a system that evolves randomly over time) that
+        consists in repeatedly making small steps in random directions
+        in a given space. Imagine a drunkard wandering in a city,
+        taking a random direction at each crossing. Will (s)he ever
+        make it back home?
+        </p>
+
+        <!-- <img style="display:block; margin-left:auto; margin-right:auto;" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Random_walk_2500_animated.svg" alt="random walk" /> -->
+
+        <p><i>Two-drunks</i> is a dual random walk simulator. Each
+          walk is timed by an independent clock featuring a form of
+          randomness: one—Channel 1—is jittery, with control over the
+          amount of jitter (from steady to completely random); the
+          other—Channel 2—simulates a random biased coin toss, with
+          control over the bias (from always ticking to ticking once
+          every very long while). The <b>Low</b> and <b>High</b>
+          outputs emit these clocks, respectively. They are both
+          derived from the same main clock; the <b>Frequency</b> knob
+          sets the frequency of this main clock.</p>
+
+        <p>Each step leads the walk to a different place closeby: a
+          new voltage at one of the <b>Unipolar</b> (Channel 1)
+          or <b>Bipolar</b> (Channel 2) outputs. But the
+          interpolation between the steps can be chosen: a square
+          interpolation will have the classic effect of a sample and
+          hold (only on a random walk, not on pure noise), but with
+          the <b>Shape</b> knob you can also choose linear,
+          sinusoidal, bouncy, pointy, woggly interpolations...  which
+          will all sound different.</p>
+
+        <blockquote>
+          <i>Note</i>: If we don't want the output to appear
+          "stalled", the interpolation time should depend on when the
+          next clock tick will occur. And indeed, it does here:
+          interpolation is slow when the next clock tick is far away,
+          and fast when it is close. How can <i>Two-drunks</i> see
+          into the future? Well, it uses mathematical tricks that
+          would be very difficult to reproduce with isolated modules
+          (say, a clock, a Bernoulli gate, and a function generator).
+        </blockquote>
+
+        <p>The challenge (or the fun, depending on the views) is that
+          the two channels share the same parameters:
+          the <b>Shape</b>, <b>Slope</b> and <b>Smoothness</b> knobs
+          control the properties of the two walks... only inverted! For
+          instance, if a knob is fully CCW, Channel 1 will act
+          according to this knob's position, and Channel 2 according
+          to the mirror position of this knob: as if it was fully
+          CW. The two channels therefore only agree when knobs are at
+          noon.</p>
+
+        <p>The <b>Smoothness</b> knob sets the maximum size of one
+        step (step sizes are random), that is, the length one walk is
+        allowed to travel in one clock tick. Fully CCW, Channel 2 will
+        be almost steady and Channel 1 will make very large steps (so
+        large that its motion can almost be described as pure
+        random). Fully CW, it will be the converse.</p>
+
+        <blockquote>
+          <i>Note</i>: I <i>think</i> that, setting the clock very fast and
+          the step size very small, you're getting closer and closer to what
+          is
+          called <a href="https://en.wikipedia.org/wiki/Brownian_motion">Brownian
+            motion</a>, the motion of a single big particle in a fluid. But I
+          might be wrong. Please correct me if I am.
+        </blockquote>
+
+        <p>The <b>Slope</b> knob sets the behavior of the two clocks. For
+        Channel 1, it acts as a random delay of the main clock: fully
+        CCW, delay is null and Channel 1's clock follows the main
+        clock. Turning it CW, the random delay gets bigger and
+        therefore the clock gets slower and more jittery. For Channel
+        2, it acts as a probability that a main clock tick will
+        produce a clock tick of Channel 2. Fully CW (remember the knob
+        inversion), probability is 1 and it accurately follows the
+        main clock. Turning it CCW, more and more clock ticks are
+        dropped; at noon, the probability is 1/2; fully CCW, the
+        probability is very small (but not null) and almost all
+        clock ticks will be dropped.</p>
+
+        <p>Since we're talking about clocks: the <b>FM</b> knob is an
+        attenuverter for the eponymous CV input, as usual... but it
+        also has a second function related to the two random
+        clocks. For Channel 1 (jittery clock), it sets the random
+        distribution of on/off states: at noon, you will get equally
+        much time with the gate on than time with the clock off. Fully
+        CCW, you will get much more time off than on, and fully CW
+        more time on than off. For Channel 2 (coin-toss clock), it
+        simply sets the pulse width of each clock tick.</p>
+
+        <p><i>Two-drunks</i> can operate in three modes, as set by
+          the <b>Mode</b> button. When the LED is off, it
+          is <i>cycling</i>: the main clock is steadily ticking and
+          stops only if a gate is received in the <b>Freeze</b>
+          input. When the LED is green, it is in <i>trigger mode</i>:
+          it will start a new cycle only upon receiving a trigger in
+          the <b>Trig</b> input. Note that this trigger will also be
+          delayed/randomly dropped on the clock outputs of Channels
+          1/2. When the LED is red, it is in <i>gate mode</i>: the
+          main clock will cycle as long as the <b>Trig</b> input is
+          high.</p>
+
+        <blockquote>
+          <i>Note</i>: both channels will always finish their current step
+          before stopping, and will pick up where they left
+          off. Therefore, there are no discontinuities in the output
+          waveform (unless you choose a square interpolation of
+          course).
+        </blockquote>
+
+        <blockquote>
+          <i>Another, sadder note</i>: in trigger mode, the interpolation time
+          is fixed by the main clock; it will not correspond perfectly
+          to the next trigger, and therefore will be "stalled"
+          sometimes. Sorry, <i>Two-drunks</i> cannot
+          <i>actually</i> see into the future. If your triggers are
+          a steady clock, you might be better off using the PLL
+          feature and the <b>Clock</b> input.
+        </blockquote>
+
+          <p>The <b>Range</b> button sets the frequency range of the
+          oscillator, as usual: low (green LED), medium (LED off),
+          audio rate (red LED).</p>
+
+        <blockquote>
+          <i>Two-drunks</i> is a surprisingly interesting noise
+          generator. Set the <b>Range</b> to audio-rate, crank
+          the <b>Frequency</b> to the maximum, and even optionally put
+          a positive offset into the V/Oct input. Now listen to both
+          outputs and wiggle the knobs carelessly. Self-patching is
+          also highly recommended!
+        </blockquote>
+
+        To sum it up:
+        <ul>
+          <li><b>Frequency</b> sets the frequency of the main
+            clock. The <b>Range</b> button sets its range.</li>
+          <li><b>Shape</b> sets the interpolation curve between two
+          steps. it morphs between: square (no interpolation), spiky,
+          spiky and bouncy, linear, sinusoidal, bouncy, woggly.</li>
+          <li><b>Slope</b> sets the clock mangling: random clock delay
+          for Channel 1 and random coin toss for Channel 2.</li>
+          <li><b>Smoothness</b> sets the maximum step size.</li>
+          <li><b>FM</b> is an attenuator for the FM CV input, and
+          also determines the output gates duration: random gate
+          distribution for Channel 1, pulse width for Channel 2. </li>
+          <li>The <b>Mode</b> switch toggles between trigger, gate
+          and cycling mode.</li>
+          <li>A trigger in <b>Trig</b> will trigger the clocks.</li>
+          <li>While a gate is high in <b>Freeze</b>, all clocks are stalled.</li>
+          <li>Long-pressing on the <b>Range</b> button, you get into
+            PLL mode, which follows the <b>Clock</b> input (as in the
+            default firmware).</li>
+          <li><b>Level</b> controls the amplitude of both channels.</li>
+          <li><b>High</b> emits the clock of Channel 1.</li>
+          <li><b>Low</b> emits the clock of Channel 2.</li>
+          <li><b>Uni</b> is Channel 1's random walk.</li>
+          <li><b>Bi</b> is Channel 2's random walk.</li>
+        </ul>
+
+        <h3 id="misc">Miscellaneous</h3>
+
+        <ul>
+          <li>The logarithmic and exponential waveforms have been
+          accentuated, to make their effect more pronounced. In
+          function generator mode, expect "more exponential"
+          envelopes. This change effects only the waveforms at control
+          rates, not at audio rate.</li>
+        </ul>
+
+        <h2 id="changelog">Changelog</h2>
+
+        <table style="width:100%">
+          <tr>
+            <th>Version</th>
+            <th>Date</th>
+            <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.0/tides-parasite-v1.0.wav.zip">v1.0</a></td>
+            <td>2015-09-01</td>
+            <td>Initial version featuring Two-bumps and Two-drunks.
+            </td>
+          </tr>
+        </table>
+      </section>
+    </div>
+  </body>
+</html>
