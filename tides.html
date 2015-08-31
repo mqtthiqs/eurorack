@@ -48,7 +48,7 @@
 
         Tides Parasite is an alternative firmware
         for <a href="http://mutable-instruments.net/modules/tides/">Tides</a>. It
-        adds the following modes to the module:
+        adds the following features to the module:
         <ul>
           <li><i>Two-bumps</i>: a silky 14-voices harmonic oscillator
           with two spectral bumps or notches, control over centroids
@@ -63,6 +63,7 @@
           delay, a stepped, smooth or waveshaped random voltage
           generator, a random burst generator, a surprising filtered
           noise source... and probably more!
+          <li>A built-in quantizer with a choice of 7 scales.</li>
         </ul>
 
         <p>All features of the official firmware are left untouched
@@ -75,6 +76,7 @@
             <li><a href="#documentation">Documentation</a>
               <ul>
                 <li><a href="#mode">Mode-switching interface</a></li>
+                <li><a href="#quant">Quantizer</a></li>
                 <li><a href="#two-bumps"><i>Two-bumps</i></a></li>
                 <li><a href="#two-drunks"><i>Two-drunks</i></a></li>
                 <li><a href="#misc">Miscellaneous</a></li>
@@ -122,6 +124,37 @@
           <li>LED 2: <i>Two-bumps</i> mode: a harmonic oscillator.</li>
           <li>LED 3: <i>Two-drunks</i> mode: a random generator.</li>
         </ul>
+
+        <h3 id="quant">Quantizer</h3>
+
+        <p>There is a built-in quantizer in Tides Parasite. To enable
+        it, long-press on the <b>Mode</b> button (> 1s), then choose
+        the active scale with the two buttons (<b>Mode</b> goes
+        backwards, <b>Range</b> goes forward). The scales are
+        indicated by dim green LEDs using binary notation:</p>
+
+        <ul>
+          <li>○○○: No quantization</li>
+          <li>●○○: Semitones</li>
+          <li>○●○: Major</li>
+          <li>●●○: Minor</li>
+          <li>○○●: Whole tones</li>
+          <li>●○●: Pentatonic minor</li>
+          <li>○●●: Poor pentatonic</li>
+          <li>●●●: Fifths</li>
+        </ul>
+
+        After two seconds of inactivity, the module goes back to the
+        current mode. It quantizes the Frequency knob and the V/Oct
+        input. The FM input is not quantized.
+
+        <blockquote>
+          <i>Note:</i> To fine-tune the oscillator, you will have to
+          use the FM attenuator together with an external offset. The
+          fact that the Frequency knob is quantized (not only the
+          V/Oct input, which would be more practical) is a hardware
+          limitation.
+        </blockquote>
 
         <h3 id="two-bumps"><i>Two-bumps</i> mode</h3>
 
@@ -241,7 +274,7 @@
         make it back home?
         </p>
 
-        <img style="display:block; margin-left:auto; margin-right:auto;" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Random_walk_2500_animated.svg" alt="random walk" /> --
+        <img style="display:block; margin-left:auto; margin-right:auto;" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Random_walk_2500_animated.svg" alt="random walk" />
 
         <p><i>Two-drunks</i> is a dual random walk simulator. Each
           walk is timed by an independent clock featuring a form of
@@ -397,12 +430,43 @@
         <h3 id="misc">Miscellaneous</h3>
 
         <ul>
-          <li>The logarithmic and exponential waveforms have been
-          accentuated, to make their effect more pronounced. In
-          function generator mode, expect "more exponential"
-          envelopes. This change effects only the waveforms at control
-          rates, not at audio rate.</li>
+          <li>The calibration procedure is not accessed as in the
+          stock firmware anymore (its space is now taken by the quantizer). To
+          calibrate, turn or the module while holding the Rate
+          knob. For the rest, follow the procedure of the official
+          manual.</li>
         </ul>
+
+        <h5>Function generator mode</h5>
+
+        <ul>
+          <li>At control rate (Rate LED off or green), the logarithmic
+          and exponential waveforms have been accentuated, to make
+          their effect more pronounced.</li>
+          <li>At audio rate (Rate LED red), the Slope knob has a
+          different action from fully CCW to noon: it sets the
+          "compression factor" of the wave, an effect called <i>waveform
+          stretching</i> by M. Puckette which results in more nasal or
+            guttural tones.</li>
+
+          <blockquote>
+          <i>Note:</i> I implemented this because in the stock
+          firwmare, there was no audible difference between the effect
+          of Slope CW or CCW. This gives a bit more variation to
+          sculpt the timbre.
+        </blockquote>
+
+        <blockquote>
+          <i>Another note:</i> this effect is not protected against
+          aliasing. At high frequency or high spectral content, it
+          will be dirty.
+        </blockquote>
+
+
+          <li>The response of the Slope button has been changed to
+          exponential.</li>
+        </ul>
+
 
         <h2 id="changelog">Changelog</h2>
 
@@ -413,8 +477,14 @@
             <th>Changes</th>
           </tr>
           <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v0.9beta1/tides-parasite-v0.9beta2.wav.zip">v0.9beta2</a></td>
+            <td>2015-08-31</td>
+            <td>Added quantizer and waveform compression.</td>
+            </td>
+          </tr>
+          <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v0.9beta1/tides-parasite-v0.9beta1.wav.zip">v0.9beta1</a></td>
-            <td>2015-09-01</td>
+            <td>2015-08-29</td>
             <td>Initial version featuring Two-bumps and Two-drunks.
             </td>
           </tr>
