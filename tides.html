@@ -115,8 +115,12 @@
         being a completely different function. To switch between
         modes, press the two buttons simultaneously. The LED
         corresponding to the current mode blinks quickly for two
-        seconds. Use the buttons to choose the mode, then wait for two
-        seconds for it to become active. The modes are:
+        seconds. Whithin these two seconds, the two press buttons, called
+          <b>Mode</b> and <b>Range</b> in the manual, can be used to
+          select a mode (<b>Mode</b> goes forward, <b>Range</b> goes
+          back). After two seconds of inactivity, the selected mode is
+          entered and the LEDs and buttons reclaim their normal
+          function. The modes are:
 
         <ul>
           <li>LED 1: function-generator mode (the original mode
@@ -127,11 +131,13 @@
 
         <h3 id="quant">Quantizer</h3>
 
-        <p>There is a built-in quantizer in Tides Parasite. To enable
-        it, long-press on the <b>Mode</b> button (> 1s), then choose
-        the active scale with the two buttons (<b>Mode</b> goes
-        backwards, <b>Range</b> goes forward). The scales are
-        indicated by dim green LEDs using binary notation:</p>
+        <p>There is a built-in quantizer in Tides Parasite, which
+        applies to all modes (including the original
+        function-generator mode). To enable it, long-press on
+        the <b>Mode</b> button (> 1s), then choose the active scale
+        with the two buttons (<b>Mode</b> goes backwards, <b>Range</b>
+        goes forward). The scales are indicated by dim green LEDs
+        using binary notation:</p>
 
         <ul>
           <li>○○○: No quantization</li>
@@ -248,7 +254,7 @@
           individual sine waves between: no decimation, a bit, and a
           lot of decimation.</li>
           <li>A trigger in the <b>Trig</b> input will randomize the
-            phase of each harmonics in the <b>Unipolar</b> output.</li>
+            phase of each harmonics, acting as a kind of reset.</li>
           <li>Feed a clock in the <b>Clock</b> input and long-press
             the <b>Range</b> button to go into PLL mode (like on the
             original firmware).</li>
