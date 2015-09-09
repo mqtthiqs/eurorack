@@ -92,8 +92,8 @@
           ready to play to your module:</p>
         
         <p class="center">
-          <a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v0.9beta2/tides-parasite-v0.9beta2.wav.zip"
-             class="btn">Download latest version (v0.9beta2)</a>
+          <a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v0.9beta3/tides-parasite-v0.9beta3.wav.zip"
+             class="btn">Download latest version (v0.9beta3)</a>
         </p>
 
         <p>Once you downloaded the file, unzip it and follow the
@@ -136,7 +136,7 @@
         function-generator mode). To enable it, long-press on
         the <b>Mode</b> button (> 1s), then choose the active scale
         with the two buttons (<b>Mode</b> goes backwards, <b>Range</b>
-        goes forward). The scales are indicated by dim green LEDs
+        goes forward). The scales are indicated by a dim green LEDs
         using binary notation:</p>
 
         <ul>
@@ -150,9 +150,10 @@
           <li>●●●: Fifths</li>
         </ul>
 
-        After two seconds of inactivity, the module goes back to the
-        current mode. It quantizes the Frequency knob and the V/Oct
-        input. The FM input is not quantized.
+        To exit scale selection, long-press Mode again (>1s); the
+        chosen scale is then active. Note that the quantizer quantizes
+        the Frequency knob and the V/Oct input. The FM input is not
+        quantized.
 
         <blockquote>
           <i>Note:</i> To fine-tune the oscillator, you will have to
@@ -258,6 +259,9 @@
           <li>Feed a clock in the <b>Clock</b> input and long-press
             the <b>Range</b> button to go into PLL mode (like on the
             original firmware).</li>
+          <li>When not in PLL mode, a trigger in the <b>Clock</b>
+          input will randomize the Harmonics distribution and
+          Decimation settings.</li>
           <li>The <b>Level</b> input acts as a VCA (like on the
             original firmware).</li>
           <li>The <b>Bipolar</b> output is the main output.</li>
@@ -430,6 +434,9 @@
           <li>Long-pressing on the <b>Range</b> button, you get into
             PLL mode, which follows the <b>Clock</b> input (as in the
             default firmware).</li>
+          <li>When not in PLL mode, a trigger in the <b>Clock</b>
+            input will randomize the Range setting.</li>
+
           <li><b>Level</b> controls the amplitude of both channels.</li>
           <li><b>High</b> emits the clock of Channel 1.</li>
           <li><b>Low</b> emits the clock of Channel 2.</li>
@@ -450,6 +457,11 @@
         <h5>Function generator mode</h5>
 
         <ul>
+          <li>The low-pass filter (<b>Smoothness</b> knob) now mutes
+            the sound completely when fully CCW.
+<blockquote>
+  Tip: Feed it an envelope to use it as an LPG, it sounds great.
+</blockquote>
           <li>At control rate (Rate LED off or green), the logarithmic
           and exponential waveforms have been accentuated, to make
           their effect more pronounced.</li>
@@ -474,7 +486,11 @@
 
 
           <li>The response of the Slope button has been changed to
-          exponential.</li>
+            exponential.</li>
+          <li>The internal sizes of the tables generating the triangle
+          and saw waves at audio rate have been reduced, to make space
+          for the added features. It should not be noticeable (please
+          contact me if you spot a reproducible difference).</li>
         </ul>
 
 
@@ -487,9 +503,46 @@
             <th>Changes</th>
           </tr>
           <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v0.9beta3/tides-parasite-v0.9beta3.wav.zip">v0.9beta3</a></td>
+            <td>2015-09-09</td>
+            <td>
+              <ul>
+                <li>No more timeout for choosing a scale: one exits
+                  quantizer mode via a long press on the Mode
+                  button.</li>
+                <li>Fixed a bug inhibiting permanent saving of the
+                  state of the module.</li>
+                <li>Fixed a bug causing the level to be maxed out when
+                  switching scales/mode.</li>
+                <li>Reduced the size of internal parabola tables,
+                  which generate saw/trianges at audio rate, to make
+                  space for new code. It should be unnoticeable.</li>
+                <li>Function generator: When Smoothness is fully CCW,
+                  outputs are now completely muted.
+                <li>Quantizer: fixed glitches appearing when exactly
+                  in between two notes.</li>
+                <li>Two-bumps: when not in PLL mode, clock randomizes
+                  both quality and harmonics choice parameters.</li>
+                <li>Two-bumps: better gain computation. Should result
+                  in louder and more consistent volumes.</li>
+                <li>Two-bumps: reduced slew on Pitch in PLL mode.</li>
+                <li>Two-bumps: Change the order of decimation
+                  choices. It now goes: low quality (green), medium
+                  (black), high (red), which respects the panel
+                  markings.</li>
+                <li>Two-drunks: Fixed a bug causing discontinuities in
+                the Bi output.</li>
+                <li>Two-drunks: when not in PLL mode, clock randomizes
+                  the Range parameter.</li>
+              </ul>
+            </td>
+            </td>
+          </tr>
+          <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v0.9beta2/tides-parasite-v0.9beta2.wav.zip">v0.9beta2</a></td>
             <td>2015-08-31</td>
-            <td>Added quantizer and waveform compression.</td>
+            <td>Added basic quantizer, and waveform compression in
+            Function generator mode.</td>
             </td>
           </tr>
           <tr>
