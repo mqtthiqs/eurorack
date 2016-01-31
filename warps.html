@@ -56,9 +56,9 @@
           mode (morph between algorithms) is now called Meta-mode,
           and is only one of 9. The easter egg (frequency-shifter) is
           another.</li>
-          <li>Most modes take the stock algorithms and are going
-            deeper into them, with two dimensions of control instead
-            of one.</li>
+          <li>Most modes take the stock algorithms and go deeper into
+            them, with two dimensions of control instead of one; some
+            are completely new functionalities.</li>
           <li>New features include: a dual chorus/flanger/slapback, a
           binaural panner with doppler-effect simulation, a dual
           bit-mangler, a Chebyschev waveshaper.</li>
@@ -88,8 +88,8 @@
           ready to play to your module:</p>
         
         <p class="center">
-          <a href=""
-             class="btn">Download latest version (v0.9beta1)</a>
+          <a href="https://github.com/mqtthiqs/parasites/releases/download/warps-v0.9/warps-parasite-v0.9.wav.zip"
+             class="btn">Download latest version (v0.9)</a>
         </p>
 
         <p>Once you downloaded the file, unzip it and follow the
@@ -163,19 +163,23 @@
             <ul>
               <li><i>Big knob</i>: amount of folds</li>
               <li><i>Small knob</i>: input bias (gives access to different
-              and subtler timbres)</li>
+                and subtler timbres)</li>
+              <li>The button switches the internal oscillator; Aux
+              outputs the mix or the internal oscillator (default behavior)</li>
             </ul>
           </li>
           <li>Ring modulator:
             <ul>
               <li><i>Big knob</i> crossfades between digital and analog ring-mods</li>
               <li><i>Small knob</i>: soft-clipping</li>
+              <li>The button switches the internal oscillator; Aux
+              outputs the mix or the internal oscillator (default behavior)</li>
             </ul>
           </li>
           <li>Frequency shifter: <i>(the stock firmware's easter egg)</i>
             <ul>
               <li><i>Big knob</i> frequency shift</li>
-              <li><i>Small knob</i>: crossfades between up/down outputs</li>
+              <li><i>Small knob</i>: crossfade between up/down outputs</li>
               <li>Tiny pots: feedback and dry/wet</li>
               <li>Outputs: up and down</li>
             </ul>
@@ -185,6 +189,8 @@
               <li><i>Big knob</i> input bit-degradation amount.</li>
               <li><i>Small knob</i>: cross-modulation. Morphs between dry,
               bitwise AND and bitwise XOR.</li>
+              <li>The button switches the internal oscillator; Aux
+              outputs the mix or the internal oscillator (default behavior)</li>
               <li><i>Note:</i> the Aux output is also affected by the
               bit degradation, so you can use this feature on the two
               channels, in stereo.</li>
@@ -201,18 +207,22 @@
               non-linearly by whole octaves, and gives interesting
               timbres out of simple ones. Fully CCW, the sound is
               unaffected.</li>
+              <li>The button switches the internal oscillator; Aux
+              outputs the mix or the internal oscillator (default behavior)</li>
             </ul>
           </li>
           <li>Vocoder:
             <ul>
               <li><i>Big knob</i> frequency warping</li>
               <li><i>Small knob</i>: release time</li>
+              <li>The button switches the internal oscillator; Aux
+              outputs the mix or the internal oscillator (default behavior)</li>
             </ul>
           </li>
           <li>Chorus/Flanger/Slapback:
             <br /><i>(see below)</i>
           </li>
-          <li>Meta-mode <i>(the stock firmware's main function)</i>:
+          <li>Meta-mode <i>(the stock firmware's main function)</i>
           </li>
         </ol>
         
@@ -248,8 +258,14 @@
           <li>the <i>Big knob</i> sets <i>x</i> coordinate of the source.</li>
           <li>the <i>Small knob</i> sets <i>y</i> coordinate of the source.</li>
           <li>the <i>Tiny pots</i> control a built-in LFO modulating
-          the source's position on a circle around the center. The first is its
+          the source's position on a circle around the center
+          (technically there are two LFOs in quadrature, modulating
+          respectively <i>x</i> and <i>y</i>). The first is its
           frequency, the second is its amplitude.
+          <li>the <i>Two outputs</i> should be used as a stereo pair, obviously.</li>
+          <li><i>Input 1</i> is one sound source; <i>Input 2</i> is
+            another source that is placed symmetrically to <i>Input
+            1</i> on the other side of the head's axis.</li>
         </ul>
 
         <p>The state of the button determines the size of the space:
@@ -291,7 +307,12 @@
 
         <ul>
           <li>To avoid entering calibration mode when switching mode,
-          the time to enter calibration has been extended to 8 seconds.</li>
+          the time to enter calibration has been extended to 8
+            seconds.</li>
+          <li>In Meta mode, the volume of the wavefolder has been
+          lowered a bit, and its phase inverted (avoids phase
+          cancellation in between the two first modes).</li>
+          <li>The volume of the vocoder has been raised a bit.</li>
         </ul>
         
         <h2 id="changelog">Changelog</h2>
@@ -301,6 +322,12 @@
             <th>Version</th>
             <th>Date</th>
             <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/warps-v0.9/warps-parasite-v0.9.wav.zip">v0.9</a></td>
+            <td>2016-01-31</td>
+            <td>Minor fixes and adjustments
+            </td>
           </tr>
           <tr>
             <td><a href="">v0.9beta1</a></td>
