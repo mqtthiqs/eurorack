@@ -59,6 +59,9 @@
           <li>an improved <i>quad sequencer mode</i> with sequence
           randomization and a step edition mode to easily enter
             sequences in sequencer mode.</li>
+          <li>an updated <i>keyframer mode</i> where frames now "wrap
+            around", and with a new <i>autoplay</i> submode playing
+            the animation by itself, at a given rate.</li>
           <li>a new user interface to easily switch between modes (no
           more hard-to-remember button combos). There are five modes:
           keyframer, quad sequencer, shift register sequencer, quad
@@ -77,6 +80,7 @@
             <li><a href="#documentation">Documentation</a>
               <ul>
                 <li><a href="#mode">Mode-switching interface</a></li>
+                <li><a href="#autoplay">Autoplay keyframes</a></li>
                 <li><a href="#euclidean">Euclidean sequencer</a></li>
                 <li><a href="#shift">Shift Register sequencer</a></li>
                 <li><a href="#preset">Preset memory</a></li>
@@ -93,14 +97,22 @@
           ready to play to your module:</p>
         
         <p class="center">
-          <a href="https://github.com/mqtthiqs/parasites/releases/download/frames-v1.1/frames-v1.1.wav.zip"
-             class="btn">Download latest version (v1.1)</a>
+          <a href="https://github.com/mqtthiqs/parasites/releases/download/frames-v1.2/frames-parasite-v1.2.wav.zip"
+             class="btn">Download latest version (v1.2)</a>
         </p>
 
         <p>Once you downloaded the file, unzip it and follow the
           Firmware update procedure in
           the <a href="http://mutable-instruments.net/modules/frames/manual">official
             manual</a>.</p>
+
+        <h4>Calibration</h4>
+
+        <p>It is <i>crucial</i> to calibrate your module after
+          updating. To calibrate, unplug all cables from Frames and
+          hold the Del button while the module is powering up.</p>
+
+        <h4>Donate</h4>
 
         <p>This firmware is entirely free, but it is the
           result of months of work; if want to support it, please
@@ -145,7 +157,8 @@
 
         <ul>
           <li><b>Frame</b> knob: keyframer mode (the original mode
-          of the stock firmware)</li>
+            of the stock firmware). If you turn the <b>Frame</b> knob all the
+          way clockwise, the LED turns red and you enter the Autoplay submode</li>
           <li><b>Knob 1</b>: Quad sequencer mode (adapted from the
           stock firmware)</li>
           <li><b>Knob 2</b>: Shift register sequencer mode</li>
@@ -159,6 +172,32 @@
         modes share the same data. This means that the keyframes you
         program will become sequences in the sequencer modes, and
         vice versa.</blockquote>
+
+        <h3 id="autoplay">Autoplay keyframer submode</h3>
+
+        <p>It is accessed in the mode-switching interface by turning the Frame knob
+        all the way clockwise. The LED turns red.</p>
+
+        <p>In this mode, the big <b>Frame</b> knob does not scan
+        through the animation; it is just used to select a
+          frame. The <b>Frame CV</b> input determines the speed at
+        which the animation is looped: at 0V, the animation is
+        stalled; positive voltage plays the animation forward, the
+        higher the voltage the higher the frequency; negative voltage
+        plays the animation backwards.</p>
+
+        <blockquote>
+          <i>Warning:</i> Don't forget to calibrate the module after
+          an update. Otherwise the autoplay speed will not exactly
+          reach zero.
+        </blockquote>
+
+        A couple demos:
+        <blockquote class="instagram-media" data-instgrm-version="6" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:8px;"> <div style=" background:#F8F8F8; line-height:0; margin-top:40px; padding:50.0% 0; text-align:center; width:100%;"> <div style=" background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAGFBMVEUiIiI9PT0eHh4gIB4hIBkcHBwcHBwcHBydr+JQAAAACHRSTlMABA4YHyQsM5jtaMwAAADfSURBVDjL7ZVBEgMhCAQBAf//42xcNbpAqakcM0ftUmFAAIBE81IqBJdS3lS6zs3bIpB9WED3YYXFPmHRfT8sgyrCP1x8uEUxLMzNWElFOYCV6mHWWwMzdPEKHlhLw7NWJqkHc4uIZphavDzA2JPzUDsBZziNae2S6owH8xPmX8G7zzgKEOPUoYHvGz1TBCxMkd3kwNVbU0gKHkx+iZILf77IofhrY1nYFnB/lQPb79drWOyJVa/DAvg9B/rLB4cC+Nqgdz/TvBbBnr6GBReqn/nRmDgaQEej7WhonozjF+Y2I/fZou/qAAAAAElFTkSuQmCC); display:block; height:44px; margin:0 auto -44px; position:relative; top:-22px; width:44px;"></div></div><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/BBFItKigbpQ/" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Une vidéo publiée par @mqtthiqs</a> le <time style=" font-family:Arial,sans-serif; font-size:14px; line-height:17px;" datetime="2016-01-28T10:59:55+00:00">28 Janv. 2016 à 2h59 PST</time></p></div></blockquote>
+<script async defer src="//platform.instagram.com/en_US/embeds.js"></script>
+
+<blockquote class="instagram-media" data-instgrm-version="6" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:8px;"> <div style=" background:#F8F8F8; line-height:0; margin-top:40px; padding:50.0% 0; text-align:center; width:100%;"> <div style=" background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAGFBMVEUiIiI9PT0eHh4gIB4hIBkcHBwcHBwcHBydr+JQAAAACHRSTlMABA4YHyQsM5jtaMwAAADfSURBVDjL7ZVBEgMhCAQBAf//42xcNbpAqakcM0ftUmFAAIBE81IqBJdS3lS6zs3bIpB9WED3YYXFPmHRfT8sgyrCP1x8uEUxLMzNWElFOYCV6mHWWwMzdPEKHlhLw7NWJqkHc4uIZphavDzA2JPzUDsBZziNae2S6owH8xPmX8G7zzgKEOPUoYHvGz1TBCxMkd3kwNVbU0gKHkx+iZILf77IofhrY1nYFnB/lQPb79drWOyJVa/DAvg9B/rLB4cC+Nqgdz/TvBbBnr6GBReqn/nRmDgaQEej7WhonozjF+Y2I/fZou/qAAAAAElFTkSuQmCC); display:block; height:44px; margin:0 auto -44px; position:relative; top:-22px; width:44px;"></div></div><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/BBFI5tGgbpi/" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Une vidéo publiée par @mqtthiqs</a> le <time style=" font-family:Arial,sans-serif; font-size:14px; line-height:17px;" datetime="2016-01-28T11:01:37+00:00">28 Janv. 2016 à 3h01 PST</time></p></div></blockquote>
+<script async defer src="//platform.instagram.com/en_US/embeds.js"></script>
 
         <h3 id="euclidean">Euclidean sequencer mode</h3>
 
@@ -398,6 +437,24 @@
 
         <h3 id="misc">Miscellaneous</h3>
 
+        <h4>Keyframer mode</h4>
+
+        <ul>
+          <li>Frames now "wrap around": before the first frame and
+          after the last frame, the big knob interpolates between the
+          first and the last frame (in the stock firmware, the
+          channels positions at these extreme points stayed
+          constant). This means that the values at the very beginning
+          and the very end of the big knob are contiguous. With the CV
+          input, you can even cross the line between the beginning and
+          the end of the animation.
+
+            <blockquote>
+              <i>Warning:</i> For this feature to work as expected, it is very
+              important to calibrate the module, as documented above.
+            </blockquote>
+        </ul>
+
         <h4>Quad sequencer mode</h4>
 
         <ul>
@@ -459,6 +516,18 @@
             <th>Changes</th>
           </tr>
           <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/frames-v1.2/frames-parasite-v1.2.wav.zip">v1.2</a></td>
+            <td>2016-01-31</td>
+            <td>
+              <ul>
+                <li>Keyframe warparound: before the first frame and
+                after the last frame, the big knob now interpolates
+                between the first and the last frame.</li>
+                <li>Autoplay keyframer submode: plays the animation by
+                itself, at a given rate (set by CV).</li>
+              </ul>
+            </td>
+            </tr><tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/frames-v1.1/frames-v1.1.wav.zip">v1.1</a></td>
             <td>2015-09-26</td>
             <td>Euclidean sequencer:
