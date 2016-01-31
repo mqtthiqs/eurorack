@@ -111,9 +111,9 @@
         <p>Click on the button to download the latest stable version,
           ready to play to your module:</p>
         
-        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.3/clouds-parasite-v1.3.wav.zip"
+        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.4/clouds-parasite-v1.4.wav.zip"
                              class="btn">Download latest version
-                             (v1.3)</a></p>
+                             (v1.4)</a></p>
 
         <p>Once you downloaded the file, unzip it and follow the
           Firmware update procedure in
@@ -465,6 +465,13 @@
             semitones, so that octaves up/down are easier to find on
             the knob.
           </li>
+          <li>set dry/wet response curve to equal power crossfading
+                  (no volume drop anymore at 50%)</li>
+          <li>Put the post-processing reverb after dry/wet, so that
+          it also affects the dry signal (so you can use Clouds as a
+          simple reverb plus its main function)</li>
+          <li>Disabled the reverb increase when Freeze was on and
+          feedback was up.</li>
         </ul>
 
         <h2>Changelog</h2>
@@ -474,6 +481,29 @@
             <th>Version</th>
             <th>Date</th>
             <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.4/clouds-parasite-v1.4.wav.zip">v1.4</a></td>
+            <td>2016-01-31</td>
+            <td>
+              <ul>
+                <li>set dry/wet response curve to equal power
+                  crossfading (no volume drop anymore at 50%)</li>
+                <li>smaller plateaux for octaves in the Pitch knob (as
+                they were in the original firmware)</li>
+                <li><b>Oliverb</b>: restore soft-clipping in the
+                feedback loop (more extreme self-oscillations, as it
+                was prior to v1.3)
+                </li>
+                <li><b>Granular, Delay modes</b>:
+                  <ul>
+                    <li>put the simple post-processing reverb after
+                    dry/wet (it now affects also the dry signal)</li>
+                    <li>disable the reverb when Freeze is enabled with
+                    some feedback.</li>
+                  </ul>
+              </ul>
+            </td>
           </tr>
           <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.3/clouds-parasite-v1.3.wav.zip">v1.3</a></td>
