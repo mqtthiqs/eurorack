@@ -51,7 +51,7 @@
         for <a href="http://mutable-instruments.net/modules/tides/">Tides</a>. It
         adds the following features to the module:
         <ul>
-          <li><i>Two-bumps</i>: a silky 14-voices harmonic oscillator
+          <li><i>Two-bumps</i>: a silky 28-voices harmonic oscillator
           with two spectral bumps or notches, control over centroids
           and width, harmonics selection, wave quality, a
           sub-oscillator, a 1-bit output, and a special harmonics
@@ -93,8 +93,8 @@
           ready to play to your module:</p>
         
         <p class="center">
-          <a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.0/tides-parasite-v1.0.wav.zip"
-             class="btn">Download latest version (v1.0)</a>
+          <a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.1/tides-parasite-v1.1.wav.zip"
+             class="btn">Download latest version (v1.1)</a>
         </p>
 
         <p>Once you downloaded the file, unzip it and follow the
@@ -194,7 +194,7 @@
         timbres can be reproduced this way, by choosing the right
         amplitude for each sine.</p>
 
-        <p><i>Two-bumps</i> is a harmonic generator that sums 14
+        <p><i>Two-bumps</i> is a harmonic generator that sums 28
         harmonics. The timbre is shaped by choosing two "center
         frequencies", (with the <b>Shape</b> and <b>Slope</b> knobs)
         which select the loudest harmonics, and a "width", which is the
@@ -209,7 +209,7 @@
 
         <p>The upper button (<b>Mode</b> button in the official
         manual) selects which harmonics can ring. When the LED is off,
-        the first 14 harmonics ring: it is the default in most harmonic
+        the first 28 harmonics ring: it is the default in most harmonic
         oscillators. When the LED is green, only the odd harmonics
         ring: the timbre is more "metallic", closer to a square wave.
         Finally, when the LED is red, only the octaves ring: the resulting
@@ -217,7 +217,7 @@
 
         <blockquote>
           <i>Tip</i>: Put the oscillator in this "octaves" mode, put
-          the width at noon and the frequency around 9 o'clock; 14
+          the width at noon and the frequency around 9 o'clock; 28
           octaves will ring at the same time, many of them way outside
           the audible range. Now feed a slow sawtooth to the 1V/Oct
           input, and adjust its amplitude so that it is 1V (or 2 or
@@ -226,12 +226,11 @@
         </blockquote>
 
         <p>The lower button (<b>Range</b> button in the manual) allows
-        to select the quality of the sine waves forming the
-        sound. When the LED is red, the quality is maximum. When the
-        LED is off, the sine is decimated a bit, leaving high-pitched
-        aliasing noise: this gives more character to the sound. When
-        the LED is green, the sine is decimated even more, for a
-        stronger effect.</p>
+        to select the quality of the sine waves. When the LED is red,
+        the quality is maximum. When the LED is off, the sine is
+        interpolated with less points, so it will sound closer to a
+        triangle. When the LED is green, the sine is produced with
+        even less points, for a stronger effect.</p>
 
         <blockquote>
           <i>Note</i>: even in the maximum quality mode, you can sometimes
@@ -472,6 +471,14 @@
         <h3 id="misc">Miscellaneous</h3>
 
         <ul>
+          <li>FM is now linear and through-zero (“TZFM”)</li>
+
+          <blockquote>
+            <i>Careful:</i> the FM input has a very low sampling
+            rate. Don't expect to do crisp digital audio-rate FM:
+            artifacts will start to appear as low as 200Hz.
+          </blockquote>
+
           <li>The calibration procedure is not accessed as in the
           stock firmware anymore (its space is now taken by the quantizer). To
           calibrate, turn on the module while holding the Rate
@@ -534,6 +541,38 @@
             <th>Version</th>
             <th>Date</th>
             <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.1/tides-parasite-v1.1.wav.zip">v1.1</a></td>
+            <td>2016-03-19</td>
+            <td>
+              <ul>
+                <li>Two-bumps:
+                  <ul>
+                    <li>increased the number of harmonics to 28
+                      (higher harmonics may buzz a little)</li>
+                    <li>cleaned the shape of the bumps (they will
+                      sound "rounder" and more natural)</li>
+                    <li>changed effect of "quality" setting:
+                      interpolates sine with more and more points</li>
+                    <li>adjust range of frequency knob in octave
+                      mode</li>
+                  </ul>
+                </li>
+                <li>All modes:
+                  <ul>
+                    <li>FM input is now linear and through-zero</li>
+                    <li>FM applies also in PLL mode</li>
+                  </ul>
+                </li>
+                <li>Function:
+                  <ul>
+                    <li>fixed a zipper noise/glitch when Smoothness
+                    was modulated close to zero</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
           </tr>
           <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.0/tides-parasite-v1.0.wav.zip">v1.0</a></td>
