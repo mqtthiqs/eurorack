@@ -32,15 +32,15 @@ namespace clouds {
     { 0.0f, 2.0f, 4.0f, 6.0f, 8.0f, 10.0f},
   };
 
-  const int kNumStructures = 4;
+  const int kNumStructures = 8;
 
   const float modulation_table[6/* kNumVoices */][kNumStructures] = {
-    {0.0f, 1.0f, 1.0f, 1.0f},
-    {0.0f, 0.0f, 1.0f, 1.0f},
-    {0.0f, 1.0f, 0.0f, 1.0f},
-    {0.0f, 0.0f, 1.0f, 1.0f},
-    {0.0f, 1.0f, 1.0f, 1.0f},
-    {0.0f, 0.0f, 0.0f, 0.0f},
+    {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f},
+    {0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f},
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f},
+    {0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
   };
 
   class Chords {
