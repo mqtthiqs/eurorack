@@ -85,6 +85,12 @@ namespace clouds {
           float sin = Interpolate(lut_sin, phase, 1024.0f);
           float cos = Interpolate(lut_sin + 256, phase, 1024.0f);
 
+          /* sin = truncf(sin * bitcrush_) / bitcrush_; */
+          /* cos = truncf(cos * bitcrush_) / bitcrush_; */
+
+          sin = SoftLimit(sin * softclip_) / SoftLimit(softclip_);
+          cos = SoftLimit(cos * softclip_) / SoftLimit(softclip_);
+
           if (modulation_type == AM) {
             float fb = 1.0f - (self_feedback_sample_[i][1] + 1.0f) * self_feedback_;
             sin *= modulation_sample_[i] + fb + in;
@@ -203,6 +209,14 @@ namespace clouds {
       freeze_ = freeze;
     }
 
+    void set_bitcrush(float bitcrush) {
+      bitcrush_ = bitcrush;
+    }
+
+    void set_softclip(float softclip) {
+      softclip_ = softclip;
+    }
+
   private:
 
     /* returns the closest value to x in the given sorted array */
@@ -267,15 +281,18 @@ namespace clouds {
       return a + (b - a) * index_fractional;
     }
 
+    /* parameters */
+    bool freeze_;
+    float self_feedback_;
+    float bitcrush_;
+    float softclip_;
+    float modulation_index_;
+
     float phase_[kNumVoices];
     float phase_increment_[kNumVoices];
-    float self_feedback_;
     float self_feedback_sample_[kNumVoices][2];
-    bool freeze_;
-
     float modulation_sample_[kNumVoices];
     float modulation_matrix_[kNumVoices];
-    float modulation_index_;
   };
 }
 

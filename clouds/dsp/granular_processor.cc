@@ -272,11 +272,29 @@ void GranularProcessor::ProcessGranular(
 
     float mode = parameters_.reverb * 4.0f;
 
+    float self_fb = 1.0f - parameters_.stereo_spread * 2.0f;
+    CONSTRAIN(self_fb, 0.0f, 1.0f);
+    self_fb *= self_fb;
+
+    float bitcrush = parameters_.stereo_spread * 2.0f - 1.0f;
+    CONSTRAIN(bitcrush, 0.0f, 1.0f);
+    bitcrush *= bitcrush;
+    bitcrush *= bitcrush;
+    bitcrush = 1.0f / (bitcrush + 0.0001f) + 0.1f;
+
+    float softclip = parameters_.stereo_spread * 2.0f - 1.0f;
+    CONSTRAIN(softclip, 0.0f, 1.0f);
+    softclip *= softclip;
+    softclip *= 10.0f;
+    softclip += 0.0001f;
+
     float modulation = parameters_.texture - 0.05f;
     CONSTRAIN(modulation, 0.0f, 1.0f);
     modulation *= modulation;
 
-    chords_.set_self_feedback(parameters_.feedback * parameters_.feedback);
+    chords_.set_self_feedback(self_fb);
+    chords_.set_softclip(softclip);
+    // chords_.set_bitcrush(bitcrush);
     chords_.set_freeze(parameters_.freeze);
     chords_.set_structure(parameters_.size);
     chords_.set_modulation_index(modulation);
@@ -285,9 +303,9 @@ void GranularProcessor::ProcessGranular(
       chords_.set_chords(parameters_.position * 50.0f + 24.0f,
                           parameters_.density * 12.0f,
                           parameters_.pitch,
-                          parameters_.stereo_spread);
+                          parameters_.feedback);
     } else if (mode < 2.0f) {
-      float detune = (parameters_.stereo_spread - 0.5f) * 0.3f;
+      float detune = (parameters_.feedback - 0.5f) * 0.3f;
       detune *= detune * detune;
 
       chords_.set_harmonics((parameters_.position - 0.5f) * 32.0f,
@@ -298,7 +316,7 @@ void GranularProcessor::ProcessGranular(
       chords_.set_rationals(parameters_.position * 8.0f + 1.0f,
                             parameters_.density + 1.0f,
                             parameters_.pitch,
-                            static_cast<int>(parameters_.stereo_spread * 7.0f) + 1);
+                            static_cast<int>(parameters_.feedback * 7.0f) + 1);
     } else {
     }
 
