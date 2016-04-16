@@ -80,7 +80,8 @@ void GranularProcessor::ProcessGranular(
   // audio signal to be written to the recording buffer.
   if (playback_mode_ != PLAYBACK_MODE_SPECTRAL &&
       playback_mode_ != PLAYBACK_MODE_RESONESTOR &&
-      playback_mode_ != PLAYBACK_MODE_CHORDS) {
+      playback_mode_ != PLAYBACK_MODE_CHORDS_FM &&
+      playback_mode_ != PLAYBACK_MODE_CHORDS_AM) {
     // const float* input_samples = &input[0].l;
     // const bool play = !parameters_.freeze ||
     //   playback_mode_ == PLAYBACK_MODE_OLIVERB;
@@ -264,7 +265,8 @@ void GranularProcessor::ProcessGranular(
     }
     break;
 
-  case PLAYBACK_MODE_CHORDS:
+  case PLAYBACK_MODE_CHORDS_FM:
+  case PLAYBACK_MODE_CHORDS_AM:
   {
     copy(&input[0], &input[size], &output[0]);
 
@@ -299,7 +301,12 @@ void GranularProcessor::ProcessGranular(
                             static_cast<int>(parameters_.stereo_spread * 7.0f) + 1);
     } else {
     }
-    chords_.Process(output, size);
+
+    if (playback_mode_ == PLAYBACK_MODE_CHORDS_AM) {
+      chords_.Process<AM>(output, size);
+    } else if (playback_mode_ == PLAYBACK_MODE_CHORDS_FM) {
+      chords_.Process<FM>(output, size);
+    }
 
     break;
   }
@@ -351,7 +358,8 @@ void GranularProcessor::Process(
 
   if (playback_mode_ != PLAYBACK_MODE_OLIVERB &&
       playback_mode_ != PLAYBACK_MODE_RESONESTOR &&
-      playback_mode_ != PLAYBACK_MODE_CHORDS) {
+      playback_mode_ != PLAYBACK_MODE_CHORDS_FM &&
+      playback_mode_ != PLAYBACK_MODE_CHORDS_AM) {
     ONE_POLE(freeze_lp_, parameters_.freeze ? 1.0f : 0.0f, 0.0005f)
     // float cutoff = (20.0f + 100.0f * feedback * feedback) / sample_rate();
     // fb_filter_[0].set_f_q<FREQUENCY_FAST>(cutoff, 0.75f);
@@ -379,7 +387,8 @@ void GranularProcessor::Process(
   // Diffusion and pitch-shifting post-processings.
   if (playback_mode_ != PLAYBACK_MODE_SPECTRAL &&
       playback_mode_ != PLAYBACK_MODE_OLIVERB &&
-      playback_mode_ != PLAYBACK_MODE_CHORDS &&
+      playback_mode_ != PLAYBACK_MODE_CHORDS_FM &&
+      playback_mode_ != PLAYBACK_MODE_CHORDS_AM &&
       playback_mode_ != PLAYBACK_MODE_RESONESTOR) {
     // float texture = parameters_.texture;
     // float diffusion = playback_mode_ == PLAYBACK_MODE_GRANULAR 
@@ -437,22 +446,26 @@ void GranularProcessor::Process(
   
   // This is what is fed back. Reverb is not fed back.
   copy(&out_[0], &out_[size], &fb_[0]);
-  
-  const float post_gain = 1.2f;
-  ParameterInterpolator dry_wet_mod(&dry_wet_, parameters_.dry_wet, size);
-  for (size_t i = 0; i < size; ++i) {
-    float dry_wet = dry_wet_mod.Next();
-    float fade_in = Interpolate(lut_xfade_in, dry_wet, 16.0f);
-    float fade_out = Interpolate(lut_xfade_out, dry_wet, 16.0f);
-    float l = static_cast<float>(input[i].l) / 32768.0f;
-    float r = static_cast<float>(input[i].r) / 32768.0f;
-    out_[i].l = l * fade_out + out_[i].l * post_gain * fade_in;
-    out_[i].r = r * fade_out + out_[i].r * post_gain * fade_in;
+
+  if (playback_mode_ != PLAYBACK_MODE_CHORDS_FM &&
+      playback_mode_ != PLAYBACK_MODE_CHORDS_AM) {
+    const float post_gain = 1.2f;
+    ParameterInterpolator dry_wet_mod(&dry_wet_, parameters_.dry_wet, size);
+    for (size_t i = 0; i < size; ++i) {
+      float dry_wet = dry_wet_mod.Next();
+      float fade_in = Interpolate(lut_xfade_in, dry_wet, 16.0f);
+      float fade_out = Interpolate(lut_xfade_out, dry_wet, 16.0f);
+      float l = static_cast<float>(input[i].l) / 32768.0f;
+      float r = static_cast<float>(input[i].r) / 32768.0f;
+      out_[i].l = l * fade_out + out_[i].l * post_gain * fade_in;
+      out_[i].r = r * fade_out + out_[i].r * post_gain * fade_in;
+    }
   }
 
   // Apply the simple post-processing reverb.
   if (playback_mode_ != PLAYBACK_MODE_OLIVERB &&
-      playback_mode_ != PLAYBACK_MODE_CHORDS &&
+      playback_mode_ != PLAYBACK_MODE_CHORDS_FM &&
+      playback_mode_ != PLAYBACK_MODE_CHORDS_AM &&
       playback_mode_ != PLAYBACK_MODE_RESONESTOR) {
     // float reverb_amount = parameters_.reverb;
 
@@ -627,7 +640,8 @@ void GranularProcessor::Prepare() {
     //   BufferAllocator allocator(buffer[0], buffer_size[0]);
     //   uint16_t* buf = allocator.Allocate<uint16_t>(16384);
     //   resonestor_.Init(buf);
-    } else if (playback_mode_ == PLAYBACK_MODE_CHORDS) {
+    } else if (playback_mode_ == PLAYBACK_MODE_CHORDS_AM ||
+               playback_mode_ == PLAYBACK_MODE_CHORDS_FM) {
       chords_.Init();
     } else {
       for (int32_t i = 0; i < num_channels_; ++i) {

@@ -8,6 +8,12 @@ using namespace stmlib;
 
 namespace clouds {
 
+  
+  enum ModulationType {
+    FM,
+    AM,
+  };
+
   const float a3 = 440.0f / 32000;
 
   const int kNumVoices = 6;
@@ -48,7 +54,11 @@ namespace clouds {
       }
     }
 
+    template<ModulationType modulation_type>
     void Process(FloatFrame* in_out, size_t size) {
+
+      modulation_sample_[0] = 1.0f;
+      modulation_sample_[0] = 1.0f;
 
       while (size--) {
 
@@ -59,22 +69,41 @@ namespace clouds {
         float total_gain = 0.0f;
 
         for (int i=0; i<kNumVoices; i++) {
-          float phase = phase_[i]
-            + in
-            + self_feedback_sample_[i][1] * self_feedback_
-            + global_feedback_sample_[1] * global_feedback_
-            + modulation_sample_[i] * modulation_index_;
-          while (phase < 0.0f) phase++;
-          while (phase > 1.0f) phase--;
+
+          float phase;
+
+          if (modulation_type == FM) {
+            phase = phase_[i] + in
+              + self_feedback_sample_[i][1] * self_feedback_
+              + modulation_sample_[i] * modulation_index_;
+            while (phase < 0.0f) phase++;
+            while (phase > 1.0f) phase--;
+          } else {
+            phase = phase_[i];
+          }
 
           float sin = Interpolate(lut_sin, phase, 1024.0f);
           float cos = Interpolate(lut_sin + 256, phase, 1024.0f);
 
-          self_feedback_sample_[i][0] = sin;
-          if (i != kNumVoices-1)
-            modulation_sample_[i+1] = sin * modulation_matrix_[i];
+          if (modulation_type == AM) {
+            float fb = 1.0f - (self_feedback_sample_[i][1] + 1.0f) * self_feedback_;
+            sin *= modulation_sample_[i] + fb + in;
+            cos *= modulation_sample_[i] + fb + in;
+          }
 
+          self_feedback_sample_[i][0] = sin;
           ONE_POLE(self_feedback_sample_[i][1], self_feedback_sample_[i][0], 0.1f);
+
+          if (i != kNumVoices-1) {
+            if (modulation_type == AM) {
+              modulation_sample_[i+1] = 1.0f - (sin + 1.0f)
+                * modulation_matrix_[i]
+                * modulation_index_;
+            } else if (modulation_type == FM) {
+              modulation_sample_[i+1] = sin * modulation_matrix_[i];
+            }
+          }
+
 
           float gain = 1.0f - modulation_matrix_[i];
           total_gain += gain;
@@ -86,11 +115,14 @@ namespace clouds {
           if (phase_[i] > 1.0) phase_[i]--;
         }
 
-        in_out->l /= total_gain;
-        in_out->r /= total_gain;
+        if (modulation_type == FM) {
+          in_out->l /= total_gain * 2.0f;
+          in_out->r /= total_gain * 2.0f;
+        } else if (modulation_type == AM) {
+          in_out->l /= total_gain * 3.0f;
+          in_out->r /= total_gain * 3.0f;
+        }
 
-        global_feedback_sample_[0] = in_out->l;
-        ONE_POLE(global_feedback_sample_[1], global_feedback_sample_[0], 0.05f);
         in_out++;
       }
     }
@@ -155,12 +187,8 @@ namespace clouds {
 
     void set_structure(float structure) {
       for (int i=0; i<kNumVoices; i++) {
-        modulation_matrix_[i] = Interpolate(modulation_table[i], structure, kNumStructures-1);
+        modulation_matrix_[i] = InterpolateSine(modulation_table[i], structure, kNumStructures - 1);
       }
-    }
-
-    void set_global_feedback(float feedback) {
-      global_feedback_ = feedback;
     }
 
     void set_self_feedback(float feedback) {
@@ -168,7 +196,7 @@ namespace clouds {
     }
 
     void set_modulation_index(float index) {
-      modulation_index_ = index * 2.0f;
+      modulation_index_ = index;
     }
 
     void set_freeze(float freeze) {
@@ -230,10 +258,18 @@ namespace clouds {
       else return a/b;
     }
 
+    inline float InterpolateSine(const float* table, float index, float size) {
+      index *= size;
+      MAKE_INTEGRAL_FRACTIONAL(index)
+        float a = table[index_integral];
+      float b = table[index_integral + 1];
+      index_fractional = Interpolate(lut_raised_cos, index_fractional, 256.0f);
+      return a + (b - a) * index_fractional;
+    }
+
     float phase_[kNumVoices];
     float phase_increment_[kNumVoices];
-    float global_feedback_, self_feedback_;
-    float global_feedback_sample_[2];
+    float self_feedback_;
     float self_feedback_sample_[kNumVoices][2];
     bool freeze_;
 
