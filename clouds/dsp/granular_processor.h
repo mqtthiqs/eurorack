@@ -32,19 +32,21 @@
 #include "stmlib/stmlib.h"
 #include "stmlib/dsp/filter.h"
 
-#include "clouds/dsp/correlator.h"
+#include "clouds/dsp/parameters.h"
+/* #include "clouds/dsp/correlator.h" */
 #include "clouds/dsp/frame.h"
-#include "clouds/dsp/fx/diffuser.h"
-#include "clouds/dsp/fx/pitch_shifter.h"
-#include "clouds/dsp/fx/reverb.h"
-#include "clouds/dsp/resonestor.h"
-#include "clouds/dsp/fx/oliverb.h"
-#include "clouds/dsp/granular_processor.h"
-#include "clouds/dsp/granular_sample_player.h"
-#include "clouds/dsp/looping_sample_player.h"
-#include "clouds/dsp/pvoc/phase_vocoder.h"
+/* #include "clouds/dsp/fx/diffuser.h" */
+/* #include "clouds/dsp/fx/pitch_shifter.h" */
+/* #include "clouds/dsp/fx/reverb.h" */
+/* #include "clouds/dsp/resonestor.h" */
+/* #include "clouds/dsp/fx/oliverb.h" */
+#include "clouds/dsp/chords.h"
+/* #include "clouds/dsp/granular_processor.h" */
+/* #include "clouds/dsp/granular_sample_player.h" */
+/* #include "clouds/dsp/looping_sample_player.h" */
+/* #include "clouds/dsp/pvoc/phase_vocoder.h" */
 #include "clouds/dsp/sample_rate_converter.h"
-#include "clouds/dsp/wsola_sample_player.h"
+/* #include "clouds/dsp/wsola_sample_player.h" */
 
 namespace clouds {
 
@@ -57,6 +59,7 @@ enum PlaybackMode {
   PLAYBACK_MODE_SPECTRAL,
   PLAYBACK_MODE_OLIVERB,
   PLAYBACK_MODE_RESONESTOR,
+  PLAYBACK_MODE_CHORDS,
   PLAYBACK_MODE_LAST
 };
 
@@ -179,24 +182,25 @@ class GranularProcessor {
   void* buffer_[2];
   size_t buffer_size_[2];
   
-  Correlator correlator_;
+  /* Correlator correlator_; */
   
-  GranularSamplePlayer player_;
-  WSOLASamplePlayer ws_player_;
-  LoopingSamplePlayer looper_;
-  PhaseVocoder phase_vocoder_;
+  /* GranularSamplePlayer player_; */
+  /* WSOLASamplePlayer ws_player_; */
+  /* LoopingSamplePlayer looper_; */
+  /* PhaseVocoder phase_vocoder_; */
   
-  Diffuser diffuser_;
-  Reverb reverb_;
-  Oliverb oliverb_;
-  Resonestor resonestor_;
-  PitchShifter pitch_shifter_;
-  stmlib::Svf fb_filter_[2];
-  stmlib::Svf hp_filter_[2];
-  stmlib::Svf lp_filter_[2];
+  /* Diffuser diffuser_; */
+  /* Reverb reverb_; */
+  /* Oliverb oliverb_; */
+  /* Resonestor resonestor_; */
+  Chords chords_;
+  /* PitchShifter pitch_shifter_; */
+  /* stmlib::Svf fb_filter_[2]; */
+  /* stmlib::Svf hp_filter_[2]; */
+  /* stmlib::Svf lp_filter_[2]; */
   
-  AudioBuffer<RESOLUTION_8_BIT_MU_LAW> buffer_8_[2];
-  AudioBuffer<RESOLUTION_16_BIT> buffer_16_[2];
+  /* AudioBuffer<RESOLUTION_8_BIT_MU_LAW> buffer_8_[2]; */
+  /* AudioBuffer<RESOLUTION_16_BIT> buffer_16_[2]; */
   
   FloatFrame in_[kMaxBlockSize];
   FloatFrame in_downsampled_[kMaxBlockSize / kDownsamplingFactor];

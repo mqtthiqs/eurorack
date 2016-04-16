@@ -73,7 +73,7 @@ void write_wav_header(FILE* fp, int num_samples, int num_channels) {
 }
 
 void TestDSP() {
-  size_t duration = 29;
+  size_t duration = 5;
 
   FILE* fp_in = fopen("audio_samples/ericderr.wav", "rb");
   FILE* fp_out = fopen("clouds.wav", "wb");
@@ -92,7 +92,7 @@ void TestDSP() {
 
   processor.set_num_channels(2);
   processor.set_low_fidelity(false);
-  processor.set_playback_mode(PLAYBACK_MODE_OLIVERB);
+  processor.set_playback_mode(PLAYBACK_MODE_CHORDS);
   
   Parameters* p = processor.mutable_parameters();
   
@@ -102,7 +102,7 @@ void TestDSP() {
   processor.Prepare();
   float pot_noise = 0.0f;
   while (remaining_samples) {
-    uint16_t tri = (remaining_samples * 2);
+    uint16_t tri = (remaining_samples * 0.5f);
     tri = tri > 32767 ? 65535 - tri : tri;
     float triangle = tri / 32768.0f;
     
@@ -111,8 +111,8 @@ void TestDSP() {
     p->freeze = false; // || (block_counter & 2047) > 1024;
     pot_noise += 0.05f * ((Random::GetSample() / 32768.0f) * 0.05f - pot_noise);
     p->position = triangle * 0.0f + 0.0f;
-    p->size = 1.0f;
-    p->pitch = 0.0f + (triangle > 0.5f ? 1.0f : 0.0f) * 0.0f;
+    p->size = triangle * 1.0f;
+    p->pitch = 24.0f + (triangle > 0.5f ? 1.0f : 0.0f) * 0.0f;
     p->density = 0.7f;
     p->texture = 1.0f;
     p->dry_wet = 1.0f;

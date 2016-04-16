@@ -33,6 +33,8 @@
 
 #include "clouds/dsp/frame.h"
 
+#include <algorithm>
+
 namespace clouds {
 
 template<int32_t ratio, int32_t filter_size, const float* coefficients>
