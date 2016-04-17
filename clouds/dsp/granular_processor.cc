@@ -280,7 +280,15 @@ void GranularProcessor::ProcessGranular(
     CONSTRAIN(bitcrush, 0.0f, 1.0f);
     bitcrush *= bitcrush;
     bitcrush *= bitcrush;
-    bitcrush = 1.0f / (bitcrush + 0.0001f) + 0.1f;
+    bitcrush = 1.0f / (bitcrush + 0.00001f) + 0.1f;
+    bitcrush *= 2.0f;
+
+    float decimate = 1.0f - parameters_.stereo_spread * 2.0f;
+    CONSTRAIN(decimate, 0.0f, 1.0f);
+    decimate *= decimate;
+    decimate *= decimate;
+    decimate = 1.0f / (decimate + 0.00001f);
+    decimate *= 4.0f;
 
     float softclip = parameters_.stereo_spread * 2.0f - 1.0f;
     CONSTRAIN(softclip, 0.0f, 1.0f);
@@ -292,18 +300,26 @@ void GranularProcessor::ProcessGranular(
     CONSTRAIN(modulation, 0.0f, 1.0f);
     modulation *= modulation;
 
+    // chords_.set_decimate(decimate);
+    // chords_.set_bitcrush(bitcrush);
     chords_.set_self_feedback(self_fb);
     chords_.set_softclip(softclip);
-    // chords_.set_bitcrush(bitcrush);
     chords_.set_freeze(parameters_.freeze);
     chords_.set_structure(parameters_.size);
     chords_.set_modulation_index(modulation);
 
     if (mode < 1.0f) {
-      chords_.set_chords(parameters_.position * 50.0f + 24.0f,
-                          parameters_.density * 12.0f,
-                          parameters_.pitch,
-                          parameters_.feedback);
+
+      float spread = parameters_.density;
+      spread = (spread - 0.01f) / (1.0f - 0.01f);
+      CONSTRAIN(spread, 0.0f, 1.0f);
+      spread *= spread;
+      spread *= 12.0f;
+
+      chords_.set_frequencies(parameters_.position * 50.0f + 24.0f,
+                              spread,
+                              parameters_.pitch,
+                              parameters_.feedback);
     } else if (mode < 2.0f) {
       float detune = (parameters_.feedback - 0.5f) * 0.3f;
       detune *= detune * detune;
@@ -318,6 +334,10 @@ void GranularProcessor::ProcessGranular(
                             parameters_.pitch,
                             static_cast<int>(parameters_.feedback * 7.0f) + 1);
     } else {
+      chords_.set_chords(parameters_.position * 50.0f + 24.0f,
+                          parameters_.density * 12.0f,
+                          parameters_.pitch,
+                          parameters_.feedback);
     }
 
     if (playback_mode_ == PLAYBACK_MODE_CHORDS_AM) {

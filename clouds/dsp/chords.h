@@ -52,6 +52,8 @@ namespace clouds {
       for (int i=0; i<kNumVoices; i++) {
         phase_[i] = 0.0f;
       }
+      bitcrush_ = decimate_ = 65535.0f;
+      softclip_ = 0.0001f;
     }
 
     template<ModulationType modulation_type>
@@ -82,12 +84,17 @@ namespace clouds {
             phase = phase_[i];
           }
 
+          /* decimate */
+          phase = floorf(phase * decimate_) / decimate_;
+
           float sin = Interpolate(lut_sin, phase, 1024.0f);
           float cos = Interpolate(lut_sin + 256, phase, 1024.0f);
 
-          /* sin = truncf(sin * bitcrush_) / bitcrush_; */
-          /* cos = truncf(cos * bitcrush_) / bitcrush_; */
+          /* bitcrush */
+          sin = truncf(sin * bitcrush_) / bitcrush_;
+          cos = truncf(cos * bitcrush_) / bitcrush_;
 
+          /* softclip */
           sin = SoftLimit(sin * softclip_) / SoftLimit(softclip_);
           cos = SoftLimit(cos * softclip_) / SoftLimit(softclip_);
 
@@ -130,6 +137,16 @@ namespace clouds {
         }
 
         in_out++;
+      }
+    }
+
+    void set_frequencies(float note, float spread, float fine, float distrib) {
+
+      for (int i=kNumVoices-1; i>=0; i--) {
+          if (i&1 || !freeze_)
+            phase_increment_[i] = SemitonesToRatio(note + fine - 69.0f) * a3;
+
+        note += spread;
       }
     }
 
@@ -217,6 +234,10 @@ namespace clouds {
       softclip_ = softclip;
     }
 
+    void set_decimate(float decimate) {
+      decimate_ = decimate;
+    }
+
   private:
 
     /* returns the closest value to x in the given sorted array */
@@ -285,6 +306,7 @@ namespace clouds {
     bool freeze_;
     float self_feedback_;
     float bitcrush_;
+    float decimate_;
     float softclip_;
     float modulation_index_;
 
