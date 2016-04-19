@@ -64,7 +64,8 @@ namespace clouds {
 
       while (size--) {
 
-        float in = in_out->l;
+        float in_l = in_out->l;
+        float in_r = in_out->r;
 
         in_out->l = in_out->r = 0.0f;
 
@@ -72,23 +73,31 @@ namespace clouds {
 
         for (int i=0; i<kNumVoices; i++) {
 
-          float phase;
+          float phase_l, phase_r;
 
           if (modulation_type == FM) {
-            phase = phase_[i] + in
+            phase_l = phase_[i] + in_l
               + self_feedback_sample_[i][1] * self_feedback_
+              + self_feedback_
               + modulation_sample_[i] * modulation_index_;
-            while (phase < 0.0f) phase++;
-            while (phase > 1.0f) phase--;
+            phase_r = phase_[i] + in_r
+              + self_feedback_sample_[i][3] * self_feedback_
+              + self_feedback_
+              + modulation_sample_[i] * modulation_index_;
+            while (phase_l < 0.0f) phase_l++;
+            while (phase_l > 1.0f) phase_l--;
+            while (phase_r < 0.0f) phase_r++;
+            while (phase_r > 1.0f) phase_r--;
           } else {
-            phase = phase_[i];
+            phase_l = phase_r = phase_[i];
           }
 
           /* decimate */
-          phase = floorf(phase * decimate_) / decimate_;
+          phase_l = floorf(phase_l * decimate_) / decimate_;
+          phase_r = floorf(phase_r * decimate_) / decimate_;
 
-          float sin = Interpolate(lut_sin, phase, 1024.0f);
-          float cos = Interpolate(lut_sin + 256, phase, 1024.0f);
+          float sin = Interpolate(lut_sin, phase_l, 1024.0f);
+          float cos = Interpolate(lut_sin + 256, phase_r, 1024.0f);
 
           /* bitcrush */
           sin = truncf(sin * bitcrush_) / bitcrush_;
@@ -100,12 +109,14 @@ namespace clouds {
 
           if (modulation_type == AM) {
             float fb = 1.0f - (self_feedback_sample_[i][1] + 1.0f) * self_feedback_;
-            sin *= modulation_sample_[i] + fb + in;
-            cos *= modulation_sample_[i] + fb + in;
+            sin *= modulation_sample_[i] + fb + in_l;
+            cos *= modulation_sample_[i] + fb + in_r;
           }
 
           self_feedback_sample_[i][0] = sin;
           ONE_POLE(self_feedback_sample_[i][1], self_feedback_sample_[i][0], 0.1f);
+          self_feedback_sample_[i][2] = cos;
+          ONE_POLE(self_feedback_sample_[i][3], self_feedback_sample_[i][2], 0.1f);
 
           if (i != kNumVoices-1) {
             if (modulation_type == AM) {
@@ -128,12 +139,14 @@ namespace clouds {
           if (phase_[i] > 1.0) phase_[i]--;
         }
 
+        total_gain += 2.0f;
+
         if (modulation_type == FM) {
+          in_out->l /= total_gain;
+          in_out->r /= total_gain;
+        } else if (modulation_type == AM) {
           in_out->l /= total_gain * 2.0f;
           in_out->r /= total_gain * 2.0f;
-        } else if (modulation_type == AM) {
-          in_out->l /= total_gain * 3.0f;
-          in_out->r /= total_gain * 3.0f;
         }
 
         in_out++;
