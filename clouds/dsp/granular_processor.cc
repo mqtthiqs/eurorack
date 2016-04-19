@@ -310,32 +310,45 @@ void GranularProcessor::ProcessGranular(
 
     if (mode < 1.0f) {
 
-      float spread = parameters_.density;
-      spread = (spread - 0.01f) / (1.0f - 0.01f);
-      CONSTRAIN(spread, 0.0f, 1.0f);
-      spread *= spread;
+      float spread = parameters_.density * 2.0f - 1.0f;
+      spread *= spread * spread;
       spread *= 12.0f;
 
-      chords_.set_frequencies(parameters_.position * 50.0f + 24.0f,
+      float distrib = parameters_.feedback * 2.0f - 1.0f;
+
+      chords_.set_frequencies(parameters_.position * 50.0f + 36.0f,
                               spread,
                               parameters_.pitch,
-                              parameters_.feedback);
+                              distrib);
     } else if (mode < 2.0f) {
+
+      float spread = parameters_.density * 2.0f - 1.0f;
+      // spread *= spread * spread;
+      spread *= 4.0f;
+
       float detune = (parameters_.feedback - 0.5f) * 0.3f;
       detune *= detune * detune;
 
       chords_.set_harmonics((parameters_.position - 0.5f) * 32.0f,
-                            parameters_.density * 4.0f,
-                            parameters_.pitch - 12.0f,
+                            spread,
+                            parameters_.pitch,
                             detune);
     } else if (mode < 3.0f) {
+
+      float spread = parameters_.density * 2.0f - 1.0f;
+      spread *= spread * spread;
+
       chords_.set_rationals(parameters_.position * 8.0f + 1.0f,
-                            parameters_.density + 1.0f,
+                            spread + 1.0f,
                             parameters_.pitch,
                             static_cast<int>(parameters_.feedback * 7.0f) + 1);
     } else {
-      chords_.set_chords(parameters_.position * 50.0f + 24.0f,
-                          parameters_.density * 12.0f,
+
+      float spread = parameters_.density * 2.0f - 1.0f;
+      spread *= 12.0f;
+
+      chords_.set_chords(parameters_.position * 50.0f + 36.0f,
+                          spread,
                           parameters_.pitch,
                           parameters_.feedback);
     }

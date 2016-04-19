@@ -153,13 +153,23 @@ namespace clouds {
       }
     }
 
+    float l_exp(float x) {
+      x = (x + 5.0f) / 10.0f;
+      return Interpolate(lut_exp, x, 16.0f);
+    }
+
+    float l_log(float x) {
+      x = (x - 1) / 9.0f;
+      return Interpolate(lut_log, x, 16.0f);
+    }
+
     void set_frequencies(float note, float spread, float fine, float distrib) {
 
-      for (int i=kNumVoices-1; i>=0; i--) {
-          if (i&1 || !freeze_)
-            phase_increment_[i] = SemitonesToRatio(note + fine - 69.0f) * a3;
+      for (int i=0; i<kNumVoices; i++) {
+        if (i&1 || !freeze_)
+          phase_increment_[i] = SemitonesToRatio(note + fine - 69.0f) * a3;
 
-        note += spread;
+        note += l_exp(distrib * l_log(i+1)) * spread;
       }
     }
 
@@ -167,7 +177,7 @@ namespace clouds {
 
       int ch = static_cast<int>(chord * 12.0f);
 
-      for (int i=kNumVoices-1; i>=0; i--) {
+      for (int i=0; i<kNumVoices; i++) {
 
         float note_q = note;
 
@@ -325,7 +335,7 @@ namespace clouds {
 
     float phase_[kNumVoices];
     float phase_increment_[kNumVoices];
-    float self_feedback_sample_[kNumVoices][2];
+    float self_feedback_sample_[kNumVoices][4];
     float modulation_sample_[kNumVoices];
     float modulation_matrix_[kNumVoices];
   };
