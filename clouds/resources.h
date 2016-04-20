@@ -75,7 +75,7 @@ extern const float lut_quantized_pitch[];
 #define LUT_DB 0
 #define LUT_DB_SIZE 257
 #define LUT_EXP 0
-#define LUT_EXP_SIZE 17
+#define LUT_EXP_SIZE 257
 #define LUT_LOG 1
 #define LUT_LOG_SIZE 17
 #define LUT_SIN 2

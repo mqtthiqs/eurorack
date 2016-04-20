@@ -7,7 +7,6 @@
 using namespace stmlib;
 
 namespace clouds {
-
   
   enum ModulationType {
     FM,
@@ -56,6 +55,16 @@ namespace clouds {
       softclip_ = 0.0001f;
     }
 
+    float l_exp(float x) {
+      x = (x + 30.0f) / 60.0f;
+      return Interpolate(lut_exp, x, 256.0f);
+    }
+
+    float l_log(float x) {
+      x = (x - 1) / 9.0f;
+      return Interpolate(lut_log, x, 16.0f);
+    }
+
     template<ModulationType modulation_type>
     void Process(FloatFrame* in_out, size_t size) {
 
@@ -79,11 +88,12 @@ namespace clouds {
             phase_l = phase_[i] + in_l
               + self_feedback_sample_[i][1] * self_feedback_
               + self_feedback_
-              + modulation_sample_[i] * modulation_index_;
+              + modulation_sample_[i];
             phase_r = phase_[i] + in_r
               + self_feedback_sample_[i][3] * self_feedback_
               + self_feedback_
-              + modulation_sample_[i] * modulation_index_;
+              + modulation_sample_[i];
+
             while (phase_l < 0.0f) phase_l++;
             while (phase_l > 1.0f) phase_l--;
             while (phase_r < 0.0f) phase_r++;
@@ -108,9 +118,10 @@ namespace clouds {
           cos = SoftLimit(cos * softclip_) / SoftLimit(softclip_);
 
           if (modulation_type == AM) {
-            float fb = 1.0f - (self_feedback_sample_[i][1] + 1.0f) * self_feedback_;
-            sin *= modulation_sample_[i] + fb + in_l;
-            cos *= modulation_sample_[i] + fb + in_r;
+            float sfb = self_feedback_ * 15.0f;
+            float fb = l_exp(self_feedback_sample_[i][1] * sfb - sfb);
+            sin *= modulation_sample_[i] * fb;// * l_exp(1.0f * in_l - 1.0f);
+            cos *= modulation_sample_[i] * fb;// * l_exp(1.0f * in_r - 1.0f);
           }
 
           self_feedback_sample_[i][0] = sin;
@@ -120,14 +131,12 @@ namespace clouds {
 
           if (i != kNumVoices-1) {
             if (modulation_type == AM) {
-              modulation_sample_[i+1] = 1.0f - (sin + 1.0f)
-                * modulation_matrix_[i]
-                * modulation_index_;
+              float index = modulation_matrix_[i] * modulation_index_ * 15.0f;
+              modulation_sample_[i+1] = l_exp(cos * index - index);
             } else if (modulation_type == FM) {
-              modulation_sample_[i+1] = sin * modulation_matrix_[i];
+              modulation_sample_[i+1] = sin * modulation_matrix_[i] * modulation_index_;
             }
           }
-
 
           float gain = 1.0f - modulation_matrix_[i];
           total_gain += gain;
@@ -141,35 +150,31 @@ namespace clouds {
 
         total_gain += 2.0f;
 
-        if (modulation_type == FM) {
-          in_out->l /= total_gain;
-          in_out->r /= total_gain;
-        } else if (modulation_type == AM) {
-          in_out->l /= total_gain * 2.0f;
-          in_out->r /= total_gain * 2.0f;
-        }
+        in_out->l /= total_gain;
+        in_out->r /= total_gain;
 
         in_out++;
       }
     }
 
-    float l_exp(float x) {
-      x = (x + 5.0f) / 10.0f;
-      return Interpolate(lut_exp, x, 16.0f);
-    }
-
-    float l_log(float x) {
-      x = (x - 1) / 9.0f;
-      return Interpolate(lut_log, x, 16.0f);
-    }
-
     void set_frequencies(float note, float spread, float fine, float distrib) {
 
-      for (int i=0; i<kNumVoices; i++) {
-        if (i&1 || !freeze_)
-          phase_increment_[i] = SemitonesToRatio(note + fine - 69.0f) * a3;
+      float n = 0.0f;
+      float ratios[kNumVoices];
 
-        note += l_exp(distrib * l_log(i+1)) * spread;
+      for (int i=0; i<kNumVoices; i++) {
+        ratios[i] = n;
+        n += l_exp(distrib * l_log(i+1));
+        /* printf("ratios[%d] = %f\n", i, ratios[i]); */
+      }
+
+      note += fine - 69.0f;
+
+      for (int i=0; i<kNumVoices; i++) {
+        if (i&1 || !freeze_) {
+          float n = note + (ratios[i] / ratios[kNumVoices-1]) * spread * (kNumVoices-1);
+          phase_increment_[i] = SemitonesToRatio(n) * a3;
+        }
       }
     }
 
@@ -259,6 +264,12 @@ namespace clouds {
 
     void set_decimate(float decimate) {
       decimate_ = decimate;
+    }
+
+    void Reset() {
+      for (int i=0; i<kNumVoices; i++) {
+        phase_[i] = 0.0f;
+      }
     }
 
   private:

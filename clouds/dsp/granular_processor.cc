@@ -308,6 +308,10 @@ void GranularProcessor::ProcessGranular(
     chords_.set_structure(parameters_.size);
     chords_.set_modulation_index(modulation);
 
+    if (parameters_.trigger) {
+      chords_.Reset();
+    }
+
     if (mode < 1.0f) {
 
       float spread = parameters_.density * 2.0f - 1.0f;
@@ -315,6 +319,8 @@ void GranularProcessor::ProcessGranular(
       spread *= 12.0f;
 
       float distrib = parameters_.feedback * 2.0f - 1.0f;
+      distrib *= distrib * distrib;
+      distrib *= 8.0f;
 
       chords_.set_frequencies(parameters_.position * 50.0f + 36.0f,
                               spread,

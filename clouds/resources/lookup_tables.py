@@ -39,8 +39,8 @@ int16_lookup_tables = []
 Exponent table.
 ----------------------------------------------------------------------------"""
 
-size = 16
-t = numpy.arange(0, size+1) / float(size) * 10 - 5
+size = 256
+t = numpy.arange(0, size+1) / float(size) * 60 - 30
 lookup_tables.append(('exp', numpy.exp(t)))
 
 """----------------------------------------------------------------------------
