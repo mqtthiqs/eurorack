@@ -77,8 +77,10 @@ namespace clouds {
     template<ModulationType modulation_type>
     void Process(FloatFrame* in_out, size_t size) {
 
-      modulation_sample_[0] = 1.0f;
-      modulation_sample_[0] = 1.0f;
+      modulation_sample_[0][0] = 1.0f;
+      modulation_sample_[0][0] = 1.0f;
+      modulation_sample_[0][1] = 1.0f;
+      modulation_sample_[0][1] = 1.0f;
 
       while (size--) {
 
@@ -97,18 +99,28 @@ namespace clouds {
             phase_l = phase_[i] + in_l
               + self_feedback_sample_[i][1] * self_feedback_
               + self_feedback_
-              + modulation_sample_[i];
+              + modulation_sample_[i][0];
             phase_r = phase_[i] + in_r
               + self_feedback_sample_[i][3] * self_feedback_
               + self_feedback_
-              + modulation_sample_[i];
+              + modulation_sample_[i][1];
 
             while (phase_l < 0.0f) phase_l++;
             while (phase_l > 1.0f) phase_l--;
             while (phase_r < 0.0f) phase_r++;
             while (phase_r > 1.0f) phase_r--;
           } else {
-            phase_l = phase_r = phase_[i];
+            phase_l = phase_[i] + in_l
+              + self_feedback_sample_[i][1] * self_feedback_
+              + self_feedback_;
+            phase_r = phase_[i] + in_r
+              + self_feedback_sample_[i][3] * self_feedback_
+              + self_feedback_;
+
+            while (phase_l < 0.0f) phase_l++;
+            while (phase_l > 1.0f) phase_l--;
+            while (phase_r < 0.0f) phase_r++;
+            while (phase_r > 1.0f) phase_r--;
           }
 
           /* decimate */
@@ -127,10 +139,8 @@ namespace clouds {
           cos = SoftLimit(cos * softclip_) / SoftLimit(softclip_);
 
           if (modulation_type == AM) {
-            float sfb = self_feedback_ * 15.0f;
-            float fb = l_exp(self_feedback_sample_[i][1] * sfb - sfb);
-            sin *= modulation_sample_[i] * fb;// * l_exp(1.0f * in_l - 1.0f);
-            cos *= modulation_sample_[i] * fb;// * l_exp(1.0f * in_r - 1.0f);
+            sin *= modulation_sample_[i][0];
+            cos *= modulation_sample_[i][1];
           }
 
           self_feedback_sample_[i][0] = sin;
@@ -140,10 +150,13 @@ namespace clouds {
 
           if (i != kNumVoices-1) {
             if (modulation_type == AM) {
-              float index = modulation_matrix_[i] * modulation_index_ * 15.0f;
-              modulation_sample_[i+1] = l_exp(cos * index - index);
+              float index = modulation_matrix_[i] * modulation_index_ * 16.0f;
+              index *= index;
+              modulation_sample_[i+1][0] = funk(sin * index - index);
+              modulation_sample_[i+1][1] = funk(cos * index - index);
             } else if (modulation_type == FM) {
-              modulation_sample_[i+1] = sin * modulation_matrix_[i] * modulation_index_;
+              modulation_sample_[i+1][0] = sin * modulation_matrix_[i] * modulation_index_;
+              modulation_sample_[i+1][1] = cos * modulation_matrix_[i] * modulation_index_;
             }
           }
 
@@ -174,7 +187,6 @@ namespace clouds {
       for (int i=0; i<kNumVoices; i++) {
         ratios[i] = n;
         n += l_exp(distrib * l_log(i+1));
-        /* printf("ratios[%d] = %f\n", i, ratios[i]); */
       }
 
       note += fine - 69.0f;
@@ -356,7 +368,7 @@ namespace clouds {
     float phase_[kNumVoices];
     float phase_increment_[kNumVoices];
     float self_feedback_sample_[kNumVoices][4];
-    float modulation_sample_[kNumVoices];
+    float modulation_sample_[kNumVoices][2];
     float modulation_matrix_[kNumVoices];
   };
 }
