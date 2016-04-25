@@ -56,8 +56,17 @@ namespace clouds {
     }
 
     float l_exp(float x) {
-      x = (x + 30.0f) / 60.0f;
-      return Interpolate(lut_exp, x, 256.0f);
+      int i=0, j=0;
+      while (x >= 20) { i++; x -= 20; }
+      while (x <= -20) { j++; x += 20; }
+      float y = Interpolate(lut_exp, (x + 20.0f) / 40.0f, 256.0f);
+      while (i--) y *= 485165195.4; /* e^20 */
+      while (j--) y /= 485165195.4; /* e^20 */
+      return y;
+    }
+
+    float funk(float x) {
+      return (1.0f / (1.0f + x * x));
     }
 
     float l_log(float x) {

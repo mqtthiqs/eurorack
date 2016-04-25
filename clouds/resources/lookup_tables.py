@@ -40,7 +40,7 @@ Exponent table.
 ----------------------------------------------------------------------------"""
 
 size = 256
-t = numpy.arange(0, size+1) / float(size) * 60 - 30
+t = numpy.arange(0, size+1) / float(size) * 40 - 20
 lookup_tables.append(('exp', numpy.exp(t)))
 
 """----------------------------------------------------------------------------
