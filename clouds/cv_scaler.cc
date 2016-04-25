@@ -52,11 +52,11 @@ CvTransformation CvScaler::transformations_[ADC_CHANNEL_LAST] = {
   // ADC_PITCH_POTENTIOMETER,
   { false, false, 0.01f },
   // ADC_V_OCT_CV,
-  { false, false, 1.0f },
+  { true, true, 0.2f },
   // ADC_BLEND_POTENTIOMETER,
   { false, false, 0.05f },
   // ADC_BLEND_CV,
-  { false, true, 0.2f },
+  { true, true, 0.2f },
   // ADC_TEXTURE_POTENTIOMETER,
   { false, false, 0.01f },
   // ADC_TEXTURE_CV,
@@ -157,23 +157,23 @@ void CvScaler::Read(Parameters* parameters) {
       -smoothed_adc_value_[ADC_BLEND_CV] * 2.0f);
   
   float dry_wet = blend_[BLEND_PARAMETER_DRY_WET];
-  dry_wet += blend_mod_[BLEND_PARAMETER_DRY_WET];
+  dry_wet += smoothed_adc_value_[ADC_BLEND_CV] * 2.0f;
   dry_wet = dry_wet * 1.05f - 0.025f;
   CONSTRAIN(dry_wet, 0.0f, 1.0f);
   parameters->dry_wet = dry_wet;
 
   float reverb_amount = blend_[BLEND_PARAMETER_REVERB];
-  reverb_amount += blend_mod_[BLEND_PARAMETER_REVERB];
+  // reverb_amount += blend_mod_[BLEND_PARAMETER_REVERB];
   CONSTRAIN(reverb_amount, 0.0f, 1.0f);
   parameters->reverb = reverb_amount;
 
   float feedback = blend_[BLEND_PARAMETER_FEEDBACK];
-  feedback += blend_mod_[BLEND_PARAMETER_FEEDBACK];
+  feedback += smoothed_adc_value_[ADC_V_OCT_CV] * 2.0f;
   CONSTRAIN(feedback, 0.0f, 1.0f);
   parameters->feedback = feedback;
 
   float stereo_spread = blend_[BLEND_PARAMETER_STEREO_SPREAD];
-  stereo_spread += blend_mod_[BLEND_PARAMETER_STEREO_SPREAD];
+  // stereo_spread += blend_mod_[BLEND_PARAMETER_STEREO_SPREAD];
   CONSTRAIN(stereo_spread, 0.0f, 1.0f);
   parameters->stereo_spread = stereo_spread;
   
@@ -182,8 +182,8 @@ void CvScaler::Read(Parameters* parameters) {
       smoothed_adc_value_[ADC_PITCH_POTENTIOMETER],
       1024.0f);
   
-  float note = calibration_data_->pitch_offset;
-  note += smoothed_adc_value_[ADC_V_OCT_CV] * calibration_data_->pitch_scale;
+  float note = 0.0f;//calibration_data_->pitch_offset;
+  // note += 0.5f * calibration_data_->pitch_scale;
   if (fabs(note - note_) > 0.5f) {
     note_ = note;
   } else {
