@@ -17,6 +17,8 @@ namespace clouds {
 
   const int kNumVoices = 6;
 
+  const uint8_t permutation[kNumVoices] = { 0, 3, 1, 4, 2, 5 };
+
   const float chords_table[12][6/*kNumVoices*/] = {
     { 0.0f, 0.0f, 5.0f, 5.0f, 12.0f, 12.0f},
     { 0.0f, 0.0f, 3.0f, 3.0f, 10.0f, 12.0f},
@@ -111,7 +113,7 @@ namespace clouds {
 
             phase_l = phase_l - (int32_t)phase_l;
             phase_r = phase_r - (int32_t)phase_r;
-          } else {
+          } else {              /* AM */
             phase_l += in_l
               + self_feedback_sample_[i][1] * self_feedback_
               + self_feedback_
@@ -195,7 +197,7 @@ namespace clouds {
       for (int i=0; i<kNumVoices; i++) {
         if (i&1 || !freeze_) {
           float n = note + (ratios[i] / ratios[kNumVoices-1]) * spread * (kNumVoices-1);
-          phase_increment_[i] = SemitonesToRatio(n) * a3;
+          phase_increment_[permutation[i]] = SemitonesToRatio(n) * a3;
         }
       }
     }
@@ -214,7 +216,7 @@ namespace clouds {
         if (note_q + fine - 69.0f < 64.0f &&
             note_q + fine - 69.0f > -64.0f)
           if (i&1 || !freeze_)
-            phase_increment_[i] = SemitonesToRatio(note_q + fine - 69.0f) * a3;
+            phase_increment_[permutation[i]] = SemitonesToRatio(note_q + fine - 69.0f) * a3;
 
         note += spread;
       }
@@ -231,7 +233,7 @@ namespace clouds {
         float ratio = freq / fundamental; /* TODO what if < 1 */
         ratio = closest_rational(ratio, max_denom);
         if (i&1 || !freeze_)
-          phase_increment_[i] = ratio * fundamental;
+          phase_increment_[permutation[i]] = ratio * fundamental;
 
         freq *= spread;
       }
@@ -250,9 +252,9 @@ namespace clouds {
 
         if (i&1 || !freeze_) {
           if (h >= 0) {
-            phase_increment_[i] = fundamental * h * sqrtf(1.0f + detune * j * j);
+            phase_increment_[permutation[i]] = fundamental * h * sqrtf(1.0f + detune * j * j);
           } else {
-            phase_increment_[i] = -fundamental / (h - 2) * sqrtf(1.0f + detune * j * j);
+            phase_increment_[permutation[i]] = -fundamental / (h - 2) * sqrtf(1.0f + detune * j * j);
           }
         }
       }
