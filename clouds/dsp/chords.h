@@ -93,46 +93,44 @@ namespace clouds {
 
         for (int i=0; i<kNumVoices; i++) {
 
-          float phase_l, phase_r;
+          /* decimate */
+          float phase_l = (int32_t)(phase_[i] * decimate_) / decimate_;
+          float phase_r = phase_l;
 
           if (modulation_type == FM) {
-            phase_l = phase_[i] + in_l
+            phase_l += in_l
               + self_feedback_sample_[i][1] * self_feedback_
               + self_feedback_
-              + modulation_sample_[i][0];
-            phase_r = phase_[i] + in_r
+              + modulation_sample_[i][0]
+              + 10.0f;
+            phase_r += in_r
               + self_feedback_sample_[i][3] * self_feedback_
               + self_feedback_
-              + modulation_sample_[i][1];
+              + modulation_sample_[i][1]
+              + 10.0f;          /* so that it's always positive */
 
-            while (phase_l < 0.0f) phase_l++;
-            while (phase_l > 1.0f) phase_l--;
-            while (phase_r < 0.0f) phase_r++;
-            while (phase_r > 1.0f) phase_r--;
+            phase_l = phase_l - (int32_t)phase_l;
+            phase_r = phase_r - (int32_t)phase_r;
           } else {
-            phase_l = phase_[i] + in_l
+            phase_l += in_l
               + self_feedback_sample_[i][1] * self_feedback_
-              + self_feedback_;
-            phase_r = phase_[i] + in_r
+              + self_feedback_
+              + 10.0f;
+            phase_r += in_r
               + self_feedback_sample_[i][3] * self_feedback_
-              + self_feedback_;
+              + self_feedback_
+              + 10.0f;
 
-            while (phase_l < 0.0f) phase_l++;
-            while (phase_l > 1.0f) phase_l--;
-            while (phase_r < 0.0f) phase_r++;
-            while (phase_r > 1.0f) phase_r--;
+            phase_l = phase_l - (int32_t)phase_l;
+            phase_r = phase_r - (int32_t)phase_r;
           }
-
-          /* decimate */
-          phase_l = floorf(phase_l * decimate_) / decimate_;
-          phase_r = floorf(phase_r * decimate_) / decimate_;
 
           float sin = Interpolate(lut_sin, phase_l, 1024.0f);
           float cos = Interpolate(lut_sin + 256, phase_r, 1024.0f);
 
           /* bitcrush */
-          sin = truncf(sin * bitcrush_) / bitcrush_;
-          cos = truncf(cos * bitcrush_) / bitcrush_;
+          sin = (int32_t)(sin * bitcrush_) / bitcrush_;
+          cos = (int32_t)(cos * bitcrush_) / bitcrush_;
 
           /* softclip */
           sin = SoftLimit(sin * softclip_) / SoftLimit(softclip_);
@@ -207,7 +205,7 @@ namespace clouds {
 
         float note_q = note;
 
-        int octaves = floorf(note / 12.0f) * 12.0f;
+        int octaves = (int32_t)(note / 12.0f) * 12.0f;
         note_q = binary_search(note - octaves, chords_table[ch], 6) + octaves;
 
         if (note_q + fine - 69.0f < 64.0f &&
