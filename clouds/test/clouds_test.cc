@@ -34,6 +34,7 @@
 
 #include "clouds/dsp/granular_processor.h"
 #include "clouds/resources.h"
+#include "stmlib/utils/random.h"
 
 using namespace clouds;
 using namespace std;
@@ -73,7 +74,7 @@ void write_wav_header(FILE* fp, int num_samples, int num_channels) {
 }
 
 void TestDSP() {
-  size_t duration = 5;
+  size_t duration = 10;
 
   FILE* fp_in = fopen("audio_samples/ericderr.wav", "rb");
   FILE* fp_out = fopen("clouds.wav", "wb");
@@ -92,13 +93,13 @@ void TestDSP() {
 
   processor.set_num_channels(2);
   processor.set_low_fidelity(false);
-  processor.set_playback_mode(PLAYBACK_MODE_CHORDS);
+  processor.set_playback_mode(PLAYBACK_MODE_CHORDS_AM);
   
   Parameters* p = processor.mutable_parameters();
   
   size_t block_counter = 0;
   float phase_ = 0.0f;
-  bool synthetic = false;
+  bool synthetic = true;
   processor.Prepare();
   float pot_noise = 0.0f;
   while (remaining_samples) {
@@ -110,14 +111,14 @@ void TestDSP() {
     p->trigger = false;
     p->freeze = false; // || (block_counter & 2047) > 1024;
     pot_noise += 0.05f * ((Random::GetSample() / 32768.0f) * 0.05f - pot_noise);
-    p->position = triangle * 0.0f + 0.0f;
-    p->size = triangle * 1.0f;
-    p->pitch = 24.0f + (triangle > 0.5f ? 1.0f : 0.0f) * 0.0f;
-    p->density = 0.7f;
-    p->texture = 1.0f;
+    p->position = 0.0f + triangle * 0.0f;
+    p->size = 0.6f;//triangle * 1.0f;
+    p->pitch = 0.0f + (triangle > 0.5f ? 1.0f : 0.0f) * 0.0f;
+    p->density = 0.5f;
+    p->texture = 0.99f;
     p->dry_wet = 1.0f;
     p->stereo_spread = 0.5f;
-    p->feedback = 0.0f;
+    p->feedback = triangle;//0.6f;
     p->reverb = 0.0f;
 
     ++block_counter;
@@ -132,7 +133,7 @@ void TestDSP() {
         }
         input[i].l = 16384.0f * sinf(phase_ * M_PI * 2);
         // input[i].r = 32768.0f * (phase_ - 0.5);
-        input[i].r = input[i].l;
+        input[i].r = input[i].l = 0.0f;
       }
       remaining_samples -= kBlockSize;
     } else {
