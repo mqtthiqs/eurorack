@@ -94,7 +94,7 @@ namespace clouds {
         for (int i=0; i<kNumVoices; i++) {
 
           /* decimate */
-          float phase_l = (int32_t)(phase_[i] * decimate_) / decimate_;
+          float phase_l = phase_[i];
           float phase_r = phase_l;
 
           if (modulation_type == FM) {
@@ -124,6 +124,9 @@ namespace clouds {
             phase_l = phase_l - (int32_t)phase_l;
             phase_r = phase_r - (int32_t)phase_r;
           }
+
+          phase_l = (int32_t)(phase_l * decimate_) / decimate_;
+          phase_r = (int32_t)(phase_r * decimate_) / decimate_;
 
           float sin = Interpolate(lut_sin, phase_l, 1024.0f);
           float cos = Interpolate(lut_sin + 256, phase_r, 1024.0f);
