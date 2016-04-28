@@ -271,29 +271,29 @@ void GranularProcessor::ProcessGranular(
 
     float mode = parameters_.reverb * 4.0f;
 
-    float self_fb = 1.0f - parameters_.stereo_spread * 2.0f;
-    CONSTRAIN(self_fb, 0.0f, 1.0f);
-    self_fb *= self_fb;
-
-    float bitcrush = parameters_.dry_wet * 2.0f - 1.0f;
+    float bitcrush = parameters_.stereo_spread * 2.0f - 1.0f;
     CONSTRAIN(bitcrush, 0.0f, 1.0f);
     bitcrush *= bitcrush;
     bitcrush *= bitcrush;
     bitcrush = 1.0f / (bitcrush + 0.00001f) + 0.1f;
     bitcrush *= 1.5f;
 
-    float decimate = 1.0f - parameters_.dry_wet * 2.0f;
+    float decimate = 1.0f - parameters_.stereo_spread * 2.0f;
     CONSTRAIN(decimate, 0.0f, 1.0f);
     decimate *= decimate;
     decimate *= decimate;
     decimate = 1.0f / (decimate + 0.00001f);
     decimate *= 4.0f;
 
-    float softclip = parameters_.stereo_spread * 2.0f - 1.0f;
+    float softclip = parameters_.dry_wet * 2.0f - 1.0f;
     CONSTRAIN(softclip, 0.0f, 1.0f);
     softclip *= softclip;
     softclip *= 10.0f;
     softclip += 0.0001f;
+
+    float self_fb = 1.0f - parameters_.dry_wet * 2.0f;
+    CONSTRAIN(self_fb, 0.0f, 1.0f);
+    self_fb *= self_fb;
 
     float modulation = parameters_.texture - 0.05f;
     CONSTRAIN(modulation, 0.0f, 1.0f);
@@ -362,11 +362,13 @@ void GranularProcessor::ProcessGranular(
 
     }
 
+    TIC
     if (playback_mode_ == PLAYBACK_MODE_CHORDS_AM) {
       chords_.Process<AM>(output, size);
     } else if (playback_mode_ == PLAYBACK_MODE_CHORDS_FM) {
       chords_.Process<FM>(output, size);
     }
+    TOC
 
     break;
   }
