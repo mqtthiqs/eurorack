@@ -314,17 +314,13 @@ void GranularProcessor::ProcessGranular(
     if (mode < 1.0f) {
 
       float spread = parameters_.density * 2.0f - 1.0f;
-      spread *= spread * spread;
       spread *= 12.0f;
 
-      float distrib = parameters_.feedback * 2.0f - 1.0f;
-      distrib *= distrib * distrib;
-      distrib *= 8.0f;
+      chords_.set_chords(parameters_.position * 50.0f + 36.0f,
+                          spread,
+                          parameters_.pitch,
+                          parameters_.feedback);
 
-      chords_.set_frequencies(parameters_.position * 50.0f + 36.0f,
-                              spread,
-                              parameters_.pitch,
-                              distrib);
     } else if (mode < 2.0f) {
 
       float spread = parameters_.density * 2.0f - 1.0f;
@@ -338,6 +334,7 @@ void GranularProcessor::ProcessGranular(
                             spread,
                             parameters_.pitch,
                             detune);
+
     } else if (mode < 3.0f) {
 
       float spread = parameters_.density * 2.0f - 1.0f;
@@ -347,15 +344,22 @@ void GranularProcessor::ProcessGranular(
                             spread + 1.0f,
                             parameters_.pitch,
                             static_cast<int>(parameters_.feedback * 7.0f) + 1);
+
     } else {
 
       float spread = parameters_.density * 2.0f - 1.0f;
+      spread *= spread * spread;
       spread *= 12.0f;
 
-      chords_.set_chords(parameters_.position * 50.0f + 36.0f,
-                          spread,
-                          parameters_.pitch,
-                          parameters_.feedback);
+      float distrib = parameters_.feedback * 2.0f - 1.0f;
+      distrib *= distrib * distrib;
+      distrib *= 8.0f;
+
+      chords_.set_frequencies(parameters_.position * 50.0f + 36.0f,
+                              spread,
+                              parameters_.pitch,
+                              distrib);
+
     }
 
     if (playback_mode_ == PLAYBACK_MODE_CHORDS_AM) {
