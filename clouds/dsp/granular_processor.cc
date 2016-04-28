@@ -275,14 +275,14 @@ void GranularProcessor::ProcessGranular(
     CONSTRAIN(self_fb, 0.0f, 1.0f);
     self_fb *= self_fb;
 
-    float bitcrush = parameters_.stereo_spread * 2.0f - 1.0f;
+    float bitcrush = parameters_.dry_wet * 2.0f - 1.0f;
     CONSTRAIN(bitcrush, 0.0f, 1.0f);
     bitcrush *= bitcrush;
     bitcrush *= bitcrush;
     bitcrush = 1.0f / (bitcrush + 0.00001f) + 0.1f;
-    bitcrush *= 2.0f;
+    bitcrush *= 1.5f;
 
-    float decimate = 1.0f - parameters_.stereo_spread * 2.0f;
+    float decimate = 1.0f - parameters_.dry_wet * 2.0f;
     CONSTRAIN(decimate, 0.0f, 1.0f);
     decimate *= decimate;
     decimate *= decimate;
@@ -299,8 +299,8 @@ void GranularProcessor::ProcessGranular(
     CONSTRAIN(modulation, 0.0f, 1.0f);
     modulation *= modulation;
 
-    // chords_.set_decimate(decimate);
-    // chords_.set_bitcrush(bitcrush);
+    chords_.set_decimate(decimate);
+    chords_.set_bitcrush(bitcrush);
     chords_.set_self_feedback(self_fb);
     chords_.set_softclip(softclip);
     chords_.set_freeze(parameters_.freeze);
