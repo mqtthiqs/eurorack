@@ -65,7 +65,7 @@ namespace clouds {
       return y;
     }
 
-    float funk(float x) {
+    float cauchy(float x) {
       return (1.0f / (1.0f + x * x));
     }
 
@@ -152,8 +152,8 @@ namespace clouds {
             if (modulation_type == AM) {
               float index = modulation_matrix_[i] * modulation_index_ * 16.0f;
               index *= index;
-              modulation_sample_[i+1][0] = funk(sin * index - index);
-              modulation_sample_[i+1][1] = funk(cos * index - index);
+              modulation_sample_[i+1][0] = cauchy(sin * index - index);
+              modulation_sample_[i+1][1] = cauchy(cos * index - index);
             } else if (modulation_type == FM) {
               modulation_sample_[i+1][0] = sin * modulation_matrix_[i] * modulation_index_;
               modulation_sample_[i+1][1] = cos * modulation_matrix_[i] * modulation_index_;
