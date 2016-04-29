@@ -313,8 +313,8 @@ void GranularProcessor::ProcessGranular(
 
     if (mode < 1.0f) {
 
-      float spread = parameters_.density * 2.0f - 1.0f;
-      spread *= 12.0f;
+      float spread = parameters_.density;
+      spread *= 24.0f;
 
       chords_.set_chords(parameters_.position * 50.0f + 36.0f,
                           spread,
@@ -323,9 +323,9 @@ void GranularProcessor::ProcessGranular(
 
     } else if (mode < 2.0f) {
 
-      float spread = parameters_.density * 2.0f - 1.0f;
+      float spread = parameters_.density;
       // spread *= spread * spread;
-      spread *= 4.0f;
+      spread *= 8.0f;
 
       float detune = (parameters_.feedback - 0.5f) * 0.3f;
       detune *= detune * detune;
@@ -337,7 +337,7 @@ void GranularProcessor::ProcessGranular(
 
     } else if (mode < 3.0f) {
 
-      float spread = parameters_.density * 2.0f - 1.0f;
+      float spread = parameters_.density * 2.0f;
       spread *= spread * spread;
 
       chords_.set_rationals(parameters_.position * 8.0f + 1.0f,
@@ -347,9 +347,9 @@ void GranularProcessor::ProcessGranular(
 
     } else {
 
-      float spread = parameters_.density * 2.0f - 1.0f;
+      float spread = parameters_.density;
       spread *= spread * spread;
-      spread *= 12.0f;
+      spread *= 24.0f;
 
       float distrib = parameters_.feedback * 2.0f - 1.0f;
       distrib *= distrib * distrib;
