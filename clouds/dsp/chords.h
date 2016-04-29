@@ -80,9 +80,9 @@ namespace clouds {
     void Process(FloatFrame* in_out, size_t size) {
 
       modulation_sample_[0][0] = 1.0f;
-      modulation_sample_[0][0] = 1.0f;
+      modulation_sample_[1][0] = 1.0f;
       modulation_sample_[0][1] = 1.0f;
-      modulation_sample_[0][1] = 1.0f;
+      modulation_sample_[1][1] = 1.0f;
 
       while (size--) {
 
@@ -153,10 +153,13 @@ namespace clouds {
 
           if (i != kNumVoices-1) {
             if (modulation_type == AM) {
-              float index = modulation_matrix_[i] * modulation_index_ * 16.0f;
-              index *= index;
-              modulation_sample_[i+1][0] = cauchy(sin * index - index);
-              modulation_sample_[i+1][1] = cauchy(cos * index - index);
+              if (i==0) {
+                for (int j=i+1; j<kNumVoices; j++) {
+                  float index = modulation_index_ * 64.0f;
+                  modulation_sample_[j][0] = cauchy(sin * index - index);
+                  modulation_sample_[j][1] = cauchy(cos * index - index);
+                }
+              }
             } else if (modulation_type == FM) {
               modulation_sample_[i+1][0] = sin * modulation_matrix_[i] * modulation_index_;
               modulation_sample_[i+1][1] = cos * modulation_matrix_[i] * modulation_index_;
@@ -164,6 +167,11 @@ namespace clouds {
           }
 
           float gain = 1.0f - modulation_matrix_[i];
+
+          if (modulation_type == AM) {
+            gain = i==0 ? 0.0f : 1.0f;
+          }
+
           total_gain += gain;
 
           in_out->l += sin * gain;
