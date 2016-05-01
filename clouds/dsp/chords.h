@@ -1,5 +1,6 @@
 #include "stmlib/dsp/units.h"
 #include "clouds/resources.h"
+#include "clouds/dsp/frame.h"
 
 #ifndef CLOUDS_DSP_CHORDS_H_
 #define CLOUDS_DSP_CHORDS_H_
@@ -44,45 +45,60 @@ namespace clouds {
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
   };
 
+  const float modulation_table_am[15/* kNumVoices */][kNumStructures] = {
+    {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, /* 0->1 [0] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f}, /* 0->2 [1] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f}, /* 0->3 [2] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f}, /* 0->4 [3] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}, /* 0->5 [4] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->2 [5] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->3 [6] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->4 [7] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->5 [8] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 2->3 [9] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 2->4 [10] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 2->5 [11] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 3->4 [12] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 3->5 [13] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 4->5 [14] */
+  };
+
+  const float indexes[kNumStructures] = {0, 5, 9, 12, 14, 15};
+
   class Chords {
   public:
     Chords() { }
     ~Chords() { }
 
+
     void Init() {
       for (int i=0; i<kNumVoices; i++) {
         phase_[i] = 0.0f;
+        modulation_sample_[i][0] = 1.0f;
+        modulation_sample_[i][1] = 1.0f;
       }
       bitcrush_ = decimate_ = 65535.0f;
       softclip_ = 0.0001f;
     }
 
-    float l_exp(float x) {
-      int i=0, j=0;
-      while (x >= 20) { i++; x -= 20; }
-      while (x <= -20) { j++; x += 20; }
-      float y = Interpolate(lut_exp, (x + 20.0f) / 40.0f, 256.0f);
-      while (i--) y *= 485165195.4; /* e^20 */
-      while (j--) y /= 485165195.4; /* e^20 */
-      return y;
-    }
-
-    float cauchy(float x) {
-      return (1.0f / (1.0f + x * x));
-    }
-
-    float l_log(float x) {
-      x = (x - 1) / 9.0f;
-      return Interpolate(lut_log, x, 16.0f);
-    }
 
     template<ModulationType modulation_type>
-    void Process(FloatFrame* in_out, size_t size) {
+      void Process(FloatFrame* in_out, size_t size) {
 
-      modulation_sample_[0][0] = 1.0f;
-      modulation_sample_[1][0] = 1.0f;
-      modulation_sample_[0][1] = 1.0f;
-      modulation_sample_[1][1] = 1.0f;
+      if (modulation_type == FM) {
+        for (int i=0; i<kNumVoices; i++) {
+          modulation_matrix_[i] = InterpolateSine(modulation_table[i],
+                                                  structure_,
+                                                  kNumStructures-1);
+        }
+      } else {                  /* AM */
+        for (int u=0; u<kNumVoices*(kNumVoices-1)/2; u++) {
+          modulation_matrix_am_[u] = InterpolateSine(modulation_table_am[u],
+                                                     structure_,
+                                                     kNumStructures-1);
+          /* printf("%d -> %f\n", u, modulation_matrix_am_[u]); */
+        }
+      }
 
       while (size--) {
 
@@ -93,7 +109,7 @@ namespace clouds {
 
         float total_gain = 0.0f;
 
-        for (int i=0; i<kNumVoices; i++) {
+        for (int i=0, u=0; i<kNumVoices; i++) {
 
           /* decimate */
           float phase_l = phase_[i];
@@ -110,12 +126,11 @@ namespace clouds {
               + self_feedback_
               + modulation_sample_[i][1]
               + 10.0f;          /* so that it's always positive */
-
-            phase_l = phase_l - (int32_t)phase_l;
-            phase_r = phase_r - (int32_t)phase_r;
           } else {              /* AM */
             phase_l += in_l
-              + self_feedback_sample_[i][1] * self_feedback_
+              + self_feedback_sample_[i][1] * self_feedback_ /* TODO
+                                                              * factorize
+                                                              * with above */
               + self_feedback_
               + 10.0f;
             phase_r += in_r
@@ -123,9 +138,10 @@ namespace clouds {
               + self_feedback_
               + 10.0f;
 
-            phase_l = phase_l - (int32_t)phase_l;
-            phase_r = phase_r - (int32_t)phase_r;
           }
+
+          phase_l = phase_l - (int32_t)phase_l;
+          phase_r = phase_r - (int32_t)phase_r;
 
           phase_l = (int32_t)(phase_l * decimate_) / decimate_;
           phase_r = (int32_t)(phase_r * decimate_) / decimate_;
@@ -146,6 +162,9 @@ namespace clouds {
             cos *= modulation_sample_[i][1];
           }
 
+          modulation_sample_[i][0] = 1.0f;
+          modulation_sample_[i][1] = 1.0f;
+
           self_feedback_sample_[i][0] = sin;
           ONE_POLE(self_feedback_sample_[i][1], self_feedback_sample_[i][0], 0.1f);
           self_feedback_sample_[i][2] = cos;
@@ -153,11 +172,13 @@ namespace clouds {
 
           if (i != kNumVoices-1) {
             if (modulation_type == AM) {
+              float index = modulation_index_ * 8.0f;
+              index *= index;
               if (i==0) {
-                for (int j=i+1; j<kNumVoices; j++) {
-                  float index = modulation_index_ * 64.0f;
-                  modulation_sample_[j][0] = cauchy(sin * index - index);
-                  modulation_sample_[j][1] = cauchy(cos * index - index);
+                for (int j=i+1; j<kNumVoices; j++, u++) {
+                  /* printf("i=%d, j=%d, u=%d\n", i, j, u); */
+                  modulation_sample_[j][0] *= cauchy(sin * index * modulation_matrix_am_[u]);
+                  modulation_sample_[j][1] *= cauchy(cos * index * modulation_matrix_am_[u]);
                 }
               }
             } else if (modulation_type == FM) {
@@ -166,16 +187,28 @@ namespace clouds {
             }
           }
 
-          float gain = 1.0f - modulation_matrix_[i];
+          float gain;
 
-          if (modulation_type == AM) {
-            gain = i==0 ? 0.0f : 1.0f;
+          if (modulation_type == FM) {
+            gain = 1.0f - modulation_matrix_[i];
+          } else {
+            int idx = indexes[i];
+            gain = 1.0f - modulation_matrix_am_[idx];
+            /* printf("gain %d = %f\n", i, gain); */
           }
 
           total_gain += gain;
 
-          in_out->l += sin * gain;
-          in_out->r += cos * gain;
+          if (modulation_type == FM) {
+            in_out->l += sin * gain;
+            in_out->r += cos * gain;
+          } else {              /* AM */
+            if (i & 1) {
+              in_out->l += sin * gain;
+            } else {
+              in_out->r += sin * gain;
+            }
+          }
 
           phase_[i] += phase_increment_[i];
           if (phase_[i] > 1.0) phase_[i]--;
@@ -197,7 +230,7 @@ namespace clouds {
 
       for (int i=0; i<kNumVoices; i++) {
         ratios[i] = n;
-        n += l_exp(distrib * l_log(i+1));
+        n += l_exp(-distrib * l_log(i+1));
       }
 
       note += fine - 69.0f;
@@ -236,7 +269,7 @@ namespace clouds {
 
       float freq = fundamental * note;
 
-      for (int i=kNumVoices-1; i>=0; i--) {
+      for (int i=0; i<kNumVoices; i++) {
 
         float ratio = freq / fundamental; /* TODO what if < 1 */
         ratio = closest_rational(ratio, max_denom);
@@ -254,7 +287,7 @@ namespace clouds {
       int k = static_cast<int>(note);
 
       float j=1;
-      for (int i=kNumVoices-1; i>=0; i--, j+=spread) {
+      for (int i=0; i<kNumVoices; i++, j+=spread) {
 
         int h = static_cast<int>(k + j);
 
@@ -269,9 +302,7 @@ namespace clouds {
     }
 
     void set_structure(float structure) {
-      for (int i=0; i<kNumVoices; i++) {
-        modulation_matrix_[i] = InterpolateSine(modulation_table[i], structure, kNumStructures - 1);
-      }
+      structure_ = structure;
     }
 
     void set_self_feedback(float feedback) {
@@ -325,16 +356,6 @@ namespace clouds {
     /* returns the closest rational to x with denominator smaller than
      * n */
 
-    float closest_rational(float x, int n) {
-      int i=0;
-
-      while (x > 2) {x /= 2.0f; i++; }
-      x = closrat(x - 1.0f, n) + 1.0f;
-      while (i--) { x *= 2.0f; }
-
-      return x;
-    }
-
     float closrat(float x, int n) {
       float a, b, c, d;
       a = 0;
@@ -358,8 +379,36 @@ namespace clouds {
       if (b > n) return c/d;
       else return a/b;
     }
+    float closest_rational(float x, int n) {
+      int i=0;
 
-    inline float InterpolateSine(const float* table, float index, float size) {
+      while (x > 2) {x /= 2.0f; i++; }
+      x = closrat(x - 1.0f, n) + 1.0f;
+      while (i--) { x *= 2.0f; }
+
+      return x;
+    }
+
+    float l_exp(float x) {
+      int i=0, j=0;
+      while (x >= 20) { i++; x -= 20; }
+      while (x <= -20) { j++; x += 20; }
+      float y = Interpolate(lut_exp, (x + 20.0f) / 40.0f, 256.0f);
+      while (i--) y *= 485165195.4; /* e^20 */
+      while (j--) y /= 485165195.4; /* e^20 */
+      return y;
+    }
+
+    float cauchy(float x) {
+      return (1.0f / (1.0f + x * x));
+    }
+
+    float l_log(float x) {
+      x = (x - 1) / 9.0f;
+      return Interpolate(lut_log, x, 16.0f);
+    }
+
+    float InterpolateSine(const float* table, float index, float size) {
       index *= size;
       MAKE_INTEGRAL_FRACTIONAL(index)
         float a = table[index_integral];
@@ -375,12 +424,14 @@ namespace clouds {
     float decimate_;
     float softclip_;
     float modulation_index_;
+    float structure_;
 
     float phase_[kNumVoices];
     float phase_increment_[kNumVoices];
     float self_feedback_sample_[kNumVoices][4];
     float modulation_sample_[kNumVoices][2];
     float modulation_matrix_[kNumVoices];
+    float modulation_matrix_am_[kNumVoices*(kNumVoices+1)/2];
   };
 }
 
