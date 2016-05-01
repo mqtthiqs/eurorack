@@ -252,6 +252,9 @@ namespace clouds {
         int octaves = (int32_t)(note / 12.0f) * 12.0f;
         note_q = binary_search(note - octaves, chords_table[ch], 6) + octaves;
 
+        float detune = ((float)i - 2.5f) * detune_;
+        note_q += detune;
+
         if (note_q + fine - 69.0f < 64.0f &&
             note_q + fine - 69.0f > -64.0f)
           if (i&1 || !freeze_)
@@ -325,6 +328,10 @@ namespace clouds {
 
     void set_decimate(float decimate) {
       decimate_ = decimate;
+    }
+
+    void set_detune(float detune) {
+      detune_ = detune;
     }
 
     void Reset() {
@@ -423,6 +430,7 @@ namespace clouds {
     float softclip_;
     float modulation_index_;
     float structure_;
+    float detune_;
 
     float phase_[kNumVoices];
     float phase_increment_[kNumVoices];

@@ -285,13 +285,13 @@ void GranularProcessor::ProcessGranular(
     decimate = 1.0f / (decimate + 0.00001f);
     decimate *= 4.0f;
 
-    float softclip = parameters_.dry_wet * 2.0f - 1.0f;
+    float softclip = parameters_.stereo_spread * 2.0f - 1.0f;
     CONSTRAIN(softclip, 0.0f, 1.0f);
     softclip *= softclip;
     softclip *= 10.0f;
     softclip += 0.0001f;
 
-    float self_fb = 1.0f - parameters_.dry_wet * 2.0f;
+    float self_fb = 1.0f - parameters_.stereo_spread * 2.0f;
     CONSTRAIN(self_fb, 0.0f, 1.0f);
     self_fb *= self_fb;
 
@@ -299,13 +299,25 @@ void GranularProcessor::ProcessGranular(
     CONSTRAIN(modulation, 0.0f, 1.0f);
     modulation *= modulation;
 
-    chords_.set_decimate(decimate);
-    chords_.set_bitcrush(bitcrush);
-    chords_.set_self_feedback(self_fb);
-    chords_.set_softclip(softclip);
+    float detune = parameters_.dry_wet;
+    detune *= 0.4f * detune;
+
+    if (playback_mode_ == PLAYBACK_MODE_CHORDS_FM) {
+      chords_.set_decimate(32768.0f);
+      chords_.set_bitcrush(32768.0f);
+      chords_.set_self_feedback(self_fb);
+      chords_.set_softclip(softclip);
+    } else {
+      chords_.set_self_feedback(0.0f);
+      chords_.set_softclip(0.0001f);
+      chords_.set_decimate(decimate);
+      chords_.set_bitcrush(bitcrush);
+    }
+
     chords_.set_freeze(parameters_.freeze);
     chords_.set_structure(parameters_.size);
     chords_.set_modulation_index(modulation);
+    chords_.set_detune(detune);
 
     if (parameters_.trigger) {
       chords_.Reset();
