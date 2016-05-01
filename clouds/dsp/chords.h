@@ -46,21 +46,21 @@ namespace clouds {
   };
 
   const float modulation_table_am[15/* kNumVoices */][kNumStructures] = {
-    {0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, /* 0->1 [0] */
+    {0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, /* 0->1 [0] */
     {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f}, /* 0->2 [1] */
-    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f}, /* 0->3 [2] */
-    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f}, /* 0->4 [3] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f}, /* 0->3 [2] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}, /* 0->4 [3] */
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}, /* 0->5 [4] */
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->2 [5] */
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->3 [6] */
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->4 [7] */
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 1->5 [8] */
-    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 2->3 [9] */
+    {0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 2->3 [9] */
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 2->4 [10] */
     {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 2->5 [11] */
-    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 3->4 [12] */
-    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 3->5 [13] */
-    {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 4->5 [14] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f}, /* 3->4 [12] */
+    {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f}, /* 3->5 [13] */
+    {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f}, /* 4->5 [14] */
   };
 
   const float indexes[kNumStructures] = {0, 5, 9, 12, 14, 15};
@@ -172,14 +172,12 @@ namespace clouds {
 
           if (i != kNumVoices-1) {
             if (modulation_type == AM) {
-              float index = modulation_index_ * 8.0f;
+              float index = modulation_index_ * 6.0f;
               index *= index;
-              if (i==0) {
-                for (int j=i+1; j<kNumVoices; j++, u++) {
-                  /* printf("i=%d, j=%d, u=%d\n", i, j, u); */
-                  modulation_sample_[j][0] *= cauchy(sin * index * modulation_matrix_am_[u]);
-                  modulation_sample_[j][1] *= cauchy(cos * index * modulation_matrix_am_[u]);
-                }
+              for (int j=i+1; j<kNumVoices; j++, u++) {
+                /* printf("i=%d, j=%d, u=%d\n", i, j, u); */
+                modulation_sample_[j][0] *= cauchy(sin * index * modulation_matrix_am_[u]);
+                modulation_sample_[j][1] *= cauchy(cos * index * modulation_matrix_am_[u]);
               }
             } else if (modulation_type == FM) {
               modulation_sample_[i+1][0] = sin * modulation_matrix_[i] * modulation_index_;
