@@ -137,7 +137,6 @@ namespace clouds {
               + self_feedback_sample_[i][3] * self_feedback_
               + self_feedback_
               + 10.0f;
-
           }
 
           phase_l = phase_l - (int32_t)phase_l;
@@ -172,7 +171,7 @@ namespace clouds {
 
           if (i != kNumVoices-1) {
             if (modulation_type == AM) {
-              float index = modulation_index_ * 6.0f;
+              float index = modulation_index_ * 5.0f;
               index *= index;
               for (int j=i+1; j<kNumVoices; j++, u++) {
                 /* printf("i=%d, j=%d, u=%d\n", i, j, u); */
