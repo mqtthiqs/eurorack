@@ -100,10 +100,10 @@ class Resonestor {
     burst_lp_.Init();
     for (int v=0; v<2; v++)
       for (int p=0; p<4; p++) {
-        lp_[p][v].Init();
-        bp1_[p][v].Init();
-        bp2_[p][v].Init();
-        hp_[p][v] = 0.0f;
+        /* lp_[p][v].Init(); */
+        /* bp1_[p][v].Init(); */
+        /* bp2_[p][v].Init(); */
+        /* hp_[p][v] = 0.0f; */
         comb_period_[p][v] = 0.0f;
         comb_feedback_[p][v] = 0.0f;
       }
@@ -159,12 +159,12 @@ class Resonestor {
 
     /* set LP/BP filters frequencies and feedback */
     for (int p=0; p<4; p++) {
-      float freq = 1.0f / comb_period_[p][voice_];
-      bp1_[p][voice_].set_f_q<FREQUENCY_FAST>(freq, narrow_[voice_]);
-      bp2_[p][voice_].set(bp1_[p][voice_]);
-      float lp_freq = (2.0f * freq + 1.0f) * damp_[voice_];
-      CONSTRAIN(lp_freq, 0.0f, 1.0f);
-      lp_[p][voice_].set_f_q<FREQUENCY_FAST>(lp_freq, 0.4f);
+      /* float freq = 1.0f / comb_period_[p][voice_]; */
+      /* bp1_[p][voice_].set_f_q<FREQUENCY_FAST>(freq, narrow_[voice_]); */
+      /* bp2_[p][voice_].set(bp1_[p][voice_]); */
+      /* float lp_freq = (2.0f * freq + 1.0f) * damp_[voice_]; */
+      /* CONSTRAIN(lp_freq, 0.0f, 1.0f); */
+      /* lp_[p][voice_].set_f_q<FREQUENCY_FAST>(lp_freq, 0.4f); */
       comb_feedback_[p][voice_] = powf(feedback_[voice_], comb_period_[p][voice_] / 32000.0f);
     }
 
@@ -217,11 +217,7 @@ class Resonestor {
                       comb_feedback_[part][voice] * 0.3f);              \
         float acc;                                                      \
         c.Write(acc);                                                   \
-        acc = lp_[part][voice].Process<FILTER_MODE_LOW_PASS>(acc);      \
-        acc = bp1_[part][voice].Process<FILTER_MODE_BAND_PASS_NORMALIZED>(acc); \
-        acc = bp2_[part][voice].Process<FILTER_MODE_BAND_PASS_NORMALIZED>(acc); \
         c.Load(acc);                                                    \
-        c.Hp(hp_[part][voice], 10.0f / 32000.0f);                       \
         c.Write(acc, 0.5f);                                             \
         c.SoftLimit();                                                  \
         c.Write(acc, 2.0f);                                             \
@@ -358,10 +354,10 @@ class Resonestor {
   float comb_period_[4][2];
   float comb_feedback_[4][2];
 
-  float hp_[4][2];
-  Svf lp_[4][2];
-  Svf bp1_[4][2];
-  Svf bp2_[4][2];
+  /* float hp_[4][2]; */
+  /* Svf lp_[4][2]; */
+  /* Svf bp1_[4][2]; */
+  /* Svf bp2_[4][2]; */
   Svf burst_lp_;
 
   int32_t voice_, __align1;
