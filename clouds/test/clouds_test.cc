@@ -111,14 +111,14 @@ void TestDSP() {
     p->trigger = false;
     p->freeze = false; // || (block_counter & 2047) > 1024;
     pot_noise += 0.05f * ((Random::GetSample() / 32768.0f) * 0.05f - pot_noise);
-    p->position = 0.0f + triangle * 0.0f;
-    p->size = 0.6f;//triangle * 1.0f;
+    p->position = 0.5f;// + triangle * 0.0f;
+    p->size = 0.0f;//triangle * 1.0f;
     p->pitch = 0.0f + (triangle > 0.5f ? 1.0f : 0.0f) * 0.0f;
-    p->density = 0.5f;
-    p->texture = 0.99f;
-    p->dry_wet = 1.0f;
+    p->density = 0.3f;
+    p->texture = 0.5f;//triangle;
+    p->dry_wet = 0.5f;
     p->stereo_spread = 0.5f;
-    p->feedback = triangle;//0.6f;
+    p->feedback = 0.4f;//0.6f;
     p->reverb = 0.0f;
 
     ++block_counter;

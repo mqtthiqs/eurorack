@@ -5,7 +5,8 @@ VPATH          = $(PACKAGES)
 TARGET         = clouds_test
 BUILD_ROOT     = build/
 BUILD_DIR      = $(BUILD_ROOT)$(TARGET)/
-CC_FILES       = 		atan.cc \
+CC_FILES       = \
+		atan.cc \
 		clouds_test.cc \
 		correlator.cc \
 		granular_processor.cc \

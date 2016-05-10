@@ -34,7 +34,7 @@
 #include "clouds/settings.h"
 #include "clouds/ui.h"
 
-// #define PROFILE_INTERRUPT 1
+#define PROFILE_INTERRUPT 1
 
 using namespace clouds;
 using namespace stmlib;
