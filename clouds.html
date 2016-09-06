@@ -70,7 +70,8 @@
             grains. Square-shaped grains have steeper edges for extra
             glitch;</li>
           <li>Availability of much <b>smaller grains</b> compared to
-            the official firmware.</li>
+            the official firmware, and asymmetrical grain envelopes
+            (saws, ramps).</li>
           <li><b>Enhanced looping delay</b> and <b>time stretcher</b>
           modes: tempo syncing with clock multiplier/divisor, support
           for <b>stereo delay</b> (ping-pong delay) and
@@ -78,8 +79,10 @@
           quality, faster delay time change.</li>
         </ul>
 
-        <p>All features of the official firmware are left untouched and
-          still accessible as before.</p>
+        <p>The four original modes, including the granular of the
+          official firmware are still present, but have been
+          tweaked/extended to my preference. Please carefully read the
+          documentation below </p>
 
         <h2>IMPORTANT WARNINGS</h2>
 
@@ -91,29 +94,47 @@
           <li><i>(2015-06-06)</i> Some cases of bricking (updates that
           leaves Clouds non-functional) have been reported with
           previous versions of this firmware, very roughly 1% of the
-          time. Their causes is still unknown, but all could be
-          repaired with a FTDI or JTAG adapter and a computer. Mutable
+          time. Their causes were unknown, but all could be repaired
+          with a FTDI or JTAG adapter and a computer. Mutable
           Instruments will not support unbricking; I can do my best to
           help (provide detailed instructions or local help). Be aware
           of the risk before updating!
           </li>
           <li> <i>(2015-04-27)</i> If your module has a serial number
-            that ends with number less than 020, you should contact Mutable
-                                    Instruments: your Clouds might have a faulty bootloader
-                                    which could brick the unit if you try to update it.
-                                    </li>
+            that ends with number less than 020, you should contact
+            Mutable Instruments: your Clouds might have a faulty
+            bootloader which could brick the unit if you try to update
+            it.
+          </li>
         </ul>
 
+        <nav role="navigation" class="table-of-contents">
+          <h4>Table of contents</h4>
+          <ul>
+            <li><a href="#download">Download and install</a></li>
+            <li><a href="#documentation">Documentation</a>
+              <ul>
+                <li><a href="#mode">Mode-switching interface</a></li>
+                <li><a href="#oliverb">Oliverb mode</a></li>
+                <li><a href="#resonestor">Resonestor mode</a></li>
+                <li><a href="#granular">Granular mode</a></li>
+                <li><a href="#pitch">Looping delay & Pitch shifter</a></li>
+                <li><a href="#looping">Looping delay</a></li>
+                <li><a href="#misc">Miscellaneous</a></li>
+              </ul>
+            </li>
+            <li><a href="#changelog">Changelog</a></li>
+          </ul>
+        </nav>
 
-
-        <h2>Download and install</h2>
+        <h2 id="download">Download and install</h2>
 
         <p>Click on the button to download the latest stable version,
           ready to play to your module:</p>
         
-        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.41/clouds-parasite-v1.41.wav.zip"
+        <p class="center"><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v2.0/clouds-parasite-v2.0.wav.zip"
                              class="btn">Download latest version
-                             (v1.41)</a></p>
+                             (v2.0)</a></p>
 
         <p>Once you downloaded the file, unzip it and follow the
           Firmware update procedure in
@@ -144,14 +165,21 @@
           </form>
         </div>
 
-          <h2>Documentation</h2>
+          <h2 id="documentation">Documentation</h2>
 
         <p>For full documentation, please see
           the <a href="http://mutable-instruments.net/modules/clouds/manual">user
             manual</a> of Clouds. I present hereafter only the
           features added/modified.</p>
 
-        <h3>Oliverb mode</h3>
+        <h3 id="mode">Mode-switching interface</h3>
+
+        To switch mode, press both black buttons simultaneously. LEDs
+        will blink orange; you can then press the <b>Blend</b>
+        or <b>Load/Save</b> button to navigate forward/backward into
+        the modes.
+
+        <h3 id="oliverb">Oliverb mode</h3>
 
         <p>The Oliverb is a full-featured and CV-controllable modeless
         reverb with some twists.</p>
@@ -163,11 +191,11 @@
                 src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/95985017%3Fsecret_token%3Ds-8Zeyz&amp;auto_play=false&amp;hide_related=true&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;visual=true"></iframe>
 
         <p>You access the new Oliverb mode like the other factory
-          playback modes: hold the <b>Blend button</b> until LEDs get
-          orange, and press it again several times until the last
-          three are lit (or only the first LED is unlit). This mode is
-          mono-in, stereo-out. The reverb parameter can be controlled
-          by the knobs and CV inputs:</p>
+          playback modes: press both black buttons <b>Blend button</b>
+          (LEDs blink orange) and press one of the two buttons until
+          the last three are lit (<i>i.e.</i> only the first LED is
+          unlit). This mode is mono-in, stereo-out. The reverb
+          parameter can be controlled by the knobs and CV inputs:</p>
 
         <dl>
           <dt>Pre-delay</dt>
@@ -210,13 +238,12 @@
             an impact on how well the sound is pitch-shifted: the
             larger the room size, the more accurate the pitch shift.
           </dd>
-          <dt>Diffusion</dt>
-          <dd>The <b>Texture</b> knob controls how much the sound is
-            "smoothened" by the diffusers each time it goes through
-            the loop. Fully clockwise, you get the more dense,
-            continuous sound; fully counter-clockwise, you clearly
-            hear the sound being repeated like in a multi-tap
-            delay.</dd>
+          <dt>Dampening</dt>
+          <dd>The <b>Texture</b> knob controls the dampening of the
+            reverb. From fully CCW to 12 o'clock, a low-pass filter is
+            applied, simultaing the absorption of the room. From 12
+            o'clock to fully CW, a high-pass filter is applied for
+            unusual, crystalline effects.</dd>
           <dt>Freeze</dt>
           <dd>The <b>Freeze</b> button sets reverb to (near)
             infinite decay, and mutes the input. This works best with
@@ -224,13 +251,13 @@
           <dt>Dry/Wet</dt>
           <dd>The first function of the <b>Blend</b> knob is dry/wet
             crossfading, as in the other modes.</dd>
-          <dt>Dampening</dt>
-          <dd>The second function of the <b>Blend</b> knob (called
-            "stereo spread") controls the dampening of the
-            reverb. From fully CCW to 12 o'clock, a low-pass filter is
-            applied, simultaing the absorption of the room. From 12
-            o'clock to fully CW, a high-pass filter is applied for
-            unusual, crystalline effects.</dd>
+          <dt>Diffusion</dt>
+          <dd>The <b>second Blend mode</b> (called "stereo spread")
+            controls how much the sound is "smoothened" by the
+            diffusers each time it goes through the loop. Fully
+            clockwise, you get the more dense, continuous sound; fully
+            counter-clockwise, you clearly hear the sound being
+            repeated like in a multi-tap delay.</dd>
           <dt>Modulation amount</dt>
           <dd>Each delay in the reverb can be individually modulated
             by 9 smoothed random LFOs. The fourth function of
@@ -245,15 +272,17 @@
             ~100Hz. It has no effect if modulation amount is null.</dd>
         </dl>
 
-        <h3>Resonestor mode</h3>
+        <h3 id="resonestor">Resonestor mode</h3>
 
         <img class="float" src="images/nestor.jpg" />
 
-        <p>It is a dual-voice, four-parts resonator (or comb filter) effect with
-          built-in capability for polyphonic Karplus-Strong plucked string
-          synthesis, and more. You access it by long-pressing the <b>Blend button</b>
-          until LEDs become orange, and press it again several times until only
-          the second LED is unlit.</p>
+        <p>It is a dual-voice, four-parts resonator (or comb filter)
+          effect with built-in capability for polyphonic
+          Karplus-Strong plucked string synthesis, and more. You
+          access it by long-pressing the <b>Blend button</b> until
+          LEDs become orange, and press it again several times until
+          only the second LED is <b>un</b>lit (in other words, if LEDs
+          1, 3 and 4 are lit).</p>
 
         <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/VOd5zx_WDyA?rel=0" frameborder="0" allowfullscreen></iframe>
 
@@ -261,9 +290,10 @@
 
         <h4>Introduction</h4>
 
-        <p>To discover it, put the knobs in the following position: <b>Position</b>,
-          <b>Size</b>, <b>Density</b>, <b>Stereo spread</b>, <b>Feedback</b> and <b>Reverb</b> fully CCW;
-          <b>Pitch</b>, <b>In gain</b> and <b>Texture</b> at 12 o'clock; <b>Dry/Wet</b> fully CW.</p>
+        <p>To discover it, put the knobs in the following positions: <b>Size</b>, <b>Density</b>, <b>Stereo spread</b>, <b>Feedback</b> and <b>Reverb</b> fully CCW;
+          <b>Pitch</b>, <b>In gain</b>, <b>Position</b>,
+          and <b>Texture</b> at 12 o'clock; <b>Dry/Wet</b> fully
+          CW.</p>
 
         <p>Each input feeds one of the two voices/resonators, which
           decay is controlled by the <b>Density</b> knob. Remember
@@ -348,8 +378,14 @@
           <dt>Freeze (<b>Freeze</b> button and CV)</dt>
           <dd>Switch the current voice, and inhibits further voice
             switch by the <b>Trig</b> CV.</dd>
-          <dt>Dry/Wet (first function of <b>Blend</b> knob and CV)</dt>
-          <dd>Crossfades between the dry and the wet signal.</dd>
+          <dt>Distortion (first function of <b>Blend</b> knob and CV)</dt>
+          <dd>Randomly distorts the timbre of the voices by modulating
+          each comb filter by low pass-filtered noise. Fully CCW, the
+          modulation amount is maximum but the noise is filtered out
+          entirely, so there is no effect. Fully CW, the noise is
+          unfiltered, but the modulation amount is null, so there is
+          no effect. In between, you get interesting effects, from
+          subtle swaying to harsh distortion.</dd>
           <dt>Stereo output (second function of <b>Blend</b> knob and CV)</dt>
           <dd>Assigns each part and voice to an output (<b>Out L</b>
             or <b>Out R</b>). Fully CCW, each voice goes to a different
@@ -369,9 +405,12 @@
             randomized at each voice switch.</dd>
         </dl>
 
-        <h3>Granular mode</h3>
+        <h3 id="granular">Granular mode</h3>
 
         <ul>
+          <li><b>Reversed playback</b>: long-press <b>Freeze</b> to
+            toggle reversed playback. When it is on, the Freeze LED
+            will flash and each grain will play back in reverse.</li>
           <li>The <b>Texture</b> knob now has asymetric shapes of
             grain envelopes. It morphes between: square, ramp up,
             ramp down, triangle, and triangle with diffuser. Fully
@@ -383,12 +422,14 @@
             produce much smaller grains. Fully counter-clockwise,
             grains are barely hearable spikes; fully clockwise, the
             maximum size is as before.
+          <li>The response curve of the Density knob has been
+            altered to get easier access to slowly sown grains.</li>
           <li>To cope with the additional computation, Grain
             polyphony has been reduced a bit. This should not be
             noticeable.</li>
         </ul>
 
-        <h3>Looping delay and Pitch-shifter mode</h3>
+        <h3 id="pitch">Looping delay and Pitch-shifter mode</h3>
 
         <ul>
           <li>When a clock is sent to the <b>Trig</b> input,
@@ -430,9 +471,12 @@
             back, the two channels are reversed.</li>
         </ul>
 
-        <h3>Looping delay</h3>
+        <h3 id="looping">Looping delay</h3>
 
         <ul>
+          <li><b>Reverse mode</b>: long-press <b>Freeze</b> to toggle
+          Reverse mode. When in reverse mode and when a loop is
+          frozen, it is played back reversed.</li>
           <li>When the pitch is at 0, it now bypasses the pitch
             shifter completely. This drastically enhances the delay
             quality when no pitch-shifting is done, avoiding the
@@ -452,9 +496,12 @@
           easier dialing of very short delays.
         </ul>
 
-        <h3>Miscellaneous</h3>
+        <h3 id="misc">Miscellaneous</h3>
 
         <ul>
+          <li>calibration has been deported to startup to make room
+            for easy mode-switching. To calibrate,
+            hold <b>Load/Save</b> while turning the system on.
           <li>changed long-press time to access the alternative
             modes to 2.5 seconds.</li>
           <li>changed response of the feedback knob to square
@@ -474,13 +521,70 @@
           feedback was up.</li>
         </ul>
 
-        <h2>Changelog</h2>
+        <h2 id="changelog">Changelog</h2>
 
         <table style="width:100%">
           <tr>
             <th>Version</th>
             <th>Date</th>
             <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v2.0/clouds-parasite-v2.0.wav.zip">v2.0</a></td>
+            <td>2016-09-05</td>
+            <td>
+              <ul>
+                <li><b>User Interface:</b>
+                  <ul>
+                    <li>changed mode-switching interface: press both
+                      black buttons at the same time to change mode;
+                      then the two buttons to go back/forth between
+                      modes</li>
+                    <li>calibration deported to pressing Write on
+                      startup</li>
+                  </ul>
+                </li>
+                <li><b>Granular mode:</b>
+                <ul>
+                  <li>adjust response of the Density knob (easier
+                  access to slowly sown grains)</li>
+                  <li>add Reverse function: all grains are read in
+                    reverse direction (long-press on Freeze)</li>
+                </ul></li>
+                <li><b>Oliverb:</b>
+                  <ul>
+                    <li>inverted Diffusion and Filtering
+                      parameters. Filtering is now on the Texture pot,
+                      Diffusion is on the second blend mode (Stereo
+                      spread).</li>
+                    <li>improve the internal modulation: smoother
+                      random LFO, better range for the two knobs
+                      controlling it.</li>
+                    <li>switch all buffers from 12 to 16 bits
+                    (smoother tails, less noise)</li>
+                  </ul>
+                </li>
+                <li><b>Resonestor:</b>
+                  <ul>
+                    <li>dry/wet now acts as Distortion (random
+                    modulation of comb delay time)</li>
+                    <li>adjust Texture (filters) knob response curve</li>
+                    <li>adjust Density (decay) knob response curve</li>
+                    <li>base note is now C3</li>
+                    <li>switch all buffers from 12 to 32 bits (smoother tails, less noise)</li>
+                  </ul>
+                </li>
+                <li><b>Looping delay:</b>
+                  <ul>
+                    <li>add Reverse function: when looped/frozen,
+                    long-press Freeze to switch the playback direction
+                    of the loop</li>
+                    <li>increase smoothing of Position knob to avoid
+                      wobbly delays with noisy PSUs.</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
           </tr>
           <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/clouds-v1.41/clouds-parasite-v1.41.wav.zip">v1.41</a></td>
