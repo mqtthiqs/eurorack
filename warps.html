@@ -59,7 +59,7 @@
           <li>Most modes take the stock algorithms and go deeper into
             them, with two dimensions of control instead of one; some
             are completely new functionalities.</li>
-          <li>New features include: a dual chorus/flanger/slapback, a
+          <li>New features include: a dual variable-rate delay, a
           binaural panner with doppler-effect simulation, a dual
           bit-mangler, a Chebyschev waveshaper.</li>
         </ul>
@@ -74,8 +74,8 @@
             <li><a href="#documentation">Documentation</a>
               <ul>
                 <li><a href="#mode">Mode-switching interface</a></li>
-                <li><a href="#doppler">Binaural Doppler panner mode</a></li>
-                <li><a href="#echo">Chorus/Flanger/Slapback mode</a></li>
+                <li><a href="#doppler">Binaural Doppler panner</a></li>
+                <li><a href="#echo">Variable-rate delay</a></li>
               </ul>
             </li>
             <li><a href="#changelog">Changelog</a></li>
@@ -88,8 +88,8 @@
           ready to play to your module:</p>
         
         <p class="center">
-          <a href="https://github.com/mqtthiqs/parasites/releases/download/warps-v0.95/warps-parasite-v0.95.wav.zip"
-             class="btn">Download latest version (v0.95)</a>
+          <a href="https://github.com/mqtthiqs/parasites/releases/download/warps-v1.0/warps-parasite-v1.0.wav.zip"
+             class="btn">Download latest version (v1.0)</a>
         </p>
 
         <p>Once you downloaded the file, unzip it and follow the
@@ -168,13 +168,8 @@
               outputs the mix or the internal oscillator (default behavior)</li>
             </ul>
           </li>
-          <li>Ring modulator:
-            <ul>
-              <li><i>Big knob</i> crossfades between digital and analog ring-mods</li>
-              <li><i>Small knob</i>: soft-clipping</li>
-              <li>The button switches the internal oscillator; Aux
-              outputs the mix or the internal oscillator (default behavior)</li>
-            </ul>
+          <li>Chebyschev waveshaper:
+            <br /><i>(see below)</i>
           </li>
           <li>Frequency shifter: <i>(the stock firmware's easter egg)</i>
             <ul>
@@ -200,13 +195,7 @@
             <ul>
               <li><i>Big knob</i> morphs between 8 analog-like comparison
                 functions, starting with the mix of both inputs. </li>
-              <li><i>Small knob</i>: order of the Chebyschev waveshaper. A
-              Chebyschev waveshaper shapes the signal
-              with <a href="https://en.wikipedia.org/wiki/Chebyshev_polynomials">Chebyschev
-              polynomials</a>. It has the effect of shifting harmonics
-              non-linearly by whole octaves, and gives interesting
-              timbres out of simple ones. Fully CCW, the sound is
-              unaffected.</li>
+              <li><i>Small knob</i>: order of the Chebyschev waveshaper.</li>
               <li>The button switches the internal oscillator; Aux
               outputs the mix or the internal oscillator (default behavior)</li>
             </ul>
@@ -219,7 +208,7 @@
               outputs the mix or the internal oscillator (default behavior)</li>
             </ul>
           </li>
-          <li>Chorus/Flanger/Slapback:
+          <li>Variable-rate delay:
             <br /><i>(see below)</i>
           </li>
           <li>Meta-mode <i>(the stock firmware's main function)</i>
@@ -232,7 +221,15 @@
 
         <p>... and a video demo (thanks
         to <a href="http://infinitesimal.eu/">davidh</a>):
-        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NxtyG2rTTRQ?rel=0" frameborder="0" allowfullscreen></iframe></p>
+        <iframe width="560" height="315"
+        src="https://www.youtube-nocookie.com/embed/NxtyG2rTTRQ?rel=0"
+                frameborder="0" allowfullscreen></iframe></p>
+
+        <p>... and another demoing some new features in v1.0 (thanks
+        to <a href="https://sb-six.bandcamp.com/">SB-SIX</a>):
+          <iframe width="560" height="315"
+          src="https://www.youtube-nocookie.com/embed/baHiSGgszQ4?rel=0"
+          frameborder="0" allowfullscreen></iframe>
 
         <h3 id="doppler">Binaural Doppler panner mode</h3>
 
@@ -281,20 +278,78 @@
         the delay and attenuation of distant sound is minimal, to a
         huge one (LED red).</p>
 
-        <h3 id="echo">Chorus/Flanger/Slapback mode</h3>
+        <h3 id="cheby">Chebyschev waveshaper</h3>
 
-        <p>This mode simulates classic effects that can be achieved with a
-        small delay line.</p>
+        <p>A Chebyschev waveshaper shapes the signal
+        with <a href="https://en.wikipedia.org/wiki/Chebyshev_polynomials">Chebyschev
+        polynomials</a>. It has the effect of shifting harmonics
+        non-linearly by harmonics, and gives interesting timbres out
+        of simple, harmonically poor ones.</p>
+
+        <p>Combined with the internal oscillator, this mode can
+        provide a full synthesis voice with tones close to additive
+        synthesis and wavefolding.</p>
 
         <ul>
-          <li>the <i>Big knob</i> sets the delay time, from sub-audio
-          to about 200 ms. </li>
-          <li>the <i>Small knob</i> sets the amount of
-            feedback. Fully CCW, you'll have only the dry sound.</li>
-          <li>the <i>Tiny pots</i> control a built-in LFO modulating
-          the delay time. The first is its frequency, the second is
-          its amplitude.
+          <li>the <i>Big knob</i> sets the order of the Chebyschev
+          function, from 0 to 16th. Fully CCW, the sound is unaffected (order
+          0). Clockwise, the harmonics of the input are increasingly
+          shifted.</li>
+          <li>the <i>Small knob</i> sets the gain of the
+          waveshaper. Fully CW, it will shift the internal sine
+          oscillator harmonics, and can therefore be used as a simple
+          additive voice.</li>
+          <li>The button switches the internal oscillator; Aux
+          outputs the mix of the inputs or the internal oscillator
+          (default behavior)</li>
         </ul>
+
+        <h3 id="echo">Variable-rate delay</h3>
+
+        <p>This mode simulates classic effects that can be achieved
+          with a tape loop. The delay is modelled after the following
+          situation: a tape loop, moving at a definite speed, with two
+          separate heads moveable along the loop: a read head and a
+          write head. You have control over:</p>
+          <ul>
+            <li><b>Small knob</b>: the distance between the read and
+              the write head on the tape loop. Fully CCW, the write
+              head is just on the left of the read head; if the tape
+              goes forward, delay time will be extremely short because
+              it will read back what was just recorded; if the tape
+              goes backwards, the delay time will be the longest,
+              because the signal written will have to traverse the
+              whole tape loop to be read back. Fully CW, where the
+              read head is just on the left of the write head it's the
+              contrary: forward tape direction will give long delays,
+              backward will give short ones. At the midpoint, there is
+              the same length of tape in the two directions, so both
+              delay times (forward and backwards) are equal.</li>
+
+            <li><b>Big knob</b>: the speed and direction of the
+              tape. Fully CW, it goes forward at full speed. As you
+              approach noon, the speed slows down, which means that
+              the time needed to traverse the distance between both
+              heads---the delay time---will increase. At the same time
+              the sound quality degrades, since there are less ferrite
+              grains by second to record the audio. At noon, the speed
+              of the tape will be infinitely slow (or stopped if you
+              prefer) so the delay time will be infinitely long and
+              the quality infinitely bad. In other words, you'll hear
+              nothing!
+
+              CCW, the tape loop will play in the other direction, so
+              you will use the "opposite" tape loop part. As a
+              consequence, if you suddenly change playback direction
+              you will hear audio in reverse for a short period of
+              time (the distance between the read and write head in
+              the new direction).
+              </li>
+            <li><b>Level 1 mini-pot</b>: feedback
+            <li><b>Level 2 mini-pot</b>: dry/wet
+            </li>
+          </ul>
+        </p>
 
         The state of the button determines the topology of the delay:
         <ul>
@@ -314,6 +369,11 @@
         <h3 id="misc">Miscellaneous</h3>
 
         <ul>
+          <li>Adjusted the smoothing on the Level CV to get a
+            snappier response to e.g. fast attacks.</li>
+          <li>Increased the TZFM modulation index of the internal sine
+          oscillator (when Int. Osc. is green and audio is fed to the
+          first input)</li>
           <li>To avoid entering calibration mode when switching mode,
           the time to enter calibration has been extended to 8
             seconds.</li>
@@ -332,6 +392,42 @@
             <th>Changes</th>
           </tr>
           <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/warps-v1.0/warps-parasite-v1.0.wav.zip">v1.0</a></td>
+            <td>2016-09-06</td>
+            <td>
+              <ul>
+                <li>Delay mode:
+                  <ul>
+                    <li>complete rewrite with two distinct parameters:
+                      tape speed (big knob) and tape length (small
+                      knob)</li>
+                    <li>separate dry/wet and feedback controls (tiny
+                    pots)</li>
+                    <li>removed the built-in LFO</li>
+                    <li>tweaked tape-hiss/distortion/filters in analog
+                    mode to sound more "realistic"</li>
+                  </ul>
+                </li>
+                <li>New dedicated Chebyschev waveshaper mode, replaces
+                 previous ring mod mode (see documentation)</li>
+                <li>Frequency shifter:
+                  <ul>
+                    <li>linear response of dry/wet and feedback
+                      mini-pots (was quadratic)</li>
+                  </ul>
+                </li>
+                <li>All modes:
+                  <ul>
+                    <li>less smoothing of levels CVs (snappier response)</li>
+                    <li>increased the TZFM modulation index of the
+                      internal sine oscillator (when Int. Osc is green
+                      audio is fed to the first input)</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/warps-v0.95/warps-parasite-v0.95.wav.zip">v0.95</a></td>
             <td>2016-01-31</td>
             <td><ul><li>merged upstream fix of a bug in the frequency
@@ -340,7 +436,6 @@
             </td>
           </tr>
           <tr>
-           <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/warps-v0.9/warps-parasite-v0.9.wav.zip">v0.9</a></td>
             <td>2016-01-31</td>
             <td>Minor fixes and adjustments
