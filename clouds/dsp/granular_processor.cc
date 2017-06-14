@@ -281,11 +281,6 @@ void GranularProcessor::Process(
     ShortFrame* output,
     size_t size) {
   // TIC
-  if (bypass_) {
-    copy(&input[0], &input[size], &output[0]);
-    return;
-  }
-  
   if (silence_ || reset_buffers_ ||
       previous_playback_mode_ != playback_mode_) {
     short* output_samples = &output[0].l;
@@ -404,8 +399,12 @@ void GranularProcessor::Process(
 
   const float post_gain = 1.2f;
 
+  float dw = parameters_.dry_wet;
+  if (bypass_) dw = 0.0f;
+  SLEW(dry_wet_lp_, dw, 0.005f);
+
   if (playback_mode_ != PLAYBACK_MODE_RESONESTOR) {
-    ParameterInterpolator dry_wet_mod(&dry_wet_, parameters_.dry_wet, size);
+    ParameterInterpolator dry_wet_mod(&dry_wet_, dry_wet_lp_, size);
     for (size_t i = 0; i < size; ++i) {
       float dry_wet = dry_wet_mod.Next();
       float fade_in = Interpolate(lut_xfade_in, dry_wet, 16.0f);
@@ -421,10 +420,13 @@ void GranularProcessor::Process(
   if (playback_mode_ != PLAYBACK_MODE_OLIVERB &&
       playback_mode_ != PLAYBACK_MODE_RESONESTOR) {
     float reverb_amount = parameters_.reverb;
+    if (inf_reverb_) reverb_amount = 1.0f;
+    static float reverb_amount_lp_ = 0.0f;
+    SLEW(reverb_amount_lp_, reverb_amount, 0.001f);
 
-    reverb_.set_amount(reverb_amount * 0.54f);
+    reverb_.set_amount(reverb_amount_lp_ * 0.54f);
     reverb_.set_diffusion(0.7f);
-    reverb_.set_time(0.35f + 0.63f * reverb_amount);
+    reverb_.set_time(0.35f + 0.63f * reverb_amount_lp_);
     reverb_.set_input_gain(0.2f);
     reverb_.set_lp(0.6f + 0.37f * feedback);
 

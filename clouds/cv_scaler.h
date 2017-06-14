@@ -89,7 +89,7 @@ class CvScaler {
   }
   
   inline bool gate(size_t index) const {
-    return index == 0 ? gate_input_.freeze() : gate_input_.trigger();
+    return gate_input_.freeze();
   }
   
   inline void set_blend_parameter(BlendParameter parameter) {

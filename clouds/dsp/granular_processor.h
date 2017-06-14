@@ -99,8 +99,21 @@ class GranularProcessor {
   inline void ToggleFreeze() {
     parameters_.freeze = !parameters_.freeze;
   }
+
   inline void ToggleReverse() {
     parameters_.granular.reverse = !parameters_.granular.reverse;
+  }
+
+  inline void ToggleBypass() {
+    bypass_ = !bypass_;
+  }
+
+  inline void set_inf_reverb(bool state) {
+    inf_reverb_ = state;
+  }
+
+  inline bool inf_reverb() {
+    return inf_reverb_;
   }
 
   inline bool frozen() const {
@@ -118,11 +131,7 @@ class GranularProcessor {
   inline void set_bypass(bool bypass) {
     bypass_ = bypass;
   }
-  
-  inline bool bypass() const {
-    return bypass_;
-  }
-  
+
   inline void set_playback_mode(PlaybackMode playback_mode) {
     playback_mode_ = playback_mode;
   }
@@ -175,10 +184,11 @@ class GranularProcessor {
   
   bool silence_;
   bool bypass_;
+  bool inf_reverb_;
   bool reset_buffers_;
   float freeze_lp_;
-  float dry_wet_;
-  
+  float dry_wet_, dry_wet_lp_;
+
   void* buffer_[2];
   size_t buffer_size_[2];
   

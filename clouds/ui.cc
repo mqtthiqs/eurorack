@@ -221,11 +221,7 @@ void Ui::PaintLeds() {
     freeze ^= flash;
   }
   leds_.set_freeze(freeze);
-  if (processor_->bypass()) {
-    leds_.PaintBar(lut_db[meter_->peak() >> 7]);
-    leds_.set_freeze(true);
-  }
-  
+
   leds_.Write();
 }
 
@@ -271,6 +267,14 @@ void Ui::OnSwitchReleased(const Event& e) {
   }
 
   switch (e.control_id) {
+    case SWITCH_BYPASS:
+      if (e.data >= kLongPressDuration) {
+        processor_->set_inf_reverb(true);
+      } else {
+        processor_->ToggleBypass();
+      }
+      break;
+
     case SWITCH_FREEZE:
       if (e.data >= kVeryLongPressDuration) {
       } else if (e.data >= kLongPressDuration) {
@@ -388,6 +392,10 @@ void Ui::DoEvents() {
         mode_ == UI_MODE_SPLASH) {
       mode_ = UI_MODE_VU_METER;
     }
+  }
+
+  if (processor_->inf_reverb() && !switches_.pressed(SWITCH_BYPASS)) {
+    processor_->set_inf_reverb(false);
   }
 }
 

@@ -212,16 +212,9 @@ void CvScaler::Read(Parameters* parameters) {
   } else if (gate_input_.freeze_falling_edge()) {
     parameters->freeze = false;
   }
-  
-  parameters->trigger = previous_trigger_[0];
-  parameters->gate = previous_gate_[0];
-  for (int i = 0; i < kAdcLatency - 1; ++i) {
-    previous_trigger_[i] = previous_trigger_[i + 1];
-    previous_gate_[i] = previous_gate_[i + 1];
-  }
-  previous_trigger_[kAdcLatency - 1] = gate_input_.trigger_rising_edge();
-  previous_gate_[kAdcLatency - 1] = gate_input_.gate();
-  
+
+  parameters->trigger = false;
+
   adc_.Convert();
 }
 

@@ -57,7 +57,8 @@ enum UiMode {
 enum SwitchIndex {
   SWITCH_MODE,
   SWITCH_WRITE,
-  SWITCH_FREEZE
+  SWITCH_FREEZE,
+  SWITCH_BYPASS,
 };
 
 enum FactoryTestingCommand {

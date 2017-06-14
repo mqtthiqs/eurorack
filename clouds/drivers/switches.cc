@@ -39,7 +39,7 @@ void Switches::Init() {
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
   
   GPIO_InitTypeDef gpio_init;
-  gpio_init.GPIO_Pin = GPIO_Pin_8;
+  gpio_init.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_8;
   gpio_init.GPIO_Mode = GPIO_Mode_IN;
   gpio_init.GPIO_OType = GPIO_OType_PP;
   gpio_init.GPIO_Speed = GPIO_Speed_25MHz;
@@ -62,8 +62,8 @@ void Switches::Debounce() {
     switch_state_[i] = (switch_state_[i] << 1) | \
         GPIO_ReadInputDataBit(GPIOC, pins[i]);
   }
-  switch_state_[kNumSwitches - 1] = (switch_state_[kNumSwitches - 1] << 1) | \
-      GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8);
+  switch_state_[2] = (switch_state_[2] << 1) | GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_8);
+  switch_state_[3] = (switch_state_[3] << 1) | GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_6);
 }
 
 }  // namespace clouds
