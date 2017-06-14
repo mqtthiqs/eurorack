@@ -109,8 +109,11 @@ class CvScaler {
     blend_[parameter] = value;
   }
   
-  inline bool blend_knob_touched() const {
-    return blend_knob_touched_;
+  inline bool blend_knob_touched() {
+    if (blend_knob_touched_) {
+      blend_knob_touched_ = false;
+      return true;
+    } else return false;
   }
   
   void UnlockBlendKnob() {

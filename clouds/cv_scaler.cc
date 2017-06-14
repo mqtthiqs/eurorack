@@ -154,21 +154,41 @@ void CvScaler::Read(Parameters* parameters) {
   dry_wet = dry_wet * 1.05f - 0.025f;
   CONSTRAIN(dry_wet, 0.0f, 1.0f);
   parameters->dry_wet = dry_wet;
+  // compare with last reading and set blend_knob_touched_ for display
+  if (fabs(dry_wet - blend_[BLEND_PARAMETER_DRY_WET]) > 0.02f) {
+    blend_knob_touched_ = true;
+    blend_[BLEND_PARAMETER_DRY_WET] = dry_wet;
+  }
 
   float reverb_amount = smoothed_adc_value_[ADC_REVERB_POTENTIOMETER];
   reverb_amount = reverb_amount * 1.05f - 0.025f;
   CONSTRAIN(reverb_amount, 0.0f, 1.0f);
   parameters->reverb = reverb_amount;
+  // compare with last reading and set blend_knob_touched_ for display
+  if (fabs(reverb_amount - blend_[BLEND_PARAMETER_REVERB]) > 0.02f) {
+    blend_knob_touched_ = true;
+    blend_[BLEND_PARAMETER_REVERB] = reverb_amount;
+  }
 
   float feedback = smoothed_adc_value_[ADC_FEEDBACK_POTENTIOMETER];
   feedback = feedback * 1.05f - 0.025f;
   CONSTRAIN(feedback, 0.0f, 1.0f);
   parameters->feedback = feedback;
+  // compare with last reading and set blend_knob_touched_ for display
+  if (fabs(feedback - blend_[BLEND_PARAMETER_FEEDBACK]) > 0.02f) {
+    blend_knob_touched_ = true;
+    blend_[BLEND_PARAMETER_FEEDBACK] = feedback;
+  }
 
   float stereo_spread = smoothed_adc_value_[ADC_SPREAD_POTENTIOMETER];
   stereo_spread = stereo_spread * 1.05f - 0.025f;
   CONSTRAIN(stereo_spread, 0.0f, 1.0f);
   parameters->stereo_spread = stereo_spread;
+  // compare with last reading and set blend_knob_touched_ for display
+  if (fabs(stereo_spread - blend_[BLEND_PARAMETER_STEREO_SPREAD]) > 0.02f) {
+    blend_knob_touched_ = true;
+    blend_[BLEND_PARAMETER_STEREO_SPREAD] = stereo_spread;
+  }
   
   parameters->pitch = stmlib::Interpolate(
       lut_quantized_pitch,
