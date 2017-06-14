@@ -230,12 +230,6 @@ void Ui::FlushEvents() {
 }
 
 void Ui::OnSwitchPressed(const Event& e) {
-  // double press -> feature switch mode
-  if ((e.control_id == SWITCH_MODE && switches_.pressed_immediate(SWITCH_WRITE)) ||
-      (e.control_id == SWITCH_WRITE && switches_.pressed_immediate(SWITCH_MODE))) {
-    mode_ = UI_MODE_PLAYBACK_MODE;
-    ignore_releases_ = 2;
-  }
 }
 
 void Ui::CalibrateC1() {
@@ -286,15 +280,15 @@ void Ui::OnSwitchReleased(const Event& e) {
 
     case SWITCH_MODE:
       if (e.data >= kVeryLongPressDuration) {
-        mode_ = UI_MODE_PLAYBACK_MODE;
+        // mode_ = UI_MODE_PLAYBACK_MODE;
       } else if (e.data >= kLongPressDuration) {
         if (mode_ == UI_MODE_QUALITY) {
           mode_ = UI_MODE_VU_METER;
         } else {
-          mode_ = UI_MODE_QUALITY;
+          mode_ = UI_MODE_LOAD;
         }
       } else if (mode_ == UI_MODE_VU_METER || mode_ == UI_MODE_BLEND_METER) {
-        mode_ = UI_MODE_BLENDING;
+        mode_ = UI_MODE_QUALITY;
       } else if (mode_ == UI_MODE_BLENDING) {
         uint8_t parameter = (cv_scaler_->blend_parameter() + 1) & 3;
         cv_scaler_->set_blend_parameter(static_cast<BlendParameter>(parameter));
@@ -308,8 +302,13 @@ void Ui::OnSwitchReleased(const Event& e) {
           processor_->playback_mode() - 1;
         processor_->set_playback_mode(static_cast<PlaybackMode>(mode));
         SaveState();
-      } else if (mode_ == UI_MODE_SAVE || mode_ == UI_MODE_LOAD) {
+      } else if (mode_ == UI_MODE_SAVE) {
         load_save_location_ = (load_save_location_ + 1) & 3;
+      } else if (mode_ == UI_MODE_LOAD) {
+        processor_->LoadPersistentData(settings_->sample_flash_data(
+            load_save_location_));
+        load_save_location_ = (load_save_location_ + 1) & 3;
+        mode_ = UI_MODE_VU_METER;
       } else {
         mode_ = UI_MODE_VU_METER;
       }
@@ -336,10 +335,7 @@ void Ui::OnSwitchReleased(const Event& e) {
         load_save_location_ = (load_save_location_ + 1) & 3;
         mode_ = UI_MODE_VU_METER;
       } else if (mode_ == UI_MODE_LOAD) {
-        processor_->LoadPersistentData(settings_->sample_flash_data(
-            load_save_location_));
         load_save_location_ = (load_save_location_ + 1) & 3;
-        mode_ = UI_MODE_VU_METER;
       } else if (mode_ == UI_MODE_PLAYBACK_MODE) {
         uint8_t mode = (processor_->playback_mode() + 1) % PLAYBACK_MODE_LAST;
         processor_->set_playback_mode(static_cast<PlaybackMode>(mode));
@@ -347,7 +343,7 @@ void Ui::OnSwitchReleased(const Event& e) {
       } else if (e.data >= kLongPressDuration) {
         mode_ = UI_MODE_SAVE;
       } else {
-        mode_ = UI_MODE_LOAD;
+        mode_ = UI_MODE_PLAYBACK_MODE;
       }
       break;
   }
