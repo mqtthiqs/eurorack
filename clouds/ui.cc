@@ -133,6 +133,9 @@ void Ui::PaintLeds() {
   uint8_t fade = clock >> 1;
   fade = fade <= 127 ? (fade << 1) : 255 - (fade << 1);
   fade = static_cast<uint16_t>(fade) * fade >> 8;
+
+  leds_.set_enabled(!processor_->bypass());
+
   switch (mode_) {
     case UI_MODE_SPLASH:
       {

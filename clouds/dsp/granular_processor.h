@@ -132,6 +132,8 @@ class GranularProcessor {
     bypass_ = bypass;
   }
 
+  inline bool bypass() { return bypass_; }
+
   inline void set_playback_mode(PlaybackMode playback_mode) {
     playback_mode_ = playback_mode;
   }
