@@ -100,6 +100,7 @@ void Leds::Clear() {
   fill(&red_[0], &red_[4], 0);
   fill(&green_[0], &green_[4], 0);
   freeze_led_ = false;
+  enabled_led_ = false;
 }
 
 }  // namespace clouds
