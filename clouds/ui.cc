@@ -147,7 +147,11 @@ void Ui::PaintLeds() {
       break;
       
     case UI_MODE_VU_METER:
-      leds_.PaintBar(lut_db[meter_->peak() >> 7]);
+      if (processor_->bypass()) {
+        leds_.PaintBar(0);
+      } else {
+        leds_.PaintBar(lut_db[meter_->peak() >> 7]);
+      }
       break;
     
     case UI_MODE_BLEND_METER:
