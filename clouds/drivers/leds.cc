@@ -57,7 +57,11 @@ void Leds::Init() {
   gpio_init.GPIO_Speed = GPIO_Speed_25MHz;
   gpio_init.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(GPIOC, &gpio_init);
-  
+
+  // "Enabled" LED
+  gpio_init.GPIO_Pin = GPIO_Pin_9;
+  GPIO_Init(GPIOC, &gpio_init);
+
   Clear();
   pwm_counter_ = 0;
 }
@@ -89,6 +93,7 @@ void Leds::Write() {
   }
   GPIO_WriteBit(GPIOC, kPinEnable, Bit_SET);
   GPIO_WriteBit(GPIOB, kPinFreezeLed, static_cast<BitAction>(freeze_led_));
+  GPIO_WriteBit(GPIOC, GPIO_Pin_9, static_cast<BitAction>(enabled_led_));
 }
 
 void Leds::Clear() {

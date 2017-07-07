@@ -92,10 +92,15 @@ class Leds {
   void set_freeze(bool status) {
     freeze_led_ = status;
   }
-  
+
+  void set_enabled(bool status) {
+    enabled_led_ = status;
+  }
+
   void Write();
 
  private:
+  bool enabled_led_;
   bool freeze_led_;
   uint8_t pwm_counter_;
   uint8_t red_[4];
