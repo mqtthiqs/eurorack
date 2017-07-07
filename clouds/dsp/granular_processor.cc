@@ -421,6 +421,7 @@ void GranularProcessor::Process(
       playback_mode_ != PLAYBACK_MODE_RESONESTOR) {
     float reverb_amount = parameters_.reverb;
     if (inf_reverb_) reverb_amount = 1.0f;
+    if (bypass_) reverb_amount = 0.0f;
     static float reverb_amount_lp_ = 0.0f;
     SLEW(reverb_amount_lp_, reverb_amount, 0.001f);
 
