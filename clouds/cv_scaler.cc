@@ -195,15 +195,6 @@ void CvScaler::Read(Parameters* parameters) {
       smoothed_adc_value_[ADC_PITCH_POTENTIOMETER],
       1024.0f);
   
-  float note = calibration_data_->pitch_offset;
-  note += smoothed_adc_value_[ADC_V_OCT_CV] * calibration_data_->pitch_scale;
-  if (fabs(note - note_) > 0.5f) {
-    note_ = note;
-  } else {
-    ONE_POLE(note_, note, 0.2f)
-  }
-  
-  parameters->pitch += note_;
   CONSTRAIN(parameters->pitch, -48.0f, 48.0f);
   
   gate_input_.Read();
