@@ -51,7 +51,7 @@
         for <a href="http://mutable-instruments.net/modules/tides/">Tides</a>. It
         adds the following features to the module:
         <ul>
-          <li><i>Two-bumps</i>: a silky 28-voices harmonic oscillator
+          <li><i>Two-bumps</i>: a silky 16-voices harmonic oscillator
           with two spectral bumps or notches, control over centroids
           and width, harmonics selection, wave quality, a
           sub-oscillator, a 1-bit output, and a special harmonics
@@ -205,7 +205,7 @@
 
         <iframe width="560" height="315" src="https://www.youtube.com/embed/3D2MwxLj9XU" frameborder="0" allowfullscreen></iframe>
 
-        <p><i>Two-bumps</i> is a harmonic generator that sums 28
+        <p><i>Two-bumps</i> is a harmonic generator that sums 16
         harmonics. The timbre is shaped by choosing two "center
         frequencies", (with the <b>Shape</b> and <b>Slope</b> knobs)
         which select the loudest harmonics, and a "width", which is the
@@ -220,7 +220,7 @@
 
         <p>The upper button (<b>Mode</b> button in the official
         manual) selects which harmonics can ring. When the LED is off,
-        the first 28 harmonics ring: it is the default in most harmonic
+        the first 16 harmonics ring: it is the default in most harmonic
         oscillators. When the LED is green, only the odd harmonics
         ring: the timbre is more "metallic", closer to a square wave.
         Finally, when the LED is red, only the octaves ring: the resulting
@@ -228,7 +228,7 @@
 
         <blockquote>
           <i>Tip</i>: Put the oscillator in this "octaves" mode, put
-          the width at noon and the frequency around 9 o'clock; 28
+          the width at noon and the frequency around 9 o'clock; 16
           octaves will ring at the same time, many of them way outside
           the audible range. Now feed a slow sawtooth to the 1V/Oct
           input, and adjust its amplitude so that it is 1V (or 2 or
@@ -484,14 +484,6 @@
         <h3 id="misc">Miscellaneous</h3>
 
         <ul>
-          <li>FM is now linear and through-zero (“TZFM”)</li>
-
-          <blockquote>
-            <i>Careful:</i> the FM input has a very low sampling
-            rate. Don't expect to do crisp digital audio-rate FM:
-            artifacts will start to appear as low as 200Hz.
-          </blockquote>
-
           <li>The calibration procedure is not accessed as in the
           stock firmware anymore (its space is now taken by the quantizer). To
           calibrate, turn on the module while holding the Range
@@ -540,10 +532,6 @@
 
           <li>The response of the Slope button has been changed to
             exponential.</li>
-          <li>The internal sizes of the tables generating the triangle
-          and saw waves at audio rate have been reduced, to make space
-          for the added features. It should not be noticeable (please
-          contact me if you spot a reproducible difference).</li>
         </ul>
 
 
@@ -554,6 +542,18 @@
             <th>Version</th>
             <th>Date</th>
             <th>Changes</th>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.12/tides-parasite-v1.12.wav.zip">v1.12</a></td>
+            <td>2017-08-09</td>
+            <td>
+              <ul>
+                <li>Two-bumps: reduced number of harmonics to 16</li>
+                <li>All modes: reverted FM input to exponential</li>
+                <li>Function: reverted internal parabola table sizes
+                as they were in the original firmware</li>
+              </ul>
+            </td>
           </tr>
           <tr>
             <td><a href="https://github.com/mqtthiqs/parasites/releases/download/tides-v1.11/tides-parasite-v1.11.wav.zip">v1.11</a></td>
