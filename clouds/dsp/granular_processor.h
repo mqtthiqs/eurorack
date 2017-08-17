@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+//
 // See http://creativecommons.org/licenses/MIT/ for more information.
 //
 // -----------------------------------------------------------------------------
@@ -45,6 +45,7 @@
 #include "clouds/dsp/pvoc/phase_vocoder.h"
 #include "clouds/dsp/sample_rate_converter.h"
 #include "clouds/dsp/wsola_sample_player.h"
+#include "clouds/dsp/kammerl_player.h"
 
 namespace clouds {
 
@@ -57,6 +58,7 @@ enum PlaybackMode {
   PLAYBACK_MODE_SPECTRAL,
   PLAYBACK_MODE_OLIVERB,
   PLAYBACK_MODE_RESONESTOR,
+  PLAYBACK_MODE_KAMMERL,
   PLAYBACK_MODE_LAST
 };
 
@@ -78,7 +80,7 @@ class GranularProcessor {
  public:
   GranularProcessor() { }
   ~GranularProcessor() { }
-  
+
   void Init(
       void* large_buffer,
       size_t large_buffer_size,
@@ -87,7 +89,7 @@ class GranularProcessor {
 
   void Process(ShortFrame* input, ShortFrame* output, size_t size);
   void Prepare();
-  
+
   inline Parameters* mutable_parameters() {
     return &parameters_;
   }
@@ -95,7 +97,7 @@ class GranularProcessor {
   inline const Parameters& parameters() const {
     return parameters_;
   }
-  
+
   inline void ToggleFreeze() {
     parameters_.freeze = !parameters_.freeze;
   }
@@ -114,48 +116,50 @@ class GranularProcessor {
   inline void set_silence(bool silence) {
     silence_ = silence;
   }
-  
+
   inline void set_bypass(bool bypass) {
     bypass_ = bypass;
   }
-  
+
   inline bool bypass() const {
     return bypass_;
   }
-  
+
   inline void set_playback_mode(PlaybackMode playback_mode) {
     playback_mode_ = playback_mode;
   }
-  
+
   inline PlaybackMode playback_mode() const { return playback_mode_; }
-  
+
   inline void set_quality(int32_t quality) {
     set_num_channels(quality & 1 ? 1 : 2);
     set_low_fidelity(quality >> 1 ? true : false);
   }
-  
+
   inline void set_num_channels(int32_t num_channels) {
     reset_buffers_ = reset_buffers_ || num_channels_ != num_channels;
     num_channels_ = num_channels;
   }
-  
+
   inline void set_low_fidelity(bool low_fidelity) {
     reset_buffers_ = reset_buffers_ || low_fidelity != low_fidelity_;
     low_fidelity_ = low_fidelity;
   }
-  
+
   inline int32_t quality() const {
     int32_t quality = 0;
     if (num_channels_ == 1) quality |= 1;
     if (low_fidelity_) quality |= 2;
     return quality;
   }
-  
+
   void GetPersistentData(PersistentBlock* block, size_t *num_blocks);
   bool LoadPersistentData(const uint32_t* data);
   void PreparePersistentData();
 
  private:
+  void WarmDistortion(float* in, float parameter);
+
   inline int32_t resolution() const {
     return low_fidelity_ ? 8 : 16;
   }
@@ -164,7 +168,7 @@ class GranularProcessor {
     return 32000.0f / \
         (low_fidelity_ ? kDownsamplingFactor : 1);
   }
-     
+
   void ResetFilters();
   void ProcessGranular(FloatFrame* input, FloatFrame* output, size_t size);
 
@@ -172,50 +176,53 @@ class GranularProcessor {
   PlaybackMode previous_playback_mode_;
   int32_t num_channels_;
   bool low_fidelity_;
-  
+
   bool silence_;
   bool bypass_;
   bool reset_buffers_;
   float freeze_lp_;
   float dry_wet_;
-  
+
   void* buffer_[2];
   size_t buffer_size_[2];
-  
+
   Correlator correlator_;
-  
+
   GranularSamplePlayer player_;
   WSOLASamplePlayer ws_player_;
   LoopingSamplePlayer looper_;
   PhaseVocoder phase_vocoder_;
-  
+
+
   Diffuser diffuser_;
   Reverb reverb_;
   Oliverb oliverb_;
   Resonestor resonestor_;
   PitchShifter pitch_shifter_;
+  KammerlPlayer kammerl_;
+  
   stmlib::Svf fb_filter_[2];
   stmlib::Svf hp_filter_[2];
   stmlib::Svf lp_filter_[2];
-  
+
   AudioBuffer<RESOLUTION_8_BIT_MU_LAW> buffer_8_[2];
   AudioBuffer<RESOLUTION_16_BIT> buffer_16_[2];
-  
+
   FloatFrame in_[kMaxBlockSize];
   FloatFrame in_downsampled_[kMaxBlockSize / kDownsamplingFactor];
   FloatFrame out_downsampled_[kMaxBlockSize / kDownsamplingFactor];
   FloatFrame out_[kMaxBlockSize];
   FloatFrame fb_[kMaxBlockSize];
-  
+
   int16_t tail_buffer_[2][256];
-  
+
   Parameters parameters_;
-  
+
   SampleRateConverter<-kDownsamplingFactor, 45, src_filter_1x_2_45> src_down_;
   SampleRateConverter<+kDownsamplingFactor, 45, src_filter_1x_2_45> src_up_;
-  
+
   PersistentState persistent_state_;
-  
+
   DISALLOW_COPY_AND_ASSIGN(GranularProcessor);
 };
 

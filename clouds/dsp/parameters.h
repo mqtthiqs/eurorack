@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+//
 // See http://creativecommons.org/licenses/MIT/ for more information.
 //
 // -----------------------------------------------------------------------------
@@ -43,11 +43,11 @@ struct Parameters {
   float stereo_spread;
   float feedback;
   float reverb;
-  
+
   bool freeze;
   bool trigger;
   bool gate;
-  
+
   struct Granular {
     float overlap;
     float window_shape;
@@ -55,13 +55,24 @@ struct Parameters {
     bool use_deterministic_seed;
     bool reverse;
   } granular;
-  
+
   struct Spectral {
     float quantization;
     float refresh_rate;
     float phase_randomization;
     float warp;
   } spectral;
+
+  struct Kammerl {
+    float probability;
+    float pitch_mode;
+    float clock_divider;
+    float distortion;
+    float slice_selection;
+    float slice_modulation;
+    float size_modulation;
+    float pitch;
+  } kammerl;
 };
 
 }  // namespace clouds

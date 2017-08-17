@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+//
 // See http://creativecommons.org/licenses/MIT/ for more information.
 //
 // -----------------------------------------------------------------------------
@@ -56,10 +56,10 @@ class CvScaler {
  public:
   CvScaler() { }
   ~CvScaler() { }
-  
+
   void Init(CalibrationData* calibration_data);
   void Read(Parameters* parameters);
-  
+
   void CalibrateC1() {
     cv_c1_ = adc_.float_value(ADC_V_OCT_CV);
   }
@@ -69,7 +69,7 @@ class CvScaler {
       calibration_data_->offset[i] = adc_.float_value(i);
     }
   }
-  
+
   bool CalibrateC3() {
     float c3 = adc_.float_value(ADC_V_OCT_CV);  // 0.4848 v0.1 ; 0.3640 v0.2
     float c1 = cv_c1_;  // 0.6666 v0.1 ; 0.6488 v0.2
@@ -83,53 +83,53 @@ class CvScaler {
       return false;
     }
   }
-  
+
   inline uint8_t adc_value(size_t index) const {
     return adc_.value(index) >> 8;
   }
-  
+
   inline bool gate(size_t index) const {
     return index == 0 ? gate_input_.freeze() : gate_input_.trigger();
   }
-  
+
   inline void set_blend_parameter(BlendParameter parameter) {
     blend_parameter_ = parameter;
     blend_knob_origin_ = previous_blend_knob_value_;
   }
-  
+
   inline BlendParameter blend_parameter() const {
     return blend_parameter_;
   }
-  
+
   inline float blend_value(BlendParameter parameter) const {
     return blend_[parameter];
   }
-  
+
   inline void set_blend_value(BlendParameter parameter, float value) {
     blend_[parameter] = value;
   }
-  
+
   inline bool blend_knob_touched() const {
     return blend_knob_touched_;
   }
-  
+
   void UnlockBlendKnob() {
     previous_blend_knob_value_ = -1.0f;
   }
 
  private:
-  void UpdateBlendParameters(float knob, float cv);
+  float UpdateBlendParameters(float knob, float cv);
   static const int kAdcLatency = 5;
-  
+
   Adc adc_;
   GateInput gate_input_;
   CalibrationData* calibration_data_;
-  
+
   float smoothed_adc_value_[ADC_CHANNEL_LAST];
   static CvTransformation transformations_[ADC_CHANNEL_LAST];
-  
+
   float note_;
-  
+
   BlendParameter blend_parameter_;
   float blend_[BLEND_PARAMETER_LAST];
   float blend_mod_[BLEND_PARAMETER_LAST];
@@ -140,10 +140,10 @@ class CvScaler {
   bool blend_knob_touched_;
 
   float cv_c1_;
-  
+
   bool previous_trigger_[kAdcLatency];
   bool previous_gate_[kAdcLatency];
-  
+
   DISALLOW_COPY_AND_ASSIGN(CvScaler);
 };
 
