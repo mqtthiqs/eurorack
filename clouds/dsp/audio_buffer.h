@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+//
 // See http://creativecommons.org/licenses/MIT/ for more information.
 //
 // -----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ class AudioBuffer {
  public:
   AudioBuffer() { }
   ~AudioBuffer() { }
-  
+
   void Init(
       void* buffer,
       int32_t size,
@@ -82,12 +82,12 @@ class AudioBuffer {
     }
     tail_ = tail_buffer;
   }
-  
+
   inline void Resync(int32_t head) {
     write_head_ = head;
     crossfade_counter_ = 0;
   }
-  
+
   inline void Write(float in) {
     if (resolution == RESOLUTION_16_BIT) {
       s16_[write_head_] = stmlib::Clip16(
@@ -107,7 +107,7 @@ class AudioBuffer {
       s8_[write_head_] = static_cast<int8_t>(
           stmlib::Clip16(in * 32768.0f) >> 8);
     }
-    
+
     if (resolution == RESOLUTION_16_BIT) {
       if (write_head_ < kInterpolationTail) {
         s16_[write_head_ + size_] = s16_[write_head_];
@@ -122,7 +122,7 @@ class AudioBuffer {
       write_head_ = 0;
     }
   }
-  
+
   inline void WriteFade(
       const float* in,
       int32_t size,
@@ -140,7 +140,7 @@ class AudioBuffer {
           }
         }
       }
-    } else if (write && !crossfade_counter_ && 
+    } else if (write && !crossfade_counter_ &&
         resolution == RESOLUTION_16_BIT &&
         write_head_ >= kInterpolationTail && write_head_ < (size_ - size)) {
       // Fast write routine for the most common case.
@@ -164,7 +164,7 @@ class AudioBuffer {
       }
     }
   }
-  
+
   inline void Write(const float* in, int32_t size, int32_t stride) {
     if (resolution == RESOLUTION_16_BIT
         && write_head_ >= kInterpolationTail && write_head_ < (size_ - size)) {
@@ -182,7 +182,7 @@ class AudioBuffer {
       }
     }
   }
-  
+
   template<InterpolationMethod method>
   inline float Read(int32_t integral, uint16_t fractional) const {
     if (method == INTERPOLATION_ZOH) {
@@ -193,12 +193,12 @@ class AudioBuffer {
       return ReadHermite(integral, fractional);
     }
   }
-  
+
   inline float ReadZOH(int32_t integral, uint16_t fractional) const {
     if (integral >= size_) {
       integral -= size_;
     }
-    
+
     float x0, scale;
     if (resolution == RESOLUTION_16_BIT) {
       x0 = s16_[integral];
@@ -212,14 +212,14 @@ class AudioBuffer {
     }
     return x0 * scale;
   }
-  
+
   inline float ReadLinear(int32_t integral, uint16_t fractional) const {
     if (integral >= size_) {
       integral -= size_;
     }
-    
+
     // assert(integral >= 0 && integral < size_);
-    
+
     float x0, x1, scale;
     float t = static_cast<float>(fractional) / 65536.0f;
     if (resolution == RESOLUTION_16_BIT) {
@@ -237,17 +237,15 @@ class AudioBuffer {
     }
     return (x0 + (x1 - x0) * t) * scale;
   }
-  
+
   inline float ReadHermite(int32_t integral, uint16_t fractional) const {
-    if (integral >= size_) {
-      integral -= size_;
-    }
-    
+    integral = integral % size_;
+
     // assert(integral >= 0 && integral < size_);
-    
+
     float xm1, x0, x1, x2, scale;
     float t = static_cast<float>(fractional) / 65536.0f;
-    
+
     if (resolution == RESOLUTION_16_BIT) {
       xm1 = s16_[integral];
       x0 = s16_[integral + 1];
@@ -267,7 +265,7 @@ class AudioBuffer {
       x2 = s8_[integral + 3];
       scale = 1.0f / 128.0f;
     }
-    
+
     // Laurent de Soras's Hermite interpolator.
     const float c = (x1 - xm1) * 0.5f;
     const float v = x0 - x1;
@@ -276,24 +274,24 @@ class AudioBuffer {
     const float b_neg = w + a;
     return ((((a * t) - b_neg) * t + c) * t + x0) * scale;
   }
-  
+
   inline int32_t size() const { return size_; }
   inline int32_t head() const { return write_head_; }
-  
+
  private:
   int16_t* s16_;
   int8_t* s8_;
-  
+
   float quantization_error_;
-  
+
   int16_t tail_ptr_;
 
   int32_t size_;
   int32_t write_head_;
-  
+
   int16_t* tail_;
   int32_t crossfade_counter_;
-  
+
   DISALLOW_COPY_AND_ASSIGN(AudioBuffer);
 };
 

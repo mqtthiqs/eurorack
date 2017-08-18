@@ -8,10 +8,10 @@
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-// 
+//
 // See http://creativecommons.org/licenses/MIT/ for more information.
 //
 // -----------------------------------------------------------------------------
@@ -76,20 +76,25 @@ void CvScaler::Init(CalibrationData* calibration_data) {
   blend_parameter_ = BLEND_PARAMETER_DRY_WET;
   blend_knob_quantized_ = -1.0f;
   blend_knob_touched_ = false;
-  
+
   fill(&previous_trigger_[0], &previous_trigger_[kAdcLatency], false);
   fill(&previous_gate_[0], &previous_gate_[kAdcLatency], false);
 }
 
-void CvScaler::UpdateBlendParameters(float knob_value, float cv) {
-  // Update the blending settings (base value and modulation) from the 
+float CvScaler::UpdateBlendParameters(float knob_value, float cv) {
+  // Update the blending settings (base value and modulation) from the
   // Blend knob and CV.
+  float blend_smoothed_cv = 0.0f;
+
   for (int32_t i = 0; i < BLEND_PARAMETER_LAST; ++i) {
     float target = i == blend_parameter_ ? cv : 0.0f;
     float coefficient = i == blend_parameter_ ? 0.1f : 0.002f;
     blend_mod_[i] += coefficient * (target - blend_mod_[i]);
+    if (i==blend_parameter_) {
+    	blend_smoothed_cv = blend_mod_[i];
+    }
   }
-  
+
   // Determines if the blend knob has been touched.
   if (blend_knob_quantized_ == -1.0f) {
     blend_knob_quantized_ = knob_value;
@@ -98,13 +103,13 @@ void CvScaler::UpdateBlendParameters(float knob_value, float cv) {
   if (blend_knob_touched_) {
     blend_knob_quantized_ = knob_value;
   }
-  
+
   if (previous_blend_knob_value_ == -1.0f) {
     blend_[blend_parameter_] = knob_value;
     previous_blend_knob_value_ = knob_value;
     blend_knob_origin_ = knob_value;
   }
-  
+
   float parameter_value = blend_[blend_parameter_];
   float delta = knob_value - previous_blend_knob_value_;
   float skew_ratio = delta > 0.0f
@@ -120,12 +125,14 @@ void CvScaler::UpdateBlendParameters(float knob_value, float cv) {
   CONSTRAIN(parameter_value, 0.0f, 1.0f);
   blend_[blend_parameter_] = parameter_value;
   previous_blend_knob_value_ = knob_value;
+
+  return parameter_value + blend_smoothed_cv;
 }
 
 void CvScaler::Read(Parameters* parameters) {
   for (size_t i = 0; i < ADC_CHANNEL_LAST; ++i) {
     const CvTransformation& transformation = transformations_[i];
-    
+
     float value = adc_.float_value(i);
     if (transformation.flip) {
       value = 1.0f - value;
@@ -136,26 +143,53 @@ void CvScaler::Read(Parameters* parameters) {
     smoothed_adc_value_[i] += transformation.filter_coefficient * \
         (value - smoothed_adc_value_[i]);
   }
-  
+
   parameters->position = smoothed_adc_value_[ADC_POSITION_POTENTIOMETER_CV];
-  
+
   float texture = smoothed_adc_value_[ADC_TEXTURE_POTENTIOMETER];
   texture -= smoothed_adc_value_[ADC_TEXTURE_CV] * 2.0f;
   CONSTRAIN(texture, 0.0f, 1.0f);
   parameters->texture = texture;
 
+  parameters->kammerl.slice_selection = smoothed_adc_value_[ADC_TEXTURE_CV];
+  CONSTRAIN(parameters->kammerl.slice_selection, 0.0f, 1.0f);
+  parameters->kammerl.slice_modulation = smoothed_adc_value_[ADC_TEXTURE_POTENTIOMETER];
+  CONSTRAIN(parameters->kammerl.slice_modulation, 0.0f, 1.0f);
+
   float density = smoothed_adc_value_[ADC_DENSITY_POTENTIOMETER_CV];
   CONSTRAIN(density, 0.0f, 1.0f);
   parameters->density = density;
+
+  parameters->kammerl.size_modulation = density;
+  CONSTRAIN(parameters->kammerl.size_modulation, 0.0f, 1.0f);
 
   parameters->size = smoothed_adc_value_[ADC_SIZE_POTENTIOMETER];
   parameters->size -= smoothed_adc_value_[ADC_SIZE_CV];
   CONSTRAIN(parameters->size, 0.0f, 1.0f);
 
-  UpdateBlendParameters(
-      smoothed_adc_value_[ADC_BLEND_POTENTIOMETER],
-      -smoothed_adc_value_[ADC_BLEND_CV] * 2.0f);
-  
+  float blend_parameter = UpdateBlendParameters(
+    smoothed_adc_value_[ADC_BLEND_POTENTIOMETER],
+	  -smoothed_adc_value_[ADC_BLEND_CV] * 2.0f);
+
+    // Update KAMMERL_MODE parameters
+  CONSTRAIN(blend_parameter, 0.0f, 1.0f);
+  switch (blend_parameter_) {
+    	case BLEND_PARAMETER_DRY_WET:
+    	  parameters->kammerl.probability = blend_parameter;
+    	  break;
+    	case BLEND_PARAMETER_STEREO_SPREAD:
+      	parameters->kammerl.clock_divider = blend_parameter;
+    		break;
+    	case BLEND_PARAMETER_FEEDBACK:
+       	parameters->kammerl.pitch_mode = blend_parameter;
+    		break;
+    	case BLEND_PARAMETER_REVERB:
+        parameters->kammerl.distortion = blend_parameter;
+    		break;
+    	default:
+    		break;
+  }
+
   float dry_wet = blend_[BLEND_PARAMETER_DRY_WET];
   dry_wet += blend_mod_[BLEND_PARAMETER_DRY_WET];
   dry_wet = dry_wet * 1.05f - 0.025f;
@@ -176,12 +210,12 @@ void CvScaler::Read(Parameters* parameters) {
   stereo_spread += blend_mod_[BLEND_PARAMETER_STEREO_SPREAD];
   CONSTRAIN(stereo_spread, 0.0f, 1.0f);
   parameters->stereo_spread = stereo_spread;
-  
+
   parameters->pitch = stmlib::Interpolate(
       lut_quantized_pitch,
       smoothed_adc_value_[ADC_PITCH_POTENTIOMETER],
       1024.0f);
-  
+
   float note = calibration_data_->pitch_offset;
   note += smoothed_adc_value_[ADC_V_OCT_CV] * calibration_data_->pitch_scale;
   if (fabs(note - note_) > 0.5f) {
@@ -189,17 +223,21 @@ void CvScaler::Read(Parameters* parameters) {
   } else {
     ONE_POLE(note_, note, 0.2f)
   }
-  
+
   parameters->pitch += note_;
   CONSTRAIN(parameters->pitch, -48.0f, 48.0f);
-  
+
+  parameters->kammerl.pitch = smoothed_adc_value_[ADC_PITCH_POTENTIOMETER];
+  parameters->kammerl.pitch += smoothed_adc_value_[ADC_V_OCT_CV] - 0.5f;
+  CONSTRAIN(parameters->kammerl.pitch, 0.0f, 1.0f);
+
   gate_input_.Read();
   if (gate_input_.freeze_rising_edge()) {
     parameters->freeze = true;
   } else if (gate_input_.freeze_falling_edge()) {
     parameters->freeze = false;
   }
-  
+
   parameters->trigger = previous_trigger_[0];
   parameters->gate = previous_gate_[0];
   for (int i = 0; i < kAdcLatency - 1; ++i) {
@@ -208,7 +246,7 @@ void CvScaler::Read(Parameters* parameters) {
   }
   previous_trigger_[kAdcLatency - 1] = gate_input_.trigger_rising_edge();
   previous_gate_[kAdcLatency - 1] = gate_input_.gate();
-  
+
   adc_.Convert();
 }
 
