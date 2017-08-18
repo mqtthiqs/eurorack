@@ -655,6 +655,7 @@ void GranularProcessor::Prepare() {
       player_.Init(num_channels_, num_grains);
       ws_player_.Init(&correlator_, num_channels_);
       looper_.Init(num_channels_);
+      kammerl_.Init(num_channels_);
     }
     reset_buffers_ = false;
     previous_playback_mode_ = playback_mode_;
