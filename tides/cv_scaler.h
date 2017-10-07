@@ -41,20 +41,13 @@ const int16_t kOctave = 12 * 128;
 #define SE * 128
 
 const uint16_t quantize_lut[7][12] = {
-  /* semitones */
-  {0, 1 SE, 2 SE, 3 SE, 4 SE, 5 SE, 6 SE, 7 SE, 8 SE, 9 SE, 10 SE, 11 SE},
-  /* ionian */
-  {0, 0, 2 SE, 2 SE, 4 SE, 5 SE, 5 SE, 7 SE, 7 SE, 9 SE, 9 SE, 11 SE},
-  /* aeolian */
-  {0, 0, 2 SE, 3 SE, 3 SE, 5 SE, 5 SE, 7 SE, 8 SE, 8 SE, 10 SE, 10 SE},
-  /* whole tones */
-  {0, 0, 2 SE, 2 SE, 4 SE, 4 SE, 6 SE, 6 SE, 8 SE, 8 SE, 10 SE, 10 SE},
-  /* pentatonic minor */
-  {0, 0, 3 SE, 3 SE, 3 SE, 5 SE, 5 SE, 7 SE, 7 SE, 10 SE, 10 SE, 10 SE},
-  /* pent-3 */
-  {0, 0, 0, 0, 7 SE, 7 SE, 7 SE, 7 SE, 10 SE, 10 SE, 10 SE, 10 SE},
-  /* fifths */
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
   {0, 0, 0, 0, 0, 0, 7 SE, 7 SE, 7 SE, 7 SE, 7 SE, 7 SE},
+  {0, 0, 0, 4 SE, 4 SE, 4 SE, 7 SE, 7 SE, 7 SE, 9 SE, 9 SE, 9 SE},
+  {0, 0, 2 SE, 2 SE, 4 SE, 4 SE, 7 SE, 7 SE, 9 SE, 9 SE, 11 SE, 11 SE}, /* A */
+  {0, 0, 0, 3 SE, 3 SE, 3 SE, 5 SE, 5 SE, 5 SE, 10 SE, 10 SE, 10 SE}, /* B */
+  {0, 0, 0, 1 SE, 1 SE, 1 SE, 5 SE, 5 SE, 5 SE, 8 SE, 8 SE, 8 SE}, /* D */
+  {0, 0, 0, 2 SE, 2 SE, 4 SE, 4 SE, 4 SE, 8 SE, 8 SE, 9 SE, 9 SE}, /* C */
 };
 
 enum AdcChannel {
@@ -145,6 +138,8 @@ class CvScaler {
       semi -= octaves * 12;
       pitch = octaves * kOctave +
         quantize_lut[quantize_ - 1][semi];
+      pitch += 12 SE;           /* pour le range du bouton */
+      pitch -= 2 SE;            /* pour le sax */
     }
 
     return pitch;

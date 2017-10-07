@@ -113,6 +113,8 @@ class WSOLASamplePlayer {
     position_ += (1.0f - env_phase_) * (1.0f - position_);
 
     pitch_ = parameters.pitch;
+    pitch_ = -12.0f;            /* l'octave en dessous */
+
     size_factor_ = parameters.size;
     
     if (windows_[0].done() && windows_[1].done()) {

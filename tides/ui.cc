@@ -68,7 +68,7 @@ void Ui::Init(Generator* generator, CvScaler* cv_scaler) {
     settings_.magic_number = kMagicNumber;
     mode_counter_ = 1;
     range_counter_ = 2;
-    cv_scaler_->quantize_ = 0;
+    cv_scaler_->quantize_ = 4;
     generator->set_sync(false);
   } else {
     mode_counter_ = settings_.mode;

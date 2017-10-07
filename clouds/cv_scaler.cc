@@ -181,6 +181,7 @@ void CvScaler::Read(Parameters* parameters) {
       lut_quantized_pitch,
       smoothed_adc_value_[ADC_PITCH_POTENTIOMETER],
       1024.0f);
+  parameters->pitch = -14.0;
   
   float note = calibration_data_->pitch_offset;
   note += smoothed_adc_value_[ADC_V_OCT_CV] * calibration_data_->pitch_scale;
